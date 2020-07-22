@@ -1,0 +1,98 @@
+ @page { 
+      margin: 2px; 
+    }
+    body { 
+      margin: 2px;
+      font-family: Arial, Helvetica, sans-serif;
+
+    }
+    .header{
+      
+      margin-bottom: 10px;
+      padding: 0;
+      height:45px;
+    }
+
+    
+    .head-logo{
+      
+      width:100px; 
+      margin-left: 0px;
+      margin-top: 0px;    
+      float: left
+    }
+
+
+    .head-logo .title-logo{
+     
+      font-size:4; 
+      text-align: left; 
+      font-weight: bold;
+      position: relative;
+      left: 10px;
+      top:49px;
+      
+    }
+
+    .head-logo .form-logo{
+      width:90%;
+    }
+    .head-title{
+      margin-top: 30px;
+      margin-left: 110px;
+      padding: 0px;
+      font-weight: bold;
+    }
+
+    .content-detail{
+    	font-size: 9; 
+      font-weight:lighter;
+      margin-top: 15px;
+      height: 245px;
+    }
+
+    .content-detail p{
+    	margin-top: 1px;
+    	
+    }
+
+    .item-detail{
+      width: 265px;
+      float: left;
+     
+      height: 200px;
+    }
+    .customer-detail{
+      width: 280px;
+      float: right;
+      height: 200px;
+    }
+    
+    .item-detail-content{
+      border: solid;
+      border-width: thin;
+      height: 50px;
+      margin-bottom: 3px;
+      border-radius: 7px;
+      padding: 2px;
+    }
+    .customer-detail-content{
+      border: solid;
+      border-width: thin;
+      height: 108px;
+      margin-bottom: 4px;
+      border-radius: 7px;
+      padding: 2px;
+    }
+
+    .footer{
+      margin-bottom: : 1px;
+      text-align: center;
+      align-content: center;
+    }
+    .barcode-detail{
+    	margin-bottom: : 1px;
+    	
+    	border-radius: 7px;
+    	height: 62px;
+    }

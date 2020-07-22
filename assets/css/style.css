@@ -1,0 +1,62 @@
+.ui-autocomplete {
+	z-index: 100;
+}
+
+.form-p-all{
+	font-size: 12px;
+}
+.form-p{
+	margin: 0;
+}
+.form-logo{
+	width: 20%;
+    height: auto;
+}
+
+.form-logo-inv{
+	width: 25%;
+    height: auto;
+}
+.line-title{
+	border: 0;
+	border-style: inset;
+	border-top: 1px solid #000;
+	width: 215px;
+}
+.line-title-jalan{
+	border: 0;
+	border-style: inset;
+	border-top: 1px solid #000;
+	width: 110px;
+}
+.center-text{
+	text-align: center;
+}
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  /*width: 20%;*/
+}
+
+/* Clear floats after the columns */
+.row:after {
+  display: table;
+  clear: both;
+}
+.scroll-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.htitle{
+	margin-bottom: 0; 
+	margin-left: 3px;
+	width:50px;
+}
+
+.hcontent{
+	font-size:10px;
+	
+}
+
