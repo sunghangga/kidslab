@@ -15,7 +15,7 @@
                             <div class="form-group row">
                               <label for="staticEmail" class="col-sm-2 col-form-label">Group <?php echo form_error('group_id') ?></label>
                               <div class="col-sm-10">
-                                <select class="form-control" id="group" name="group_id">
+                                <select class="form-control select2bs4" id="group" name="group_id">
                                   <?php if($group_id != null){ 
                                        echo '<option value="'.$group_id.'">'.$group.'</option>';
                                    } 
@@ -60,9 +60,19 @@
             </div><!-- /.col -->
           </div><!-- /.row -->
         </div>
-        <script src="<?php echo base_url('template/adminlte/plugins/jquery/jquery.min.js') ?>"></script>
-        <script src="<?php echo base_url('template/adminlte/plugins/jquery-ui/jquery-ui.min.js') ?>"></script>
         </section><!-- /.content -->
+        <!-- jQuery -->
+        <script src="<?php echo base_url() ?>template/adminlte/plugins/jquery/jquery.min.js"></script>
+        <script src="<?php echo base_url() ?>template/adminlte/plugins/datatables/jquery.dataTables.js"></script>
+        <script src="<?php echo base_url() ?>template/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+        <script>
+        $(function () {
+            //Initialize Select2 Elements
+             $('.select2bs4').select2({
+              theme: 'bootstrap4'
+            })          
+           })
+      </script>
 
   <script type="text/javascript">
     // var group= document.getElementById("group").value;

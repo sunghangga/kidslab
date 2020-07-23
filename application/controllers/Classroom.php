@@ -11,6 +11,7 @@ class Classroom extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Classroom_model');
+        $this->load->model(array('Classroom_model','Class_type_model'));
         $this->load->library('form_validation');
         if($this->session->userdata('user_login') != 'TRUE'){ redirect('login', 'refresh');}
         if($this->session->userdata('user_level') != '1'){ redirect('login', 'refresh');}
@@ -50,10 +51,13 @@ class Classroom extends CI_Controller
         $data = array(
             'button' => 'Create',
             'action' => site_url('classroom/create_action'),
-	    'id' => set_value('id'),
-	    'name' => set_value('name'),
-	    'quota' => set_value('quota'),
+    	    'id' => set_value('id'),
+    	    'name' => set_value('name'),
+    	    'quota' => set_value('quota'),
+            'class_type_id' => set_value('class_type_id'),
+            'get_all_classtype' => $this->Class_type_model->get_all(),
 	);
+        // echo json_encode($data);
         $this->template->load('template','classroom/classroom_form', $data);
     }
     
@@ -65,8 +69,9 @@ class Classroom extends CI_Controller
             $this->create();
         } else {
             $data = array(
-		'name' => $this->input->post('name',TRUE),
-		'quota' => $this->input->post('quota',TRUE),
+    		'name' => $this->input->post('name',TRUE),
+    		'quota' => $this->input->post('quota',TRUE),
+            'class_type_id' => $this->input->post('class_type_id',TRUE),
 	    );
 
             $this->Classroom_model->insert($data);
@@ -83,9 +88,13 @@ class Classroom extends CI_Controller
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('classroom/update_action'),
-		'id' => set_value('id', $row->id),
-		'name' => set_value('name', $row->name),
-		'quota' => set_value('quota', $row->quota),
+        		'id' => set_value('id', $row->id),
+        		'name' => set_value('name', $row->name),
+        		'quota' => set_value('quota', $row->quota),
+                'class_type_id' => set_value('class_type_id',$row->type_id),
+                'class_type_name' => set_value('class_type_name',$row->type_name),
+                'get_all_classtype' => $this->Class_type_model->get_all(),
+
 	    );
             $this->template->load('template','classroom/classroom_form', $data);
         } else {
@@ -102,9 +111,10 @@ class Classroom extends CI_Controller
             $this->update($this->input->post('id', TRUE));
         } else {
             $data = array(
-		'name' => $this->input->post('name',TRUE),
-		'quota' => $this->input->post('quota',TRUE),
-		'update_at' => date('Y-m-d H:m:s'),
+    		'name' => $this->input->post('name',TRUE),
+    		'quota' => $this->input->post('quota',TRUE),
+            'class_type_id' => $this->input->post('class_type_id',TRUE),
+    		'update_at' => date('Y-m-d H:m:s'),
 	    );
 
             $this->Classroom_model->update($this->input->post('id', TRUE), $data);
@@ -131,6 +141,7 @@ class Classroom extends CI_Controller
     {
 	$this->form_validation->set_rules('name', 'name', 'trim|required');
 	$this->form_validation->set_rules('quota', 'quota', 'trim|required');
+    $this->form_validation->set_rules('class_type_id', 'class_type_id', 'trim|required');
 
 	$this->form_validation->set_rules('id', 'id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');

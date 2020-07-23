@@ -9,7 +9,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>Horizon</title>
+  <title>Kids Lab</title>
   <link rel="stylesheet" href="<?php echo base_url() ?>template/adminlte/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -112,6 +112,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="<?php echo base_url('participants') ?>" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Participants
+              </p>
+            </a>
+          </li>
           <?php $level= $this->session->userdata('user_level');
             if($level=="1") { ?>
           <li class="nav-item has-treeview">
@@ -193,7 +201,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <b>Version</b> 1.0.0
     </div>
     <!-- Default to the left -->
-    <strong>Horizon Express &copy; 2020</strong> | Powered by MKM Honda Jimbaran
+    <strong>Scheduler &copy; 2020</strong> | Powered by Kids Lab
   </footer>
 </div>
 <!-- ./wrapper -->

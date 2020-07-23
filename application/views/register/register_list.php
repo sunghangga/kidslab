@@ -6,16 +6,25 @@
             <div class='col-12'>
               <div class='card'>
                 <div class='card-header'>
-                  <h3 class='card-title'>CLASSROOM LIST <?php echo anchor('classroom/create/','Create',array('class'=>'btn btn-primary btn-sm'));?></h3>
+                  <h3 class='card-title'>REGISTER LIST <?php echo anchor('register/create/','Create',array('class'=>'btn btn-primary btn-sm'));?>
+		<?php echo anchor(site_url('register/pdf'), '<i class="fa fa-file-pdf-o"></i> PDF', 'class="btn btn-primary btn-sm"'); ?></h3>
                 </div><!-- /.card-header -->
                 <div class='card-body'>
         <table class="table table-bordered table-striped" id="mytable">
             <thead>
                 <tr>
                     <th width="80px">No</th>
-		    <th>Name</th>
-            <th>Class Type</th>
-		    <th>Quota</th>
+		    <th>Reg Code</th>
+		    <th>Child Name</th>
+		    <th>Parent Name</th>
+		    <th>Phone</th>
+		    <th>Email</th>
+		    <th>Address</th>
+		    <th>Birth Date</th>
+		    <th>Period</th>
+		    <th>Class Type Id</th>
+		    <th>Classroom Id</th>
+		    <th>Note</th>
 		    <th>Create At</th>
 		    <th>Update At</th>
 		    <th>Action</th>
@@ -24,23 +33,31 @@
 	    <tbody>
             <?php
             $start = 0;
-            foreach ($classroom_data as $classroom)
+            foreach ($register_data as $register)
             {
                 ?>
                 <tr>
 		    <td><?php echo ++$start ?></td>
-		    <td><?php echo $classroom->name ?></td>
-            <td><?php echo $classroom->class_type_id ?></td>
-		    <td><?php echo $classroom->quota ?></td>
-		    <td><?php echo $classroom->create_at ?></td>
-		    <td><?php echo $classroom->update_at ?></td>
+		    <td><?php echo $register->reg_code ?></td>
+		    <td><?php echo $register->child_name ?></td>
+		    <td><?php echo $register->parent_name ?></td>
+		    <td><?php echo $register->phone ?></td>
+		    <td><?php echo $register->email ?></td>
+		    <td><?php echo $register->address ?></td>
+		    <td><?php echo $register->birth_date ?></td>
+		    <td><?php echo $register->period ?></td>
+		    <td><?php echo $register->class_type_id ?></td>
+		    <td><?php echo $register->classroom_id ?></td>
+		    <td><?php echo $register->note ?></td>
+		    <td><?php echo $register->create_at ?></td>
+		    <td><?php echo $register->update_at ?></td>
 		    <td style="text-align:center" width="140px">
 			<?php 
-			echo anchor(site_url('classroom/read/'.$classroom->id),'<i class="fa fa-eye"></i>',array('title'=>'detail','class'=>'btn btn-info btn-sm')); 
+			echo anchor(site_url('register/read/'.$register->id),'<i class="fa fa-eye"></i>',array('title'=>'detail','class'=>'btn btn-info btn-sm')); 
 			echo '  '; 
-			echo anchor(site_url('classroom/update/'.$classroom->id),'<i class="fa fa-edit"></i>',array('title'=>'edit','class'=>'btn btn-warning btn-sm')); 
+			echo anchor(site_url('register/update/'.$register->id),'<i class="fa fa-edit"></i>',array('title'=>'edit','class'=>'btn btn-warning btn-sm')); 
 			echo '  '; 
-			echo anchor(site_url('classroom/delete/'.$classroom->id),'<i class="fa fa-trash-alt"></i>','title="delete" class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+			echo anchor(site_url('register/delete/'.$register->id),'<i class="fa fa-trash-alt"></i>','title="delete" class="btn btn-danger btn-sm" onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
 			?>
 		    </td>
 	        </tr>
