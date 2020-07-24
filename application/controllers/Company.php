@@ -139,7 +139,7 @@ class Company extends CI_Controller
               'name' => $this->input->post('name',TRUE),
               'tlp' => $this->input->post('tlp',TRUE),
               'logo' => $present_photo,
-              'update_at' => date('Y-m-d H:m:s'),
+              'update_at' => date('Y-m-d H:i:s'),
             );
 
           

@@ -10,7 +10,6 @@ class Classroom extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Classroom_model');
         $this->load->model(array('Classroom_model','Class_type_model'));
         $this->load->library('form_validation');
         if($this->session->userdata('user_login') != 'TRUE'){ redirect('login', 'refresh');}
@@ -114,7 +113,7 @@ class Classroom extends CI_Controller
     		'name' => $this->input->post('name',TRUE),
     		'quota' => $this->input->post('quota',TRUE),
             'class_type_id' => $this->input->post('class_type_id',TRUE),
-    		'update_at' => date('Y-m-d H:m:s'),
+    		'update_at' => date('Y-m-d H:i:s'),
 	    );
 
             $this->Classroom_model->update($this->input->post('id', TRUE), $data);

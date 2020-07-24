@@ -10,8 +10,7 @@ class User extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model('User_model');
-        $this->load->model('Group_model');
+        $this->load->model(array('User_model','Group_model'));
         $this->load->library('form_validation');
         if($this->session->userdata('user_login') != 'TRUE'){ redirect('login', 'refresh');}
     }
@@ -78,7 +77,6 @@ class User extends CI_Controller
         		'name' => $this->input->post('name',TRUE),
             'password' => $this->bcrypt->hash_password($this->input->post('password'),TRUE),
         		'username' => $this->input->post('username',TRUE),
-            'create_at' => date('Y-m-d h:m:s'),
         	    );
 
             $this->User_model->insert($data);
@@ -125,7 +123,7 @@ class User extends CI_Controller
             'group_id' => $this->input->post('group_id',TRUE),
             'name' => $this->input->post('name',TRUE),
             'password' => $this->bcrypt->hash_password($this->input->post('password'),TRUE),
-            'update_at' => date('Y-m-d H:m:s'),
+            'update_at' => date('Y-m-d H:i:s'),
             'username' => $this->input->post('username',TRUE),
               );
             echo "tidak sama";
@@ -134,7 +132,7 @@ class User extends CI_Controller
             $data = array(
             'group_id' => $this->input->post('group_id',TRUE),
             'name' => $this->input->post('name',TRUE),
-            'update_at' => date('Y-m-d H:m:s'),
+            'update_at' => date('Y-m-d H:i:s'),
             'username' => $this->input->post('username',TRUE),
               );
           }
@@ -185,15 +183,6 @@ class User extends CI_Controller
 
     public function profil_action() 
     {
-      // $data = array(
-      //       'group_id' => $this->input->post('group_id',TRUE),
-      //       'nama' => $this->input->post('nama',TRUE),
-      //       'password' => $this->bcrypt->hash_password($this->input->post('password'),TRUE),
-      //       'update_at' => date('Y-m-d h:m:s'),
-      //       'username' => $this->input->post('username',TRUE),
-      //       'id' => $this->input->post('id',TRUE),
-      //         );
-      // echo json_encode($data);
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -205,14 +194,14 @@ class User extends CI_Controller
             'group_id' => $this->input->post('group_id',TRUE),
             'nama' => $this->input->post('nama',TRUE),
             'password' => $this->bcrypt->hash_password($this->input->post('password'),TRUE),
-            'update_at' => date('Y-m-d h:m:s'),
+            'update_at' => date('Y-m-d H:i:s'),
             'username' => $this->input->post('username',TRUE),
               );
           }else{
             $data = array(
             'group_id' => $this->input->post('group_id',TRUE),
             'nama' => $this->input->post('nama',TRUE),
-            'update_at' => date('Y-m-d h:m:s'),
+            'update_at' => date('Y-m-d H:i:s'),
             'username' => $this->input->post('username',TRUE),
               );
           }

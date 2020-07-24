@@ -16,7 +16,7 @@
                               <label for="staticEmail" class="col-sm-2 col-form-label">Group <?php echo form_error('group_id') ?></label>
                               <div class="col-sm-10">
                                 <select class="form-control select2bs4" id="group" name="group_id">
-                                  <?php if($group_id != null){ 
+                                  <?php if($group_id != null || $group_id != ""){ 
                                        echo '<option value="'.$group_id.'">'.$group.'</option>';
                                    } 
                                   foreach ($get_all_group as $row)

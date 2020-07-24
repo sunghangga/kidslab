@@ -28,6 +28,12 @@ class Register_model extends CI_Model
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }
+
+    function get_last_code()
+    {
+        $this->db->select('max(reg_code) last_code');
+        return $this->db->get($this->table)->row();
+    }
     
     // get total rows
     function total_rows($q = NULL) {
@@ -74,6 +80,9 @@ class Register_model extends CI_Model
     function insert($data)
     {
         $this->db->insert($this->table, $data);
+        $insert_id = $this->db->insert_id();
+        // echo json_encode($insert_id);
+        return  $insert_id;
     }
 
     // update data

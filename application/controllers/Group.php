@@ -97,7 +97,7 @@ class Group extends CI_Controller
         } else {
             $data = array(
 		'name' => $this->input->post('name',TRUE),
-        'update_at' => date('Y-m-d H:m:s'),
+        'update_at' => date('Y-m-d H:i:s'),
 	    );
 
             $this->Group_model->update($this->input->post('id', TRUE), $data);

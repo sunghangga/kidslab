@@ -20,7 +20,7 @@
                                   <div class="col-sm">
                                      <select class="form-control select2bs4" name="class_type_id" id="class_type_id" placeholder="Class Type" value="<?php echo $class_type_id; ?>" />
                                       <?php 
-                                          if($class_type_id != "null" || $class_type_id != "" ){ 
+                                          if($class_type_id != null || $class_type_id != "" ){ 
                                                echo '<option value="'.$class_type_id.'" selected>'.$class_type_name.'</option>';
                                           }
                                           foreach ($get_all_classtype as $row)

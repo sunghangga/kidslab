@@ -12,6 +12,7 @@ class Participants extends CI_Controller
         parent::__construct();
         $this->load->model('Participants_model');
         $this->load->library('form_validation');
+        if($this->session->userdata('user_login') != 'TRUE'){ redirect('login', 'refresh');}
     }
 
     public function index()
@@ -135,7 +136,7 @@ class Participants extends CI_Controller
     		'email' => $this->input->post('email',TRUE),
     		'address' => $this->input->post('address',TRUE),
     		'birth_date' => $this->input->post('birth_date',TRUE),
-    		'update_at' => date('Y-m-d H:m:s'),
+    		'update_at' => date('Y-m-d H:i:s'),
 	    );
 
             $this->Participants_model->update($this->input->post('id', TRUE), $data);

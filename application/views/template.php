@@ -91,8 +91,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <aside class="main-sidebar sidebar-light-danger elevation-4">
     <!-- Brand Logo -->
     <a href="<?php echo base_url('beranda') ?>" class="brand-link bg-red">
-      <!-- <img src="<?php echo base_url() ?>template/dist/img/logo-white.png" alt="AdminLTE Logo" class="brand-image"
-           style="opacity: .8"> -->
+      <img src="<?php echo base_url() ?>template/dist/img/logo.png" alt="AdminLTE Logo" class="brand-image"
+           style="height: 100%; width: auto;">
       <span class="brand-text font-weight-light"><b>Kids</b> Lab</span>
     </a>
 
@@ -117,6 +117,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Participants
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="<?php echo base_url('register') ?>" class="nav-link">
+              <i class="nav-icon fas fa-list-ol"></i>
+              <p>
+                Registration
               </p>
             </a>
           </li>
