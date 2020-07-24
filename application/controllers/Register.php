@@ -10,7 +10,7 @@ class Register extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model(array('Register_model','Participants_model','Class_type_model','Classroom_model'));
+        $this->load->model(array('Register_model','Participants_model','Class_type_model','Classroom_model','Payment_model'));
         $this->load->library('form_validation');
         if($this->session->userdata('user_login') != 'TRUE'){ redirect('login', 'refresh');}
     }
@@ -28,11 +28,12 @@ class Register extends CI_Controller
 
     public function get_all_participants($id=null){
         if (isset($_GET['term'])) {
-            $result = $this->Participants_model->get_all($_GET['term']);
+            $result = $this->Register_model->search_participants($_GET['term']);
             if (count($result) > 0) {
             foreach ($result as $row)
               $arr_result[] = array(
-              'child_name' => $row->child_name,
+              	'code' => $row->code,
+              	'label' => $row->child_name, //harus pake variabel label biar kebaca
 				'parent_name' => $row->parent_name,
 				'phone' => $row->phone,
 				'email' => $row->email,

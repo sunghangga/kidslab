@@ -112,21 +112,40 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="<?php echo base_url('participants') ?>" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                Participants
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="<?php echo base_url('register') ?>" class="nav-link">
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-list-ol"></i>
               <p>
                 Registration
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?php echo base_url('participants') ?>" class="nav-link">
+                  <i class="nav-icon far fa-circle"></i>
+                  <p>
+                    Participants
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo base_url('register') ?>" class="nav-link">
+                  <i class="nav-icon far fa-circle"></i>
+                  <p>
+                    Register
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo base_url('payment') ?>" class="nav-link">
+                  <i class="nav-icon far fa-circle"></i>
+                  <p>
+                    Payment
+                  </p>
+                </a>
+              </li>
+            </ul>
           </li>
           <?php $level= $this->session->userdata('user_level');
             if($level=="1") { ?>

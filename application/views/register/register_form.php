@@ -109,7 +109,7 @@
           $(function () {
               // panggil pertama
               classroom_list();
-              
+
                $('#inputDate').datetimepicker({
                   format: 'YYYY-MM-DD'
                 })
@@ -121,11 +121,11 @@
                 }) 
             });
 
-          $( "#child_name" ).autocomplete({
-              source: "<?php echo base_url()?>register/get_all_participants",
+          $("#child_name").autocomplete({
+              source: "<?php echo base_url()?>register/get_all_participants/",
 
               select: function (event, ui) {
-                $('[name="child_name"]').val(ui.item.child_name); 
+                $('[name="child_name"]').val(ui.item.label); 
                 $('[name="parent_name"]').val(ui.item.parent_name);
                 $('[name="phone"]').val(ui.item.phone);
                 $('[name="email"]').val(ui.item.email);
@@ -141,7 +141,7 @@
             $.ajax({
                 type : 'ajax',
                 url : '<?php echo base_url()?>register/get_classroom_list/'+id,
-                async : false,
+                // async : false,
                 dataType : 'json',
                 success : function(data){
                   var html = '';
