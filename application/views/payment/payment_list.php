@@ -65,7 +65,7 @@
                           { "data": "reg_code"},
                           { "data": "pay_status",
                                 render: function ( data, type, row ) { 
-                                    if (data.pay_status == 0) {
+                                    if (data == 1) {
                                         return '<i class="fa fa-check-square" style="color: green;"></i>';
                                     }
                                     else {
@@ -86,5 +86,41 @@
                           },
                       ]
                 });
+
+                $('#mytable').on( 'click', '#confirm', function (e) {
+                  e.preventDefault();
+                  var data = table.row( $(this).parents('tr') ).data();
+                  if (data != null) {
+                    Swal.fire({
+                      title: "Confirmation",
+                      text: "Are your sure want to confirm Registration No."+data.reg_code+" ?",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Yes, confirm it!'
+                    })
+                    .then((result) => {
+                      if (result.value) {
+                        Swal.fire({
+                          icon: 'success',
+                          title: 'Your receipt has been confirm!',
+                          showConfirmButton: false,
+                          timer: 1000,
+                          onClose: () => {
+                            window.location = '<?php echo base_url()?>payment/apply_payment/'+data.id;
+                          }
+                        })
+                      } else {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Your request has been canceled!',
+                          showConfirmButton: false,
+                          timer: 1000
+                        })
+                      }
+                    });
+                  }
+              } );
             }
         </script>

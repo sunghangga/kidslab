@@ -127,12 +127,20 @@ class Payment extends CI_Controller
 
     public function apply_payment($id) 
     {
+        $row = $this->Payment_model->get_by_id($id);
+        if ($row->pay_status == 0) {
+            $update_status = 1;
+        }
+        else {
+            $update_status = 0;
+        }
         $data = array(
-            'pay_status' => $this->input->post('pay_status',TRUE),
+            'pay_status' => $update_status,
         );
 
-        $this->Payment_model->update($this->input->post('id', TRUE), $data);
+        $this->Payment_model->update($id, $data);
         $this->session->set_flashdata('message', 'Update Record Success');
+        redirect(site_url('payment'));
     }
     
     public function delete($id) 

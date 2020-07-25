@@ -288,6 +288,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="<?php echo base_url() ?>template/adminlte/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
 <!-- <script src="<?php echo base_url() ?>template/adminlte/dist/js/adminlte.min.js"></script> -->
 <script src="<?php echo base_url('template/adminlte/plugins/select2/js/select2.full.min.js')?>"></script>
-<script src="<?php echo base_url('template/plugins/sweetalert/sweetalert.min.js')?>"></script>
+<script src="<?php echo base_url('template/plugins/sweetalert/sweetalert2.all.min.js')?>"></script>
 </body>
 </html>

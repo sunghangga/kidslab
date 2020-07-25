@@ -115,11 +115,12 @@ class Register extends CI_Controller
 	        if ($count_book_class->count >= $check_quota->quota) {
 	        	$this->form_validation->set_rules('quota_limit', 'quota_limit', 'trim|required',
 	        		array('required' => 
-	        			'<div class="alert alert-danger alert-dismissible">
-                  			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  				<h5><i class="icon fas fa-ban"></i> Alert!</h5>
-                  				Quota for the selected class is full. Choose another class, or upgrade quota
-                  		</div>')
+	        			'<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					  <strong><i class="icon fas fa-ban"></i>Alert!</strong> Quota for the selected class is full. Choose another class, or upgrade quota.
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					  </button>
+					</div>')
 	        	);
 	        	$this->form_validation->run();
 	        	$this->create();
