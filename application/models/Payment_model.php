@@ -22,6 +22,16 @@ class Payment_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    // get all join
+    function get_all_join()
+    {
+        $this->db->select('p.id, p.pay_status, p.create_at, p.update_at, r.reg_code, r.child_name, r.parent_name, r.phone, r.email');
+        $this->db->from('payment p');
+        $this->db->join('register r','r.id=p.register_id');
+        $this->db->order_by('p.id', $this->order);
+        return $this->db->get()->result();
+    }
+
     // get data by id
     function get_by_id($id)
     {

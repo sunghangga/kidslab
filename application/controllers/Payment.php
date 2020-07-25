@@ -17,13 +17,19 @@ class Payment extends CI_Controller
 
     public function index()
     {
-        $payment = $this->Payment_model->get_all();
+        $payment = $this->Payment_model->get_all_join();
 
         $data = array(
             'payment_data' => $payment
         );
 
         $this->template->load('template','payment/payment_list', $data);
+    }
+
+    public function get_data_range()
+    {
+        $data = $this->Payment_model->get_all_join();
+        echo json_encode($data);
     }
 
     public function read($id) 
@@ -117,6 +123,16 @@ class Payment extends CI_Controller
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('payment'));
         }
+    }
+
+    public function apply_payment($id) 
+    {
+        $data = array(
+            'pay_status' => $this->input->post('pay_status',TRUE),
+        );
+
+        $this->Payment_model->update($this->input->post('id', TRUE), $data);
+        $this->session->set_flashdata('message', 'Update Record Success');
     }
     
     public function delete($id) 

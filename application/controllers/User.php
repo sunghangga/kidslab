@@ -57,7 +57,7 @@ class User extends CI_Controller
       	    'create_at' => set_value('create_at'),
       	    'get_all_group' => $this->Group_model->get_all(),
       	    'id' => set_value('id'),
-            'group_id' => set_value('group_id'),
+            // 'group_id' => set_value('group_id'),
       	    'name' => set_value('name'),
       	    'password' => set_value('password'),
       	    'username' => set_value('username'),

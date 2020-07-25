@@ -25,8 +25,12 @@ class Register_model extends CI_Model
     // get data by id
     function get_by_id($id)
     {
-        $this->db->where($this->id, $id);
-        return $this->db->get($this->table)->row();
+        $this->db->select('r.*, c.name class_name, ct.name class_type');
+        $this->db->from('register r');
+        $this->db->join('classroom c','c.id=r.classroom_id');
+        $this->db->join('class_type ct','c.class_type_id=ct.id');
+        $this->db->where('r.id', $id);
+        return $this->db->get()->row();
     }
 
     function get_last_code()
@@ -41,6 +45,13 @@ class Register_model extends CI_Model
         $this->db->order_by('child_name', 'ASC');
         $this->db->limit(10);
         return $this->db->get('participants')->result();
+    }
+
+    function get_count_book($class_book_id, $period)
+    {
+        $this->db->select('count(reg_code) count');
+        $this->db->where(array("classroom_id" => $class_book_id, "DATE_FORMAT(birth_date,'%Y-%m')" => $period));
+        return $this->db->get($this->table)->row();
     }
     
     // get total rows

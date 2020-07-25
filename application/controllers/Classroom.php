@@ -53,10 +53,9 @@ class Classroom extends CI_Controller
     	    'id' => set_value('id'),
     	    'name' => set_value('name'),
     	    'quota' => set_value('quota'),
-            'class_type_id' => set_value('class_type_id'),
+            // 'class_type_id' => set_value('class_type_id'),
             'get_all_classtype' => $this->Class_type_model->get_all(),
 	);
-        // echo json_encode($data);
         $this->template->load('template','classroom/classroom_form', $data);
     }
     
@@ -90,7 +89,7 @@ class Classroom extends CI_Controller
         		'id' => set_value('id', $row->id),
         		'name' => set_value('name', $row->name),
         		'quota' => set_value('quota', $row->quota),
-                'class_type_id' => set_value('class_type_id',$row->type_id),
+                'class_type_id' => set_value('class_type_id',$row->class_type_id),
                 'class_type_name' => set_value('class_type_name',$row->type_name),
                 'get_all_classtype' => $this->Class_type_model->get_all(),
 

@@ -90,8 +90,8 @@ class Register extends CI_Controller
 	    'address' => set_value('address'),
 	    'birth_date' => set_value('birth_date'),
 	    'period' => set_value('period'),
-	    'class_type_id' => set_value('class_type_id'),
-	    'classroom_id' => set_value('classroom_id'),
+	    // 'class_type_id' => set_value('class_type_id'),
+	    // 'classroom_id' => set_value('classroom_id'),
 	    'note' => set_value('note'),
 	    'get_all_classtype' => $this->Class_type_model->get_all(),
 	    'get_all_classroom' => $this->Classroom_model->get_all(),
@@ -106,40 +106,59 @@ class Register extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->create();
         } else {
-        	//untuk membuat kode otomatis
-            $last_code = $this->Register_model->get_last_code();
-            if (is_null($last_code->last_code)) {
-                $last_code->last_code = 0;
-            }
-            $last_code = explode('.', $last_code->last_code);
-            $code = (int) ($last_code[count($last_code)-1]);
-            $code++;
-            $branch = "KL21";
-            $code = $branch.'.'.sprintf("%08s", $code);
+        	// untuk mengecek jumlah kelas tersisa
+        	$class_book_id = $this->input->post('classroom_id',TRUE);
+	        $period = $this->input->post('period',TRUE);
+	        $check_quota = $this->Classroom_model->get_by_id($class_book_id);
+	        $count_book_class = $this->Register_model->get_count_book($class_book_id, $period);
 
-            $data = array(
-				'reg_code' => $code,
-				'child_name' => $this->input->post('child_name',TRUE),
-				'parent_name' => $this->input->post('parent_name',TRUE),
-				'phone' => $this->input->post('phone',TRUE),
-				'email' => $this->input->post('email',TRUE),
-				'address' => $this->input->post('address',TRUE),
-				'birth_date' => $this->input->post('birth_date',TRUE),
-				'period' => $this->input->post('period',TRUE),
-				'class_type_id' => $this->input->post('class_type_id',TRUE),
-				'classroom_id' => $this->input->post('classroom_id',TRUE),
-				'note' => $this->input->post('note',TRUE),
-		    );
+	        if ($count_book_class->count >= $check_quota->quota) {
+	        	$this->form_validation->set_rules('quota_limit', 'quota_limit', 'trim|required',
+	        		array('required' => 
+	        			'<div class="alert alert-danger alert-dismissible">
+                  			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  				<h5><i class="icon fas fa-ban"></i> Alert!</h5>
+                  				Quota for the selected class is full. Choose another class, or upgrade quota
+                  		</div>')
+	        	);
+	        	$this->form_validation->run();
+	        	$this->create();
+	        } else {
+	        	//untuk membuat kode otomatis
+	            $last_code = $this->Register_model->get_last_code();
+	            if (is_null($last_code->last_code)) {
+	                $last_code->last_code = 0;
+	            }
+	            $last_code = explode('.', $last_code->last_code);
+	            $code = (int) ($last_code[count($last_code)-1]);
+	            $code++;
+	            $branch = "KL21";
+	            $code = $branch.'.'.sprintf("%08s", $code);
 
-            $last_id = $this->Register_model->insert($data);
+	            $data = array(
+					'reg_code' => $code,
+					'child_name' => $this->input->post('child_name',TRUE),
+					'parent_name' => $this->input->post('parent_name',TRUE),
+					'phone' => $this->input->post('phone',TRUE),
+					'email' => $this->input->post('email',TRUE),
+					'address' => $this->input->post('address',TRUE),
+					'birth_date' => $this->input->post('birth_date',TRUE),
+					'period' => $this->input->post('period',TRUE).'-01', //untuk dapat masuk ke db
+					'class_type_id' => $this->input->post('class_type_id',TRUE),
+					'classroom_id' => $this->input->post('classroom_id',TRUE),
+					'note' => $this->input->post('note',TRUE),
+			    );
 
-            $data_payment = array(
-            	'register_id' => $last_id,
-            	'pay_status' => 0, 
-            );
-            $this->Payment_model->insert($data_payment);
-            $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('register'));
+	            $last_id = $this->Register_model->insert($data);
+
+	            $data_payment = array(
+	            	'register_id' => $last_id,
+	            	'pay_status' => 0, 
+	            );
+	            $this->Payment_model->insert($data_payment);
+	            $this->session->set_flashdata('message', 'Create Record Success');
+	            redirect(site_url('register'));
+	        }
         }
     }
     
@@ -151,17 +170,21 @@ class Register extends CI_Controller
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('register/update_action'),
-		'id' => set_value('id', $row->id),
-		'child_name' => set_value('child_name', $row->child_name),
-		'parent_name' => set_value('parent_name', $row->parent_name),
-		'phone' => set_value('phone', $row->phone),
-		'email' => set_value('email', $row->email),
-		'address' => set_value('address', $row->address),
-		'birth_date' => set_value('birth_date', $row->birth_date),
-		'period' => set_value('period', $row->period),
-		'class_type_id' => set_value('class_type_id', $row->class_type_id),
-		'classroom_id' => set_value('classroom_id', $row->classroom_id),
-		'note' => set_value('note', $row->note),
+				'id' => set_value('id', $row->id),
+				'child_name' => set_value('child_name', $row->child_name),
+				'parent_name' => set_value('parent_name', $row->parent_name),
+				'phone' => set_value('phone', $row->phone),
+				'email' => set_value('email', $row->email),
+				'address' => set_value('address', $row->address),
+				'birth_date' => set_value('birth_date', $row->birth_date),
+				'period' => set_value('period', $row->period),
+				'class_type_id' => set_value('class_type_id', $row->class_type_id),
+				'classroom_id' => set_value('classroom_id', $row->classroom_id),
+				'class_type_name' => set_value('class_type_name', $row->class_type),
+				'classroom_name' => set_value('classroom_name', $row->class_name),
+				'note' => set_value('note', $row->note),
+				'get_all_classtype' => $this->Class_type_model->get_all(),
+			    'get_all_classroom' => $this->Classroom_model->get_all(),
 	    );
             $this->template->load('template','register/register_form', $data);
         } else {
@@ -177,23 +200,42 @@ class Register extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->update($this->input->post('id', TRUE));
         } else {
-            $data = array(
-		'child_name' => $this->input->post('child_name',TRUE),
-		'parent_name' => $this->input->post('parent_name',TRUE),
-		'phone' => $this->input->post('phone',TRUE),
-		'email' => $this->input->post('email',TRUE),
-		'address' => $this->input->post('address',TRUE),
-		'birth_date' => $this->input->post('birth_date',TRUE),
-		'period' => $this->input->post('period',TRUE),
-		'class_type_id' => $this->input->post('class_type_id',TRUE),
-		'classroom_id' => $this->input->post('classroom_id',TRUE),
-		'note' => $this->input->post('note',TRUE),
-		'update_at' => date('Y-m-d H:i:s'),
-	    );
+        	// untuk mengecek jumlah kelas tersisa
+        	$class_book_id = $this->input->post('classroom_id',TRUE);
+	        $period = $this->input->post('period',TRUE);
+	        $check_quota = $this->Classroom_model->get_by_id($class_book_id);
+	        $count_book_class = $this->Register_model->get_count_book($class_book_id, $period);
 
-            $this->Register_model->update($this->input->post('id', TRUE), $data);
-            $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('register'));
+	        if ($count_book_class->count >= $check_quota->quota) {
+	        	$this->form_validation->set_rules('quota_limit', 'quota_limit', 'trim|required',
+	        		array('required' => 
+	        			'<div class="alert alert-danger alert-dismissible">
+                  			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  				<h5><i class="icon fas fa-ban"></i> Alert!</h5>
+                  				Quota for the selected class is full. Choose another class, or upgrade quota
+                  		</div>')
+	        	);
+	        	$this->form_validation->run();
+	        	$this->update($this->input->post('id', TRUE));
+	        } else {
+	            $data = array(
+					'child_name' => $this->input->post('child_name',TRUE),
+					'parent_name' => $this->input->post('parent_name',TRUE),
+					'phone' => $this->input->post('phone',TRUE),
+					'email' => $this->input->post('email',TRUE),
+					'address' => $this->input->post('address',TRUE),
+					'birth_date' => $this->input->post('birth_date',TRUE),
+					'period' => $this->input->post('period',TRUE).'-01',
+					'class_type_id' => $this->input->post('class_type_id',TRUE),
+					'classroom_id' => $this->input->post('classroom_id',TRUE),
+					'note' => $this->input->post('note',TRUE),
+					'update_at' => date('Y-m-d H:i:s'),
+			    );
+
+	            $this->Register_model->update($this->input->post('id', TRUE), $data);
+	            $this->session->set_flashdata('message', 'Update Record Success');
+	            redirect(site_url('register'));
+	        }
         }
     }
     

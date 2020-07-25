@@ -25,7 +25,7 @@ class Classroom_model extends CI_Model
     // get data by id
     function get_by_id($id)
     {
-        $this->db->select('classroom.id, classroom.name, classroom.quota, classroom.class_type_id, classroom.create_at, classroom.update_at, class_type.id type_id, class_type.name type_name');
+        $this->db->select('classroom.id, classroom.name, classroom.quota, classroom.class_type_id, classroom.create_at, classroom.update_at, class_type.name type_name');
         $this->db->from($this->table);
         $this->db->join('class_type','classroom.class_type_id=class_type.id');
         $this->db->where('classroom.id', $id);
@@ -35,7 +35,7 @@ class Classroom_model extends CI_Model
     // get data by id
     function get_classroom_by_type($id)
     {
-        $this->db->select('classroom.id, classroom.name, classroom.quota, classroom.class_type_id, classroom.create_at, classroom.update_at, class_type.id type_id, class_type.name type_name');
+        $this->db->select('classroom.id, classroom.name, classroom.quota, classroom.class_type_id, classroom.create_at, classroom.update_at, class_type.name type_name');
         $this->db->from($this->table);
         $this->db->join('class_type','classroom.class_type_id=class_type.id');
         $this->db->where('class_type.id', $id);

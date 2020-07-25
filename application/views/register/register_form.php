@@ -9,6 +9,7 @@
                 </div>
                   <div class='card-body'>
                     <div class='row'>
+                      <?php echo form_error('quota_limit') ?>
                       <div class='col-12'>
                           <form action="<?php echo $action; ?>" method="post">
 	  <div class='form-group row'><label for='label' class='col-sm-2 col-form-label'>Child Name <?php echo form_error('child_name') ?></label>
@@ -86,7 +87,7 @@
                                 </div>
 	    <input type="hidden" name="id" value="<?php echo $id; ?>" /> 
 	 <div style='text-align: right;'> 
-                        <button type="submit" class="btn btn-primary"><?php echo $button ?></button> 
+                        <button type="submit" class="btn btn-primary" ><?php echo $button ?></button> 
 	    <a href="<?php echo site_url('register') ?>" class="btn btn-default">Cancel</a>
 	</div>
                           </form>
