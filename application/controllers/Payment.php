@@ -10,7 +10,7 @@ class Payment extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Payment_model');
+        $this->load->model(array('Payment_model','Shipment_model'));
         $this->load->library('form_validation');
         if($this->session->userdata('user_login') != 'TRUE'){ redirect('login', 'refresh');}
     }
@@ -127,7 +127,7 @@ class Payment extends CI_Controller
 
     public function apply_payment() 
     {
-        $id=$this->input->post('id');
+        $id=$this->input->post('id', TRUE);
         $row = $this->Payment_model->get_by_id($id);
         if ($row->pay_status == 0) {
             $update_status = 1;
@@ -140,8 +140,7 @@ class Payment extends CI_Controller
             'update_at' => date('Y-m-d H:i:s'),
         );
 
-        $data = $this->Payment_model->update($id, $data);
-        $this->Shipment_model->update_by_register_id($row->register_id, $data);
+        $this->Payment_model->update($id, $data, $row->register_id);
         $this->session->set_flashdata('message', 'Update Record Success');
         echo json_encode($data);
     }

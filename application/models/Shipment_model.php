@@ -22,6 +22,17 @@ class Shipment_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    // get all join
+    function get_all_join()
+    {
+        $this->db->select('s.id, s.pay_status, s.ship_status, s.create_at, s.update_at, r.reg_code, r.child_name, r.parent_name, r.phone, r.email');
+        $this->db->from('shipment s');
+        $this->db->join('register r','r.id=s.register_id');
+        $this->db->where('s.pay_status',1);
+        $this->db->order_by('s.id', $this->order);
+        return $this->db->get()->result();
+    }
+
     // get data by id
     function get_by_id($id)
     {
@@ -70,7 +81,7 @@ class Shipment_model extends CI_Model
     // update data by register_id
     function update_by_register_id($id, $data)
     {
-        $this->db->where('pay_status', $id);
+        $this->db->where('register_id', $data->register_id);
         $this->db->update($this->table, $data);
     }
 

@@ -44,6 +44,32 @@ class Shipment extends CI_Controller
         }
     }
 
+    public function get_data_range()
+    {
+        $data = $this->Shipment_model->get_all_join();
+        echo json_encode($data);
+    }
+
+    public function apply_shipment() 
+    {
+        $id=$this->input->post('id');
+        $row = $this->Shipment_model->get_by_id($id);
+        if ($row->ship_status == 0) {
+            $update_status = 1;
+        }
+        else {
+            $update_status = 0;
+        }
+        $data = array(
+            'ship_status' => $update_status,
+            'update_at' => date('Y-m-d H:i:s'),
+        );
+
+        $data = $this->Shipment_model->update($id, $data);
+        $this->session->set_flashdata('message', 'Update Record Success');
+        echo json_encode($data);
+    }
+
     public function create() 
     {
         $data = array(

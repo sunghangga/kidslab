@@ -69,10 +69,12 @@ class Payment_model extends CI_Model
     }
 
     // update data
-    function update($id, $data)
+    function update($id, $data, $register_id)
     {
-        $this->db->where($this->id, $id);
-        $this->db->update($this->table, $data);
+        // untuk update ke tabel payment
+        $this->db->update($this->table, $data, array($this->id => $id));
+        // untuk update ke tabel shipment
+        $this->db->update('shipment', $data, array('register_id' => $register_id));
     }
 
     // delete data
