@@ -3,50 +3,44 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Payment extends CI_Controller
+class Shipment extends CI_Controller
 {
     
         
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Payment_model');
+        $this->load->model('Shipment_model');
         $this->load->library('form_validation');
-        if($this->session->userdata('user_login') != 'TRUE'){ redirect('login', 'refresh');}
     }
 
     public function index()
     {
-        $payment = $this->Payment_model->get_all_join();
+        $shipment = $this->Shipment_model->get_all();
 
         $data = array(
-            'payment_data' => $payment
+            'shipment_data' => $shipment
         );
 
-        $this->template->load('template','payment/payment_list', $data);
-    }
-
-    public function get_data_range()
-    {
-        $data = $this->Payment_model->get_all_join();
-        echo json_encode($data);
+        $this->template->load('template','shipment/shipment_list', $data);
     }
 
     public function read($id) 
     {
-        $row = $this->Payment_model->get_by_id($id);
+        $row = $this->Shipment_model->get_by_id($id);
         if ($row) {
             $data = array(
 		'id' => $row->id,
 		'pay_status' => $row->pay_status,
+		'ship_status' => $row->ship_status,
 		'register_id' => $row->register_id,
 		'create_at' => $row->create_at,
 		'update_at' => $row->update_at,
 	    );
-            $this->template->load('template','payment/payment_read', $data);
+            $this->template->load('template','shipment/shipment_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('payment'));
+            redirect(site_url('shipment'));
         }
     }
 
@@ -54,14 +48,15 @@ class Payment extends CI_Controller
     {
         $data = array(
             'button' => 'Create',
-            'action' => site_url('payment/create_action'),
+            'action' => site_url('shipment/create_action'),
 	    'id' => set_value('id'),
 	    'pay_status' => set_value('pay_status'),
+	    'ship_status' => set_value('ship_status'),
 	    'register_id' => set_value('register_id'),
 	    'create_at' => set_value('create_at'),
 	    'update_at' => set_value('update_at'),
 	);
-        $this->template->load('template','payment/payment_form', $data);
+        $this->template->load('template','shipment/shipment_form', $data);
     }
     
     public function create_action() 
@@ -73,35 +68,37 @@ class Payment extends CI_Controller
         } else {
             $data = array(
 		'pay_status' => $this->input->post('pay_status',TRUE),
+		'ship_status' => $this->input->post('ship_status',TRUE),
 		'register_id' => $this->input->post('register_id',TRUE),
 		'create_at' => $this->input->post('create_at',TRUE),
 		'update_at' => $this->input->post('update_at',TRUE),
 	    );
 
-            $this->Payment_model->insert($data);
+            $this->Shipment_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('payment'));
+            redirect(site_url('shipment'));
         }
     }
     
     public function update($id) 
     {
-        $row = $this->Payment_model->get_by_id($id);
+        $row = $this->Shipment_model->get_by_id($id);
 
         if ($row) {
             $data = array(
                 'button' => 'Update',
-                'action' => site_url('payment/update_action'),
+                'action' => site_url('shipment/update_action'),
 		'id' => set_value('id', $row->id),
 		'pay_status' => set_value('pay_status', $row->pay_status),
+		'ship_status' => set_value('ship_status', $row->ship_status),
 		'register_id' => set_value('register_id', $row->register_id),
 		'create_at' => set_value('create_at', $row->create_at),
 		'update_at' => set_value('update_at', $row->update_at),
 	    );
-            $this->template->load('template','payment/payment_form', $data);
+            $this->template->load('template','shipment/shipment_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('payment'));
+            redirect(site_url('shipment'));
         }
     }
     
@@ -114,56 +111,35 @@ class Payment extends CI_Controller
         } else {
             $data = array(
 		'pay_status' => $this->input->post('pay_status',TRUE),
+		'ship_status' => $this->input->post('ship_status',TRUE),
 		'register_id' => $this->input->post('register_id',TRUE),
 		'create_at' => $this->input->post('create_at',TRUE),
 		'update_at' => $this->input->post('update_at',TRUE),
 	    );
 
-            $this->Payment_model->update($this->input->post('id', TRUE), $data);
+            $this->Shipment_model->update($this->input->post('id', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('payment'));
+            redirect(site_url('shipment'));
         }
-    }
-
-    public function apply_payment() 
-    {
-        $id=$this->input->post('id');
-        $row = $this->Payment_model->get_by_id($id);
-        if ($row->pay_status == 0) {
-            $update_status = 1;
-        }
-        else {
-            $update_status = 0;
-        }
-        $data = array(
-            'pay_status' => $update_status,
-            'update_at' => date('Y-m-d H:i:s'),
-        );
-
-        $data = $this->Payment_model->update($id, $data);
-        $this->Shipment_model->update_by_register_id($row->register_id, $data);
-        $this->session->set_flashdata('message', 'Update Record Success');
-        echo json_encode($data);
     }
     
     public function delete($id) 
     {
-        $row = $this->Payment_model->get_by_id($id);
+        $row = $this->Shipment_model->get_by_id($id);
 
         if ($row) {
-            $this->Payment_model->delete($id);
+            $this->Shipment_model->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
-            redirect(site_url('payment'));
+            redirect(site_url('shipment'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('payment'));
+            redirect(site_url('shipment'));
         }
     }
 
     public function _rules() 
     {
-	$this->form_validation->set_rules('pay_status', 'pay status', 'trim|required');
-	$this->form_validation->set_rules('register_id', 'register id', 'trim|required');
+	$this->form_validation->set_rules('ship_status', 'ship status', 'trim|required');
 
 	$this->form_validation->set_rules('id', 'id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
@@ -171,8 +147,8 @@ class Payment extends CI_Controller
 
 }
 
-/* End of file Payment.php */
-/* Location: ./application/controllers/Payment.php */
+/* End of file Shipment.php */
+/* Location: ./application/controllers/Shipment.php */
 /* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2020-07-24 16:56:46 */
+/* Generated by Harviacode Codeigniter CRUD Generator 2020-07-26 07:51:07 */
 /* http://harviacode.com */

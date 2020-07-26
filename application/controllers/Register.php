@@ -10,7 +10,7 @@ class Register extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model(array('Register_model','Participants_model','Class_type_model','Classroom_model','Payment_model'));
+        $this->load->model(array('Register_model','Participants_model','Class_type_model','Classroom_model','Payment_model','Shipment_model'));
         $this->load->library('form_validation');
         if($this->session->userdata('user_login') != 'TRUE'){ redirect('login', 'refresh');}
     }
@@ -156,7 +156,15 @@ class Register extends CI_Controller
 	            	'register_id' => $last_id,
 	            	'pay_status' => 0, 
 	            );
+
+	            $data_shipment = array(
+	            	'register_id' => $last_id,
+	            	'pay_status' => 0,
+	            	'ship_status' => 0, 
+	            );
+
 	            $this->Payment_model->insert($data_payment);
+	            $this->Shipment_model->insert($data_shipment);
 	            $this->session->set_flashdata('message', 'Create Record Success');
 	            redirect(site_url('register'));
 	        }

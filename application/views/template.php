@@ -147,6 +147,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </li>
             </ul>
           </li>
+          <li class="nav-item">
+            <a href="<?php echo base_url('shipment') ?>" class="nav-link">
+              <i class="nav-icon fas fa-shipping-fast"></i>
+              <p>
+                Shipment
+              </p>
+            </a>
+          </li>
           <?php $level= $this->session->userdata('user_level');
             if($level=="1") { ?>
           <li class="nav-item has-treeview">

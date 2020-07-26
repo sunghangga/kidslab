@@ -108,7 +108,17 @@
                           showConfirmButton: false,
                           timer: 1000,
                           onClose: () => {
-                            window.location = '<?php echo base_url()?>payment/apply_payment/'+data.id;
+                            //menggunakan ajax agar tidak perlu load page
+                            $.ajax({
+                                type : "POST",
+                                url  : "<?php echo base_url('payment/apply_payment')?>",
+                                dataType : "JSON",
+                                data : {id: data.id},
+                                success: function(data){
+                                    get_all();
+                                }
+                            });
+                            return false;
                           }
                         })
                       } else {
