@@ -3,6 +3,11 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Helper\Sample;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 class Register extends CI_Controller
 {
     
@@ -24,6 +29,33 @@ class Register extends CI_Controller
         );
 
         $this->template->load('template','register/register_list', $data);
+    }
+
+    public function schedule()
+    {
+        $this->template->load('template','schedule/schedule_list');
+    }
+
+    public function schedule_list()
+    {
+        $schedule = $this->Register_model->get_schedule();
+        echo json_encode($schedule);
+    }
+
+    public function schedule_report()
+    {
+        $this->template->load('template','report/schedule_by_period');
+    }
+
+    public function address_list()
+    {
+    	$address = $this->Register_model->get_address();
+        echo json_encode($address);
+    }
+
+    public function address_report()
+    {
+        $this->template->load('template','report/address_by_period');
     }
 
     public function get_all_participants($id=null){
@@ -247,6 +279,47 @@ class Register extends CI_Controller
 	        }
         }
     }
+
+    public function schedule_excel()
+    {
+    	$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->getActiveSheet();
+		$sheet
+		->setCellValue('A1', 'No')
+		->setCellValue('B1', 'Registration Code')
+		->setCellValue('C1', 'Child Name')
+		->setCellValue('D1', 'Period')
+		->setCellValue('E1', 'Class Type')
+		->setCellValue('F1', 'Classroom');
+        
+        $schedule = $this->Register_model->get_schedule();
+        $i=2; //row ke berapa
+        foreach($schedule as $data) {
+        	// untuk memisahkan period
+        	$time=strtotime($data->period);
+			$month=date("F",$time);
+			$year=date("Y",$time);
+			
+			$sheet
+			->setCellValue('A'.$i, $i-1)
+			->setCellValue('B'.$i, $data->reg_code)
+			->setCellValue('C'.$i, $data->child_name)
+			->setCellValue('D'.$i, $month.' '.$year)
+			->setCellValue('E'.$i, $data->class_type)
+			->setCellValue('F'.$i, $data->class_name);
+			$i++;
+		}
+
+		$writer = new Xlsx($spreadsheet);
+		
+		$filename = 'Schedule - '.date('F Y');
+		
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"'); 
+		header('Cache-Control: max-age=0');
+
+		$writer->save('php://output');
+	}
     
     public function delete($id) 
     {

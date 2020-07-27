@@ -33,6 +33,28 @@ class Register_model extends CI_Model
         return $this->db->get()->row();
     }
 
+    // get_schedule
+    function get_schedule()
+    {
+        $this->db->select('r.reg_code, r.child_name, r.period, c.name class_name, ct.name class_type');
+        $this->db->from('register r');
+        $this->db->join('payment p','p.register_id=r.id');
+        $this->db->join('classroom c','c.id=r.classroom_id');
+        $this->db->join('class_type ct','c.class_type_id=ct.id');
+        $this->db->where('p.pay_status', 1);
+        return $this->db->get()->result();
+    }
+
+    // get_address
+    function get_address()
+    {
+        $this->db->select('r.reg_code, r.child_name, r.parent_name, r.period, r.address, r.email, r.phone');
+        $this->db->from('register r');
+        $this->db->join('payment p','p.register_id=r.id');
+        $this->db->where('p.pay_status', 1);
+        return $this->db->get()->result();
+    }
+
     function get_last_code()
     {
         $this->db->select('max(reg_code) last_code');

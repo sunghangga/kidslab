@@ -20,10 +20,10 @@
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
-  <!-- <div class="login-logo">
-    <h2><a href="#" class="brand-link"><img src="<?php echo base_url() ?>template/dist/img/logo-red.png" alt="AdminLTE Logo" style="width: 50%;
-    height: auto;"><span style="font-size: 130%;color: #be1e2d;"><b>Horizon</b>Express</span></a></h2>
-  </div> -->
+  <div class="login-logo">
+    <h2><a href="#" class="brand-link"><img src="<?php echo base_url() ?>template/dist/img/logo.png" alt="AdminLTE Logo" style="width: 35%;
+    height: auto;"><span style="font-size: 200%;color: #be1e2d;"><b>Kids</b>Lab</span></a></h2>
+  </div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
