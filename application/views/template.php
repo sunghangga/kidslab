@@ -148,6 +148,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul>
           </li>
           <li class="nav-item">
+            <a href="<?php echo base_url('register/schedule') ?>" class="nav-link">
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>
+                Schedule
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="<?php echo base_url('shipment') ?>" class="nav-link">
               <i class="nav-icon fas fa-shipping-fast"></i>
               <p>
@@ -210,6 +218,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul>
           </li>
           <?php } ?>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Report
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?php echo base_url('register/schedule_report') ?>" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Schedule by Period</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="<?php echo base_url('register/address_report') ?>" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Shipment Address</p>
+                </a>
+              </li>
+            </ul>
+          </li>
 
             
         </ul>
