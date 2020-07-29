@@ -8,8 +8,8 @@
 <div class="page-kirim">
 <?php foreach($data_address as $row) { ?>
 <div class="row form-p-all">
-    <div class="col-md-12" style="border-style: solid; width: 100%; height: 120px; margin-top: 2px;">
-    <div class="column">
+    <div class="col-md-12">
+    <div class="column" style="border-style: solid; width: 80%; margin-top: 2px;">
       <!-- <p class="form-p" style="margin-left: 3px; margin-top: 2px;"><b>PENGIRIM</b></p> -->
       <table>
         <tr>
@@ -47,7 +47,7 @@
         </tr>
       </table>
     </div>
-    <div class="column-right" style="padding-left: 610px; width: 70%; margin-top: 2px;">
+    <div class="column-right" style="padding-left: 475px; width: 70%; margin-top: 2px;">
       <table>
         <tr>
           <td >

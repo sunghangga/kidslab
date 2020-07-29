@@ -363,20 +363,22 @@ class Register extends CI_Controller
 			$sheetData = $spreadsheet->getActiveSheet()->toArray();
 
 			$data = array();
-			$numrow = 1;
-            // foreach($sheet as $row){
-            //     if($numrow > 1){
-            //         array_push($data, array(
-            //             'nama_dosen' => $row['A'],
-            //             'email'      => $row['B'],
-            //             'alamat'      => $row['C'],
-            //     	));
-            //     }
-            //     $numrow++;
-            // }
+			for($i = 1;$i < count($sheetData);$i++)
+			{
+                array_push($data, array(
+                	'parent_name' => $sheetData[$i][1],
+                	'address' => $sheetData[$i][2],
+                	'phone' => $sheetData[$i][3],
+                    'child_name' => $sheetData[$i][4],
+                    'birth_date' => $sheetData[$i][5],
+                    'class_type_id' => $sheetData[$i][6],
+                    'classroom_id' => $sheetData[$i][7],
+                    'email' => 'default@email.com',
+                    'period' => $sheetData[$i][9],
+            	));
+            }
 
-			echo "<pre>";
-			print_r($sheetData);
+			print_r($data);
 		}
 	}
     
