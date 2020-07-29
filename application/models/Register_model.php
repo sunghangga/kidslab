@@ -58,10 +58,26 @@ class Register_model extends CI_Model
     // get_address
     function get_address()
     {
-        $this->db->select('r.reg_code, r.child_name, r.parent_name, r.period, r.address, r.email, r.phone');
+        $this->db->select('r.reg_code, r.child_name, r.parent_name, r.period, r.address, r.email, r.phone, c.name class_name, ct.name class_type');
         $this->db->from('register r');
         $this->db->join('payment p','p.register_id=r.id');
+        $this->db->join('classroom c','c.id=r.classroom_id');
+        $this->db->join('class_type ct','c.class_type_id=ct.id');
         $this->db->where('p.pay_status', 1);
+        return $this->db->get()->result();
+    }
+
+    // get_address
+    function get_address_print()
+    {
+        $this->db->select('r.reg_code, r.child_name, r.parent_name, r.period, r.address, r.email, r.phone, c.name class_name, ct.name class_type');
+        $this->db->from('register r');
+        $this->db->join('payment p','p.register_id=r.id');
+        $this->db->join('shipment s','s.register_id=r.id');
+        $this->db->join('classroom c','c.id=r.classroom_id');
+        $this->db->join('class_type ct','c.class_type_id=ct.id');
+        $this->db->where('p.pay_status', 1);
+        $this->db->where('s.ship_status', 1);
         return $this->db->get()->result();
     }
 

@@ -15,7 +15,7 @@ class Register extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model(array('Register_model','Participants_model','Class_type_model','Classroom_model','Payment_model','Shipment_model'));
+        $this->load->model(array('Register_model','Participants_model','Class_type_model','Classroom_model','Payment_model','Shipment_model','Company_model'));
         $this->load->library('form_validation');
         if($this->session->userdata('user_login') != 'TRUE'){ redirect('login', 'refresh');}
     }
@@ -26,7 +26,8 @@ class Register extends CI_Controller
 
         $data = array(
             'register_data' => $register,
-            'get_all_classtype' => $this->Class_type_model->get_all()
+            'get_all_classtype' => $this->Class_type_model->get_all(),
+            'get_all_classroom' => $this->Classroom_model->get_all()
         );
 
         $this->template->load('template','register/register_list', $data);
@@ -56,13 +57,32 @@ class Register extends CI_Controller
 
     public function address_list()
     {
-    	$address = $this->Register_model->get_address();
+    	$address = $this->Register_model->get_address_print();
         echo json_encode($address);
     }
 
     public function address_report()
     {
         $this->template->load('template','report/address_by_period');
+    }
+
+    public function address_pdf()
+    {
+    	$company = $this->Company_model->get_all();
+        $row = $this->Register_model->get_address_print();
+        if ($row) {
+            $data = array(
+	            'logo' => $company->logo,
+	            'name' => $company->name,
+	            'tlp' => $company->tlp,
+	            'data_address' => $row
+	        );
+            $this->load->library("mypdf");
+            $this->mypdf->generate("report/address_print","A4","potrait","Participants Address", $data);
+        } else {
+            $this->session->set_flashdata('message', 'Record Not Found');
+            redirect(site_url('register/address_report'));
+        }
     }
 
     public function get_all_participants($id=null){

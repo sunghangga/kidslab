@@ -3,7 +3,7 @@
 }
 
 .form-p-all{
-	font-size: 12px;
+	font-size: 18px;
 }
 .form-p{
 	margin: 0;
@@ -38,6 +38,11 @@
   /*width: 20%;*/
 }
 
+.column-right {
+  float: right;
+  /*width: 20%;*/
+}
+
 /* Clear floats after the columns */
 .row:after {
   display: table;
@@ -56,7 +61,7 @@
 }
 
 .hcontent{
-	font-size:10px;
+	font-size:18px;
 	
 }
 

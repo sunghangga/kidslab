@@ -66,9 +66,10 @@
                           { "data": "class_type" },
                       ],
                       "columnDefs": [
-                          { targets: 2, "width": "130px" },
-                          { targets: 3, "width": "80", render: function(data){return moment(data).format('MMM YYYY'); }},
-                          { targets: 4, "width": "105px" },
+                          { targets: 1, "width": "120px" },
+                          { targets: 2, "width": "300px" },
+                          { targets: 3, "width": "120", render: function(data){return moment(data).format('MMMM YYYY'); }},
+                          { targets: 4, "width": "150px" },
                       ]
                 });
             }

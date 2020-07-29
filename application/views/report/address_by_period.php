@@ -6,7 +6,9 @@
             <div class='col-12'>
               <div class='card'>
                 <div class='card-header'>
-                  <h3 class='card-title'>SCHEDULE LIST <?php echo anchor(site_url('register/schedule_excel'), ' <i class="fas fa-file-pdf"></i> PDF', 'class="btn btn-danger btn-sm"'); ?></h3>
+                  <h3 class='card-title'>SCHEDULE LIST 
+                    <button id=address_pdf type="button" class="btn btn-danger btn-sm"><i class="fas fa-file-pdf"></i> PDF</button>
+                  </h3>
                 </div><!-- /.card-header -->
                 <div class='card-body'>
         <table class="table table-bordered table-striped" id="mytable">
@@ -35,6 +37,10 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 get_all();
+            });
+
+            $("#address_pdf").click(function(){
+              window.open('<?php echo base_url()?>register/address_pdf', '_blank');
             });
 
             function get_all(){
@@ -66,9 +72,10 @@
                           { "data": "class_type" },
                       ],
                       "columnDefs": [
-                          { targets: 2, "width": "130px" },
-                          { targets: 3, "width": "80", render: function(data){return moment(data).format('MMMM YYYY'); }},
-                          { targets: 4, "width": "105px" },
+                          { targets: 1, "width": "120px" },
+                          { targets: 2, "width": "300px" },
+                          { targets: 3, "width": "120", render: function(data){return moment(data).format('MMMM YYYY'); }},
+                          { targets: 4, "width": "150px" },
                       ]
                 });
             }
