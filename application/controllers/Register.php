@@ -31,6 +31,12 @@ class Register extends CI_Controller
         $this->template->load('template','register/register_list', $data);
     }
 
+    public function get_data_range()
+    {
+        $register = $this->Register_model->get_data_register();
+        echo json_encode($register);
+    }
+
     public function schedule()
     {
         $this->template->load('template','schedule/schedule_list');
@@ -321,17 +327,18 @@ class Register extends CI_Controller
 		$writer->save('php://output');
 	}
     
-    public function delete($id) 
+    public function delete() 
     {
+    	$id=$this->input->post('id', TRUE);
         $row = $this->Register_model->get_by_id($id);
 
         if ($row) {
             $this->Register_model->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
-            redirect(site_url('register'));
+            echo json_encode($row);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('register'));
+            echo json_encode($row);
         }
     }
 

@@ -33,6 +33,16 @@ class Register_model extends CI_Model
         return $this->db->get()->row();
     }
 
+    // get data by id
+    function get_data_register()
+    {
+        $this->db->select('r.*, c.name class_name, ct.name class_type');
+        $this->db->from('register r');
+        $this->db->join('classroom c','c.id=r.classroom_id');
+        $this->db->join('class_type ct','c.class_type_id=ct.id');
+        return $this->db->get()->result();
+    }
+
     // get_schedule
     function get_schedule()
     {
