@@ -6,6 +6,18 @@
             <div class='col-12'>
               <div class='card'>
                 <div class='card-header'>
+              <!-- <?php echo form_open_multipart('spreadsheet/import_excel', array('name' => 'spreadsheet')); ?>
+                  <p>Upload Data Registration</p>
+                  <input  type="file" name="regis">
+                  <button class="btn btn-primary btn-sm" type="submit" name="import">Upload</button>
+              <?php echo form_close(); ?> -->
+              <form method="POST" action="<?php echo base_url() ?>spreadsheet/import_excel" enctype="multipart/form-data">
+                  <h5>UPLOAD REGISTRATION DATA</h5>
+                  <input type="file" name="userfile">
+                  <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-file-upload"></i> Upload</button>
+              </form>
+            </div>
+                <div class='card-header'>
                     <div class="row">
                     <div class="col">
                         <h3 class='card-title'>REGISTER LIST <?php echo anchor('register/create/','Create',array('class'=>'btn btn-primary btn-sm'));?></h3>
@@ -42,20 +54,7 @@
                </div>
             </div><!-- row -->
             </div><!-- /.card-header -->
-            <div class='card-header'>
-              <?php echo form_open_multipart($action); ?>
-                  <p>Upload Data Registration</p>
-                  <input  type="file" name="regis">
-                  <button class="btn btn-primary btn-sm" type="submit" name="import">Upload</button>
-                  <?php echo $info_upload ?>
-                  <? 
-                  if(isset($_SESSION['messageumsl'])){
-                    echo $_SESSION['messageumsl'];
-                    unset($_SESSION['messageumsl']);
-                  }
-                   ?>
-              <?php echo form_close(); ?>
-            </div>
+            
         <div class='card-body'>
         <table class="table table-bordered table-striped" id="mytable">
             <thead>
@@ -129,7 +128,6 @@
                 var class_type = document.getElementById("class_type_id").value;
                 var classroom = document.getElementById("classroom_id").value;
                 var date = document.getElementById("inputPeriod").value;
-                console.log(class_type,classroom,date);
                 var count = 0;
                 var table = $("#mytable").DataTable({
                     scrollY: "400px",

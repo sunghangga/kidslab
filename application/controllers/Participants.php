@@ -81,7 +81,7 @@ class Participants extends CI_Controller
             $code = (int) ($last_code[count($last_code)-1]);
             $code++;
             $branch = "KL11";
-            $code = $branch.'.'.sprintf("%08s", $code);
+            $code = $branch.'.'.sprintf("%06s", $code);
 
             $data = array(
     		'code' => $code,
