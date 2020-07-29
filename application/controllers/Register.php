@@ -25,7 +25,8 @@ class Register extends CI_Controller
         $register = $this->Register_model->get_all();
 
         $data = array(
-            'register_data' => $register
+            'register_data' => $register,
+            'get_all_classtype' => $this->Class_type_model->get_all()
         );
 
         $this->template->load('template','register/register_list', $data);

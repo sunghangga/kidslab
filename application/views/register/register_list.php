@@ -7,49 +7,36 @@
               <div class='card'>
                 <div class='card-header'>
                     <div class="row">
-                    <div class="col-md-6">
-                  <h3 class='card-title'>REGISTER LIST <?php echo anchor('register/create/','Create',array('class'=>'btn btn-primary btn-sm'));?></h3>
-              </div>
-              <div class="col-md-6">
-                    <div class="col-sm-6 input-group date" data-target-input="nearest" id="inputPeriod">
+                    <div class="col">
+                        <h3 class='card-title'>REGISTER LIST <?php echo anchor('register/create/','Create',array('class'=>'btn btn-primary btn-sm'));?></h3>
+                    </div>
+                <div class="col">
+                    <div class="input-group date" data-target-input="nearest" id="inputPeriod">
                       <input type="text" class="form-control datetimepicker-input" data-target="#inputPeriod" placeholder="Period"  name="period" id="period"/>
                       <div class="input-group-append" data-target="#inputPeriod" data-toggle="datetimepicker">
                           <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                       </div>
                     </div>
-                    <div class='col-sm-6'>
-                          <select class="form-control select2bs4" onchange="classroom_list()" name="class_type_id" id="class_type_id" placeholder="Class Type" value="<?php echo $class_type_id; ?>" />
-                          <?php 
-                              if($class_type_id != null || $class_type_id != "" ){ 
-                                   echo '<option value="'.$class_type_id.'" selected>'.$class_type_name.'</option>';
-                              }
-                              foreach ($get_all_classtype as $row)
-                              {
-                                if($class_type_id != $row->id){
-                                  echo '<option value="'.$row->id.'">'.$row->name.'</option>';
-                                }
-                              } 
-                          ?>
-                         </select>
-                       </div>
-                    <div class='col-sm-6'>
-                      <select class="form-control select2bs4" id="classroom_id" name="classroom_id">
-                        <?php if($classroom_id != null || $classroom_id != ""){ 
-                             echo '<option value="'.$classroom_id.'">'.$classroom_name.'</option>';
-                         } 
-                        foreach ($get_all_classroom as $row)
-                            {
-                              if($group_id != $row->id){
-                                echo '<option value="'.$row->id.'">'.$row->name.'</option>';
-                              }
-                            } ?>
-                        >
-                      </select>
-                   </div> 
-                  <!-- /.input group -->
+                    
+                     
+                </div><!-- /.input group -->
+                <div class='col'>
+                  <select class="form-control select2bs4" onchange="classroom_list()" name="class_type_id" id="class_type_id" placeholder="Class Type" value="<?php echo $class_type_id; ?>" />
+                  <?php 
+                      foreach ($get_all_classtype as $row)
+                      {
+                        echo '<option value="'.$row->id.'">'.$row->name.'</option>';
+                      } 
+                  ?>
+                 </select>
                 </div>
-                </div><!-- /.card-header -->
-                <div class='card-body'>
+                <div class='col'>
+                  <select class="form-control select2bs4" id="classroom_id" name="classroom_id">
+                  </select>
+               </div>
+            </div><!-- row -->
+            </div><!-- /.card-header -->
+        <div class='card-body'>
         <table class="table table-bordered table-striped" id="mytable">
             <thead>
                 <tr>
@@ -116,7 +103,7 @@
                 }
             });
           }
-          
+
             function get_all(){
                 var count = 0;
                 var table = $("#mytable").DataTable({
