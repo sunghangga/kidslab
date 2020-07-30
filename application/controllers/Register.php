@@ -35,7 +35,10 @@ class Register extends CI_Controller
 
     public function get_data_range()
     {
-        $register = $this->Register_model->get_data_register();
+    	$class_type = $_GET['class_type'];
+        $classroom = $_GET['classroom'];
+        $date = $_GET['date'];
+        $register = $this->Register_model->get_data_register($class_type, $classroom, $date);
         echo json_encode($register);
     }
 

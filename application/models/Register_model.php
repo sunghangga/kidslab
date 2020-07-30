@@ -34,12 +34,27 @@ class Register_model extends CI_Model
     }
 
     // get data by id
-    function get_data_register()
+    function get_data_register($class_type, $classroom, $date)
     {
         $this->db->select('r.*, c.name class_name, ct.name class_type');
         $this->db->from('register r');
         $this->db->join('classroom c','c.id=r.classroom_id');
         $this->db->join('class_type ct','c.class_type_id=ct.id');
+        if ($class_type != null) {
+            $this->db->where('ct.id', $class_type);
+        }
+        if ($classroom != null) {
+            $this->db->where('c.id', $classroom);
+        }
+        // digunakan range tanggal 1 sampai 31 karena jumlah maks hari 31
+        if ($date != null) { 
+            $this->db->where('r.period >=', $date.'-01');
+            $this->db->where('r.period <=', $date.'-31');
+        }
+        else {
+            $this->db->where('r.period >=', date('Y-m').'-01');
+            $this->db->where('r.period <=', date('Y-m').'-31');
+        }
         return $this->db->get()->result();
     }
 

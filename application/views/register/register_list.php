@@ -26,7 +26,7 @@
                     <div class="col input-group date" data-target-input="nearest" id="inputPeriod">
                       <input type="text" class="form-control datetimepicker-input" data-target="#inputPeriod" placeholder="Period"  name="period" id="period"/>
                       <div class="input-group-append" data-target="#inputPeriod" data-toggle="datetimepicker">
-                          <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                          <div class="input-group-text" id="input_btn_calendar"><i class="far fa-calendar-alt"></i></div>
                       </div>
                     </div>
                     
@@ -35,6 +35,7 @@
                 <div class='col'>
                   <select class="col form-control select2bs4" onchange="classroom_list()" name="class_type_id" id="class_type_id" placeholder="Class Type" value="<?php echo $class_type_id; ?>" />
                   <?php 
+                      echo '<option value="" selected>-- ALL --</option>';
                       foreach ($get_all_classtype as $row)
                       {
                         echo '<option value="'.$row->id.'">'.$row->name.'</option>';
@@ -43,8 +44,9 @@
                  </select>
                 </div>
                 <div class='col'>
-                  <select class="col form-control select2bs4" id="classroom_id" name="classroom_id">
+                  <select class="col form-control select2bs4" id="classroom_id" name="classroom_id" onchange="get_all()">
                     <?php 
+                    echo '<option value="" selected>-- ALL --</option>';
                     foreach ($get_all_classroom as $row)
                         {
                             echo '<option value="'.$row->id.'">'.$row->name.'</option>';
@@ -115,6 +117,7 @@
                   var html = '';
                   var i;
 
+                  html += '<option value="" selected>-- ALL --</option>';
                   for(i=0; i<data.length; i++){
 
                       html += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
@@ -122,12 +125,14 @@
                   $('#classroom_id').html(html);
                 }
             });
+            get_all();
           }
 
             function get_all(){
                 var class_type = document.getElementById("class_type_id").value;
                 var classroom = document.getElementById("classroom_id").value;
-                var date = document.getElementById("inputPeriod").value;
+                var date = document.getElementById("period").value;
+                console.log(class_type,classroom,date);
                 var count = 0;
                 var table = $("#mytable").DataTable({
                     scrollY: "400px",
