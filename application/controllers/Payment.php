@@ -10,17 +10,16 @@ class Payment extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model(array('Payment_model','Shipment_model'));
+        $this->load->model(array('Payment_model','Shipment_model','Class_type_model','Classroom_model'));
         $this->load->library('form_validation');
         if($this->session->userdata('user_login') != 'TRUE'){ redirect('login', 'refresh');}
     }
 
     public function index()
     {
-        $payment = $this->Payment_model->get_all_join();
-
         $data = array(
-            'payment_data' => $payment
+            'get_all_classtype' => $this->Class_type_model->get_all(),
+            'get_all_classroom' => $this->Classroom_model->get_all()
         );
 
         $this->template->load('template','payment/payment_list', $data);
@@ -28,7 +27,10 @@ class Payment extends CI_Controller
 
     public function get_data_range()
     {
-        $data = $this->Payment_model->get_all_join();
+        $class_type = $_GET['class_type'];
+        $classroom = $_GET['classroom'];
+        $date = $_GET['date'];
+        $data = $this->Payment_model->get_all_join($class_type, $classroom, $date);
         echo json_encode($data);
     }
 

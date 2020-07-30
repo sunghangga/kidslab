@@ -10,16 +10,15 @@ class Shipment extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Shipment_model');
+        $this->load->model(array('Shipment_model','Class_type_model','Classroom_model'));
         $this->load->library('form_validation');
     }
 
     public function index()
     {
-        $shipment = $this->Shipment_model->get_all();
-
         $data = array(
-            'shipment_data' => $shipment
+            'get_all_classtype' => $this->Class_type_model->get_all(),
+            'get_all_classroom' => $this->Classroom_model->get_all()
         );
 
         $this->template->load('template','shipment/shipment_list', $data);
@@ -46,7 +45,10 @@ class Shipment extends CI_Controller
 
     public function get_data_range()
     {
-        $data = $this->Shipment_model->get_all_join();
+        $class_type = $_GET['class_type'];
+        $classroom = $_GET['classroom'];
+        $date = $_GET['date'];
+        $data = $this->Shipment_model->get_all_join($class_type, $classroom, $date);
         echo json_encode($data);
     }
 

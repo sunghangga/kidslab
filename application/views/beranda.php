@@ -6,8 +6,8 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-
-                <p>HOME</p>
+                <h3 id="delivery_count">HOME</h3>
+                <p>Kids Lab</p>
               </div>
               <div class="icon">
                 <i class="fas fa-home"></i>

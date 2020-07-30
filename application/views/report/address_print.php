@@ -47,7 +47,7 @@
         </tr>
       </table>
     </div>
-    <div class="column-right" style="padding-left: 475px; width: 70%; margin-top: 2px;">
+    <div class="column-right" style="padding-left: 475px; width: 50%; margin-top: 2px;">
       <table>
         <tr>
           <td >

@@ -44,18 +44,29 @@ class Register extends CI_Controller
 
     public function schedule()
     {
-        $this->template->load('template','schedule/schedule_list');
+    	$data = array(
+            'get_all_classtype' => $this->Class_type_model->get_all(),
+            'get_all_classroom' => $this->Classroom_model->get_all()
+        );
+        $this->template->load('template','schedule/schedule_list', $data);
     }
 
     public function schedule_list()
     {
-        $schedule = $this->Register_model->get_schedule();
+    	$class_type = $_GET['class_type'];
+        $classroom = $_GET['classroom'];
+        $date = $_GET['date'];
+        $schedule = $this->Register_model->get_schedule($class_type, $classroom, $date);
         echo json_encode($schedule);
     }
 
     public function schedule_report()
     {
-        $this->template->load('template','report/schedule_by_period');
+    	$data = array(
+            'get_all_classtype' => $this->Class_type_model->get_all(),
+            'get_all_classroom' => $this->Classroom_model->get_all()
+        );
+        $this->template->load('template','report/schedule_by_period', $data);
     }
 
     public function address_list()
@@ -349,7 +360,26 @@ class Register extends CI_Controller
 		->setCellValue('E1', 'Class Type')
 		->setCellValue('F1', 'Classroom');
         
-        $schedule = $this->Register_model->get_schedule();
+        if ($_GET['ct'] != null) {
+    		$class_type =  $_GET['ct'];
+    	}
+    	else {
+    		$class_type = null;
+    	}
+    	if ($_GET['c'] != null) {
+    		$classroom =  $_GET['c'];
+    	}
+    	else {
+    		$classroom = null;
+    	}
+    	if ($_GET['d'] != null) {
+    		$date =  $_GET['d'];
+    	}
+    	else {
+    		$date = null;
+    	}
+
+        $schedule = $this->Register_model->get_schedule($class_type, $classroom, $date);
         $i=2; //row ke berapa
         foreach($schedule as $data) {
         	// untuk memisahkan period
@@ -369,7 +399,7 @@ class Register extends CI_Controller
 
 		$writer = new Xlsx($spreadsheet);
 		
-		$filename = 'Schedule - '.date('F Y');
+		$filename = 'Schedule Period '.$month.' - '.$year;
 		
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"'); 

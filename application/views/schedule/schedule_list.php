@@ -6,7 +6,42 @@
             <div class='col-12'>
               <div class='card'>
                 <div class='card-header'>
+                  <div class="row">
+                    <div class="col">
                   <h3 class='card-title'>SCHEDULE LIST </h3>
+                </div>
+                <div class="col-md-2">
+                    <div class="col input-group date" data-target-input="nearest" id="inputPeriod">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#inputPeriod" placeholder="Period"  name="period" id="period"/>
+                      <div class="input-group-append" data-target="#inputPeriod" data-toggle="datetimepicker">
+                          <div class="input-group-text" id="input_btn_calendar"><i class="far fa-calendar-alt"></i></div>
+                      </div>
+                    </div>
+                </div><!-- /.input group -->
+                <div class='col-md-auto'>
+                  <select class="col form-control select2bs4" onchange="classroom_list()" name="class_type_id" id="class_type_id" placeholder="Class Type" value="<?php echo $class_type_id; ?>" />
+                  <?php 
+                      echo '<option value="" selected>-- ALL --</option>';
+                      foreach ($get_all_classtype as $row)
+                      {
+                        echo '<option value="'.$row->id.'">'.$row->name.'</option>';
+                      } 
+                  ?>
+                 </select>
+                </div>
+                <div class='col-md-auto'>
+                  <select class="col form-control select2bs4" id="classroom_id" name="classroom_id">
+                    <?php 
+                    echo '<option value="" selected>-- ALL --</option>';
+                    foreach ($get_all_classroom as $row)
+                        {
+                            echo '<option value="'.$row->id.'">'.$row->name.'</option>';
+                        } ?>
+                    >
+                  </select>
+               </div>
+               <button class="btn btn-info btn-md" onclick="get_all()"><i class="fas fa-search"></i></button>
+              </div>
                 </div><!-- /.card-header -->
                 <div class='card-body'>
         <table class="table table-bordered table-striped" id="mytable">
@@ -34,10 +69,45 @@
         <script src="<?php echo base_url() ?>assets/bootstrap/js/moment.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
+                // panggil pertama
+                $('#inputPeriod').datetimepicker({
+                  format: 'YYYY-MM'
+                })
+               $('.select2bs4').select2({
+                  theme: 'bootstrap4'
+                }) 
+
                 get_all();
+                
             });
 
+            function classroom_list(){
+            var elem = document.getElementById("class_type_id");
+            var id = elem.options[elem.selectedIndex].value;
+            $.ajax({
+                type : 'ajax',
+                url : '<?php echo base_url()?>register/get_classroom_list/'+id,
+                // async : false,
+                dataType : 'json',
+                success : function(data){
+                  var html = '';
+                  var i;
+
+                  html += '<option value="" selected>-- ALL --</option>';
+                  for(i=0; i<data.length; i++){
+
+                      html += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+                  }
+                  $('#classroom_id').html(html);
+                }
+            });
+            // get_all();
+          }
+
             function get_all(){
+              var class_type = document.getElementById("class_type_id").value;
+                var classroom = document.getElementById("classroom_id").value;
+                var date = document.getElementById("period").value;
                 var count = 0;
                 var table = $("#mytable").DataTable({
                     scrollY: "400px",
@@ -50,7 +120,9 @@
                         "url": "<?php echo base_url()?>register/schedule_list/",
                         "dataSrc": "",
                         "data": function(data) {
-                            
+                            data.class_type = class_type;
+                            data.classroom = classroom;
+                            data.date = date;
                         },
                       },
                       "columns": [
