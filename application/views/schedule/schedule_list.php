@@ -52,7 +52,7 @@
 		    <th>Child Name</th>
 		    <th>Period</th>
 		    <th>Class Type</th>
-		    <th>Classroom</th>
+		    <th>Online Class</th>
                 </tr>
             </thead>
         </table>

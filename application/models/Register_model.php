@@ -34,6 +34,16 @@ class Register_model extends CI_Model
     }
 
     // get data by id
+    function get_book_by_id($id)
+    {
+        $this->db->select('r.*, ct.name class_type');
+        $this->db->from('register r');
+        $this->db->join('class_type ct','r.class_type_id=ct.id');
+        $this->db->where('r.id', $id);
+        return $this->db->get()->row();
+    }
+
+    // get data by id
     function get_data_register($class_type, $classroom, $date)
     {
         $this->db->select('r.*, c.name class_name, ct.name class_type');

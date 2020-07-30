@@ -32,7 +32,7 @@
                       </div>
                     </div>
                     <div class="form-group row">
-                      <label for="staticEmail" class="col-sm-2 col-form-label">Group ID</label>
+                      <label for="staticEmail" class="col-sm-2 col-form-label">Group</label>
                       <div class="col-sm-10">
                         <input type="text" class="form-control" name="group_id" id="group_id" placeholder="group_id" value="<?php echo $group_id; ?>" disabled/>
                       </div>
@@ -41,6 +41,12 @@
                       <label for="staticEmail" class="col-sm-2 col-form-label">Create At</label>
                       <div class="col-sm-10">
                         <input type="text" class="form-control" name="create_at" id="create_at" placeholder="create_at" value="<?php echo $create_at; ?>" disabled/>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="staticEmail" class="col-sm-2 col-form-label">Update At</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" name="update_at" id="update_at" placeholder="update_at" value="<?php echo $update_at; ?>" disabled/>
                       </div>
                     </div>
                     <input type="hidden" name="id" value="<?php echo $id; ?>" />
@@ -59,6 +65,7 @@
         <script src="<?php echo base_url('template/adminlte/plugins/jquery-ui/jquery-ui.min.js') ?>"></script>
         <script src="<?php echo base_url() ?>assets/bootstrap/js/moment.js"></script>
         <script>
-          document.getElementById("create_at").value = moment(document.getElementById("create_at").value).format('D MMM YYYY');
+          document.getElementById("create_at").value = moment(document.getElementById("create_at").value).format('D MMM YYYY hh:mm:ss');
+          document.getElementById("update_at").value = moment(document.getElementById("update_at").value).format('D MMM YYYY hh:mm:ss');
         </script>
         </section><!-- /.content -->

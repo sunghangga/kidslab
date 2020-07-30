@@ -139,7 +139,8 @@ class Register extends CI_Controller
             foreach ($result as $row)
               $arr_result[] = array(
               	'code' => $row->code,
-              	'label' => $row->child_name, //harus pake variabel label biar kebaca
+              	'label' => $row->child_name.' ('.$row->code.')', //harus pake variabel label biar kebaca
+				'child_name' => $row->child_name,
 				'parent_name' => $row->parent_name,
 				'phone' => $row->phone,
 				'email' => $row->email,
@@ -171,6 +172,33 @@ class Register extends CI_Controller
 				'birth_date' => $row->birth_date,
 				'period' => $row->period,
 				'class_type_id' => $row->class_type_id,
+				'classroom_id' => $row->classroom_id,
+				'note' => $row->note,
+				'create_at' => $row->create_at,
+				'update_at' => $row->update_at,
+		    );
+            $this->template->load('template','register/register_read', $data);
+        } else {
+            $this->session->set_flashdata('message', 'Record Not Found');
+            redirect(site_url('register'));
+        }
+    }
+
+    public function read_book($id) 
+    {
+        $row = $this->Register_model->get_book_by_id($id);
+        if ($row) {
+            $data = array(
+				'id' => $row->id,
+				'reg_code' => $row->reg_code,
+				'child_name' => $row->child_name,
+				'parent_name' => $row->parent_name,
+				'phone' => $row->phone,
+				'email' => $row->email,
+				'address' => $row->address,
+				'birth_date' => $row->birth_date,
+				'period' => $row->period,
+				'class_type_id' => $row->class_type,
 				'classroom_id' => $row->classroom_id,
 				'note' => $row->note,
 				'create_at' => $row->create_at,
@@ -321,6 +349,36 @@ class Register extends CI_Controller
 				'classroom_id' => set_value('classroom_id', $row->classroom_id),
 				'class_type_name' => set_value('class_type_name', $row->class_type),
 				'classroom_name' => set_value('classroom_name', $row->class_name),
+				'note' => set_value('note', $row->note),
+				'get_all_classtype' => $this->Class_type_model->get_all(),
+			    'get_all_classroom' => $this->Classroom_model->get_all(),
+	    );
+            $this->template->load('template','register/register_form', $data);
+        } else {
+            $this->session->set_flashdata('message', 'Record Not Found');
+            redirect(site_url('register'));
+        }
+    }
+
+    public function update_book($id) 
+    {
+        $row = $this->Register_model->get_book_by_id($id);
+
+        if ($row) {
+            $data = array(
+                'button' => 'Update',
+                'action' => site_url('register/update_action'),
+				'id' => set_value('id', $row->id),
+				'child_name' => set_value('child_name', $row->child_name),
+				'parent_name' => set_value('parent_name', $row->parent_name),
+				'phone' => set_value('phone', $row->phone),
+				'email' => set_value('email', $row->email),
+				'address' => set_value('address', $row->address),
+				'birth_date' => set_value('birth_date', $row->birth_date),
+				'period' => set_value('period', $row->period),
+				'class_type_id' => set_value('class_type_id', $row->class_type_id),
+				'classroom_id' => set_value('classroom_id', $row->classroom_id),
+				'class_type_name' => set_value('class_type_name', $row->class_type),
 				'note' => set_value('note', $row->note),
 				'get_all_classtype' => $this->Class_type_model->get_all(),
 			    'get_all_classroom' => $this->Classroom_model->get_all(),
@@ -566,6 +624,21 @@ class Register extends CI_Controller
     {
     	$id=$this->input->post('id', TRUE);
         $row = $this->Register_model->get_by_id($id);
+
+        if ($row) {
+            $this->Register_model->delete($id);
+            $this->session->set_flashdata('message', 'Delete Record Success');
+            echo json_encode($row);
+        } else {
+            $this->session->set_flashdata('message', 'Record Not Found');
+            echo json_encode($row);
+        }
+    }
+
+    public function delete_book() 
+    {
+    	$id=$this->input->post('id', TRUE);
+        $row = $this->Register_model->get_book_by_id($id);
 
         if ($row) {
             $this->Register_model->delete($id);

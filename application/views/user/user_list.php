@@ -16,8 +16,8 @@
                     		    <th>Nama</th>
                             <th>Username</th>
                             <th>Group</th>
-                            <th>Date</th>
-                    		    <th>Last Update</th>
+                            <th>Update At</th>
+                    		    <th>Update At</th>
                     		    <th>Action</th>
                                     </tr>
                                 </thead>
@@ -32,7 +32,7 @@
                     		    <td><?php echo $user->name ?></td>
                             <td><?php echo $user->username ?></td>
                             <td><?php echo $user->group ?></td>
-                            <?php $newDate = date('d M Y', strtotime($user->create_at));  ?>
+                            <?php $newDate = date('d M Y h:i:s', strtotime($user->create_at));  ?>
                             <td><?php echo $newDate ?></td>
                 		        <?php $newDate = date('d M Y h:i:s', strtotime($user->update_at));  ?>
                             <td><?php echo $newDate ?></td>

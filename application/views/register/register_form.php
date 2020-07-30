@@ -126,7 +126,7 @@
               source: "<?php echo base_url()?>register/get_all_participants/",
 
               select: function (event, ui) {
-                $('[name="child_name"]').val(ui.item.label); 
+                $('[name="child_name"]').val(ui.item.child_name); 
                 $('[name="parent_name"]').val(ui.item.parent_name);
                 $('[name="phone"]').val(ui.item.phone);
                 $('[name="email"]').val(ui.item.email);

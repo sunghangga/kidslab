@@ -30,10 +30,12 @@
                 <tr>
 		    <td><?php echo ++$start ?></td>
 		    <td><?php echo $classroom->name ?></td>
-            <td><?php echo $classroom->class_type_id ?></td>
+            <td><?php echo $classroom->type_name ?></td>
 		    <td><?php echo $classroom->quota ?></td>
-		    <td><?php echo $classroom->create_at ?></td>
-		    <td><?php echo $classroom->update_at ?></td>
+		    <?php $newDate = date('d M Y h:i:s', strtotime($classroom->create_at));  ?>
+            <td><?php echo $newDate ?></td>
+            <?php $newDate = date('d M Y h:i:s', strtotime($classroom->update_at));  ?>
+            <td><?php echo $newDate ?></td>
 		    <td style="text-align:center" width="140px">
 			<?php 
 			echo anchor(site_url('classroom/read/'.$classroom->id),'<i class="fa fa-eye"></i>',array('title'=>'detail','class'=>'btn btn-info btn-sm')); 

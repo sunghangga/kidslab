@@ -52,6 +52,8 @@
                     <th>No</th>
             		    <th>Reg Code</th>
             		    <th>Child Name</th>
+                    <th>Parent Name</th>
+                    <th>Address</th>
             		    <th>Period</th>
             		    <th>Class Type</th>
             		    <th>Classroom</th>
@@ -142,15 +144,16 @@
                           },
                           { "data": "reg_code"},
                           { "data": "child_name" },
+                          { "data": "parent_name" },
+                          { "data": "address" },
                           { "data": "period" },
                           { "data": "class_name" },
                           { "data": "class_type" },
                       ],
                       "columnDefs": [
-                          { targets: 1, "width": "120px" },
-                          { targets: 2, "width": "300px" },
-                          { targets: 3, "width": "120", render: function(data){return moment(data).format('MMMM YYYY'); }},
-                          { targets: 4, "width": "150px" },
+                          { targets: [2,3], "width": "120px" },
+                          { targets: 4, "width": "300px" },
+                          { targets: 5, "width": "120", render: function(data){return moment(data).format('MMMM YYYY'); }},
                       ]
                 });
             }

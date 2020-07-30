@@ -64,9 +64,8 @@
         		    <th>Address</th>
         		    <th>Birth Date</th>
         		    <th>Period</th>
-        		    <th>Class Type Id</th>
-        		    <th>Classroom Id</th>
-        		    <th>Note</th>
+        		    <th>Class Type</th>
+        		    <th>Online Class</th>
         		    <th>Create At</th>
         		    <th>Update At</th>
         		    <th>Action</th>
@@ -82,7 +81,7 @@
                 <div class='card-header'>
                   <div class="row">
                     <div class="col">
-                        <h3 class='card-title'>REGISTER LIST </h3>
+                        <h3 class='card-title'>PENDING LIST </h3>
                     </div>
                   </div><!-- row -->
                 </div><!-- /.card-header -->
@@ -193,7 +192,6 @@
                           { "data": "period" },
                           { "data": "class_type" },
                           { "data": "class_name"},
-                          { "data": "note"},
                           { "data": "create_at" },
                           { "data": "update_at" },
                           { "data": null,
@@ -208,7 +206,11 @@
                                     '</div>';
                               }
                           },
-                      ]
+                      ],
+                    "columnDefs": [
+                        { targets: 7, "width": "90", render: function(data){return moment(data).format('D MMMM YYYY'); }},
+                        { targets: 8, "width": "90", render: function(data){return moment(data).format('MMMM YYYY'); }},
+                    ]
                 });
 
               $('#mytable').on( 'click', '#info', function (e) {
@@ -318,21 +320,25 @@
                                     '</div>';
                               }
                           },
-                      ]
+                      ],
+                    "columnDefs": [
+                        { targets: 7, "width": "90", render: function(data){return moment(data).format('D MMMM YYYY'); }},
+                        { targets: 8, "width": "90", render: function(data){return moment(data).format('MMMM YYYY'); }},
+                    ]
                 });
 
                 $('#mytable2').on( 'click', '#info', function (e) {
                 e.preventDefault();
                   var data = table.row( $(this).parents('tr') ).data();
                   if (data != null) {
-                    window.location = '<?php echo base_url()?>register/read/'+data.id;
+                    window.location = '<?php echo base_url()?>register/read_book/'+data.id;
                   }
               } );
               $('#mytable2').on( 'click', '#update', function (e) {
                 e.preventDefault();
                   var data = table.row( $(this).parents('tr') ).data();
                   if (data != null) {
-                    window.location = '<?php echo base_url()?>register/update/'+data.id;
+                    window.location = '<?php echo base_url()?>register/update_book/'+data.id;
                   }
               } );
 
@@ -360,7 +366,7 @@
                             //menggunakan ajax agar tidak perlu load page
                             $.ajax({
                                 type : "POST",
-                                url  : "<?php echo base_url('register/delete')?>",
+                                url  : "<?php echo base_url('register/delete_book')?>",
                                 dataType : "JSON",
                                 data : {id: data.id},
                                 success: function(data){

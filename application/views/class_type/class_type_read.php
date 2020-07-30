@@ -33,3 +33,10 @@
             </div><!-- /.row -->
           </div><!-- /.container-fluid -->
         </section><!-- /.content -->
+        <script src="<?php echo base_url('template/adminlte/plugins/jquery/jquery.min.js') ?>"></script>
+        <script src="<?php echo base_url('template/adminlte/plugins/jquery-ui/jquery-ui.min.js') ?>"></script>
+        <script src="<?php echo base_url() ?>assets/bootstrap/js/moment.js"></script>
+        <script>
+          document.getElementById("create_at").value = moment(document.getElementById("create_at").value).format('D MMM YYYY hh:mm:ss');
+          document.getElementById("update_at").value = moment(document.getElementById("update_at").value).format('D MMM YYYY hh:mm:ss');
+        </script>

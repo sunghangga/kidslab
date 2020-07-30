@@ -18,7 +18,7 @@ class Classroom extends CI_Controller
 
     public function index()
     {
-        $classroom = $this->Classroom_model->get_all();
+        $classroom = $this->Classroom_model->get_all_class();
 
         $data = array(
             'classroom_data' => $classroom
@@ -35,6 +35,7 @@ class Classroom extends CI_Controller
 		'id' => $row->id,
 		'name' => $row->name,
 		'quota' => $row->quota,
+        'class_type' => $row->class_type,
 		'create_at' => $row->create_at,
 		'update_at' => $row->update_at,
 	    );

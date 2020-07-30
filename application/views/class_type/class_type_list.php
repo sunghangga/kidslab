@@ -28,8 +28,10 @@
                 <tr>
 		    <td><?php echo ++$start ?></td>
 		    <td><?php echo $class_type->name ?></td>
-		    <td><?php echo $class_type->create_at ?></td>
-		    <td><?php echo $class_type->update_at ?></td>
+            <?php $newDate = date('d M Y h:i:s', strtotime($class_type->create_at));  ?>
+            <td><?php echo $newDate ?></td>
+            <?php $newDate = date('d M Y h:i:s', strtotime($class_type->update_at));  ?>
+            <td><?php echo $newDate ?></td>
 		    <td style="text-align:center" width="140px">
 			<?php 
 			echo anchor(site_url('class_type/read/'.$class_type->id),'<i class="fa fa-eye"></i>',array('title'=>'detail','class'=>'btn btn-info btn-sm')); 

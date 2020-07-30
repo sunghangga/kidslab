@@ -32,6 +32,15 @@ class Classroom_model extends CI_Model
         return $this->db->get()->row();
     }
 
+    function get_all_class()
+    {
+        $this->db->select('classroom.id, classroom.name, classroom.quota, classroom.class_type_id, classroom.create_at, classroom.update_at, class_type.name type_name');
+        $this->db->from($this->table);
+        $this->db->join('class_type','classroom.class_type_id=class_type.id');
+        $this->db->order_by('classroom.id', $this->order);
+        return $this->db->get()->result();
+    }
+
     // get data by classroom
     function get_id_classroom($classroom_name)
     {

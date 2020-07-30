@@ -34,10 +34,11 @@ class User extends CI_Controller
         if ($row) {
             $data = array(
         		'create_at' => $row->create_at,
-        		'group_id' => $row->group_id,
+        		'group_id' => $row->group,
         		'id' => $row->id,
         		'nama' => $row->name,
         		'password' => $row->password,
+            'create_at' => $row->create_at,
         		'update_at' => $row->update_at,
         		'username' => $row->username,
 	    );

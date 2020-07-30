@@ -50,7 +50,9 @@ class User_model extends CI_Model
     // get data by id
     function get_by_id($id)
     {
-        $this->db->where($this->id, $id);
+        $this->db->select('user.*,group.name as group');
+        $this->db->join('group', 'group.id=user.group_id');
+        $this->db->where('user.id', $id);
         return $this->db->get($this->table)->row();
     }
 

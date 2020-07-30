@@ -42,12 +42,12 @@
                                     <div class='col-sm-10'><input type="text" class="form-control" name="period" id="period" placeholder="Period" value="<?php echo $period; ?>" disabled/>
                                    </div> 
                                 </div>
-	  <div class='form-group row'><label for='label' class='col-sm-2 col-form-label'>Class Type Id <?php echo form_error('class_type_id') ?></label>
-                                    <div class='col-sm-10'><input type="text" class="form-control" name="class_type_id" id="class_type_id" placeholder="Class Type Id" value="<?php echo $class_type_id; ?>" disabled/>
+	  <div class='form-group row'><label for='label' class='col-sm-2 col-form-label'>Class Type <?php echo form_error('class_type_id') ?></label>
+                                    <div class='col-sm-10'><input type="text" class="form-control" name="class_type_id" id="class_type_id" placeholder="Class Type" value="<?php echo $class_type_id; ?>" disabled/>
                                    </div> 
                                 </div>
-	  <div class='form-group row'><label for='label' class='col-sm-2 col-form-label'>Classroom Id <?php echo form_error('classroom_id') ?></label>
-                                    <div class='col-sm-10'><input type="text" class="form-control" name="classroom_id" id="classroom_id" placeholder="Classroom Id" value="<?php echo $classroom_id; ?>" disabled/>
+	  <div class='form-group row'><label for='label' class='col-sm-2 col-form-label'>Classroom <?php echo form_error('classroom_id') ?></label>
+                                    <div class='col-sm-10'><input type="text" class="form-control" name="classroom_id" id="classroom_id" placeholder="Classroom" value="<?php echo $classroom_id; ?>" disabled/>
                                    </div> 
                                 </div>
 	    <div class='form-group row'><label for='label' class='col-sm-2 col-form-label'>Note <?php echo form_error('note') ?></label>
