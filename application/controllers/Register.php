@@ -60,19 +60,45 @@ class Register extends CI_Controller
 
     public function address_list()
     {
-    	$address = $this->Register_model->get_address_print();
+    	$class_type = $_GET['class_type'];
+        $classroom = $_GET['classroom'];
+        $date = $_GET['date'];
+    	$address = $this->Register_model->get_address_print($class_type, $classroom, $date);
         echo json_encode($address);
     }
 
     public function address_report()
     {
-        $this->template->load('template','report/address_by_period');
+    	$data = array(
+            'get_all_classtype' => $this->Class_type_model->get_all(),
+            'get_all_classroom' => $this->Classroom_model->get_all()
+        );
+        $this->template->load('template','report/address_by_period', $data);
     }
 
     public function address_pdf()
     {
+    	if ($_GET['ct'] != null) {
+    		$class_type =  $_GET['ct'];
+    	}
+    	else {
+    		$class_type = null;
+    	}
+    	if ($_GET['c'] != null) {
+    		$classroom =  $_GET['c'];
+    	}
+    	else {
+    		$classroom = null;
+    	}
+    	if ($_GET['d'] != null) {
+    		$date =  $_GET['d'];
+    	}
+    	else {
+    		$date = null;
+    	}
+    	
     	$company = $this->Company_model->get_all();
-        $row = $this->Register_model->get_address_print();
+        $row = $this->Register_model->get_address_print($class_type, $classroom, $date);
         if ($row) {
             $data = array(
 	            'logo' => $company->logo,
@@ -81,6 +107,7 @@ class Register extends CI_Controller
 	            'data_address' => $row
 	        );
             $this->load->library("mypdf");
+            set_time_limit(500);
             $this->mypdf->generate("report/address_print","A4","potrait","Participants Address", $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');

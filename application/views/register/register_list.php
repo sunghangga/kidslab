@@ -18,21 +18,19 @@
               </form>
             </div>
                 <div class='card-header'>
-                    <div class="row">
+                  <div class="row">
                     <div class="col">
                         <h3 class='card-title'>REGISTER LIST <?php echo anchor('register/create/','Create',array('class'=>'btn btn-primary btn-sm'));?></h3>
                     </div>
-                <div class="col">
+                <div class="col-md-2">
                     <div class="col input-group date" data-target-input="nearest" id="inputPeriod">
                       <input type="text" class="form-control datetimepicker-input" data-target="#inputPeriod" placeholder="Period"  name="period" id="period"/>
                       <div class="input-group-append" data-target="#inputPeriod" data-toggle="datetimepicker">
                           <div class="input-group-text" id="input_btn_calendar"><i class="far fa-calendar-alt"></i></div>
                       </div>
                     </div>
-                    
-                     
                 </div><!-- /.input group -->
-                <div class='col'>
+                <div class='col-md-auto'>
                   <select class="col form-control select2bs4" onchange="classroom_list()" name="class_type_id" id="class_type_id" placeholder="Class Type" value="<?php echo $class_type_id; ?>" />
                   <?php 
                       echo '<option value="" selected>-- ALL --</option>';
@@ -43,8 +41,8 @@
                   ?>
                  </select>
                 </div>
-                <div class='col'>
-                  <select class="col form-control select2bs4" id="classroom_id" name="classroom_id" onchange="get_all()">
+                <div class='col-md-auto'>
+                  <select class="col form-control select2bs4" id="classroom_id" name="classroom_id">
                     <?php 
                     echo '<option value="" selected>-- ALL --</option>';
                     foreach ($get_all_classroom as $row)
@@ -54,6 +52,7 @@
                     >
                   </select>
                </div>
+               <button class="btn btn-info btn-md" onclick="get_all()"><i class="fas fa-search"></i></button>
             </div><!-- row -->
             </div><!-- /.card-header -->
             
@@ -125,14 +124,13 @@
                   $('#classroom_id').html(html);
                 }
             });
-            get_all();
+            // get_all();
           }
 
             function get_all(){
                 var class_type = document.getElementById("class_type_id").value;
                 var classroom = document.getElementById("classroom_id").value;
                 var date = document.getElementById("period").value;
-                console.log(class_type,classroom,date);
                 var count = 0;
                 var table = $("#mytable").DataTable({
                     scrollY: "400px",

@@ -83,7 +83,7 @@ class Register_model extends CI_Model
     }
 
     // get_address
-    function get_address_print()
+    function get_address_print($class_type, $classroom, $date)
     {
         $this->db->select('r.reg_code, r.child_name, r.parent_name, r.period, r.address, r.email, r.phone, c.name class_name, ct.name class_type');
         $this->db->from('register r');
@@ -93,6 +93,21 @@ class Register_model extends CI_Model
         $this->db->join('class_type ct','c.class_type_id=ct.id');
         $this->db->where('p.pay_status', 1);
         $this->db->where('s.ship_status', 1);
+        if ($class_type != null) {
+            $this->db->where('ct.id', $class_type);
+        }
+        if ($classroom != null) {
+            $this->db->where('c.id', $classroom);
+        }
+        // digunakan range tanggal 1 sampai 31 karena jumlah maks hari 31
+        if ($date != null) { 
+            $this->db->where('r.period >=', $date.'-01');
+            $this->db->where('r.period <=', $date.'-31');
+        }
+        else {
+            $this->db->where('r.period >=', date('Y-m').'-01');
+            $this->db->where('r.period <=', date('Y-m').'-31');
+        }
         return $this->db->get()->result();
     }
 
