@@ -51,31 +51,65 @@
             </div><!-- row -->
             </div><!-- /.card-header -->
             
-        <div class='card-body'>
-        <table class="table table-bordered table-striped" id="mytable">
-            <thead>
-                <tr>
-                    <th>No</th>
-		    <th>Reg Code</th>
-		    <th>Child Name</th>
-		    <th>Parent Name</th>
-		    <th>Phone</th>
-		    <th>Email</th>
-		    <th>Address</th>
-		    <th>Birth Date</th>
-		    <th>Period</th>
-		    <th>Class Type Id</th>
-		    <th>Classroom Id</th>
-		    <th>Note</th>
-		    <th>Create At</th>
-		    <th>Update At</th>
-		    <th>Action</th>
-                </tr>
-            </thead>
-	    <tbody>
-        </table>
+                <div class='card-body'>
+                <table class="table table-bordered table-striped" id="mytable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+        		    <th>Reg Code</th>
+        		    <th>Child Name</th>
+        		    <th>Parent Name</th>
+        		    <th>Phone</th>
+        		    <th>Email</th>
+        		    <th>Address</th>
+        		    <th>Birth Date</th>
+        		    <th>Period</th>
+        		    <th>Class Type Id</th>
+        		    <th>Classroom Id</th>
+        		    <th>Note</th>
+        		    <th>Create At</th>
+        		    <th>Update At</th>
+        		    <th>Action</th>
+                        </tr>
+                    </thead>
+        	    <tbody>
+              </table>
                     </div><!-- /.box-body -->
               </div><!-- /.box -->
+
+              <!-- new table -->
+              <div class='card'>
+                <div class='card-header'>
+                  <div class="row">
+                    <div class="col">
+                        <h3 class='card-title'>REGISTER LIST </h3>
+                    </div>
+                  </div><!-- row -->
+                </div><!-- /.card-header -->
+                <div class='card-body'>
+                <table class="table table-bordered table-striped" id="mytable2">
+                    <thead>
+                        <tr>
+                          <th>No</th>
+                          <th>Reg Code</th>
+                          <th>Child Name</th>
+                          <th>Parent Name</th>
+                          <th>Phone</th>
+                          <th>Email</th>
+                          <th>Address</th>
+                          <th>Birth Date</th>
+                          <th>Period</th>
+                          <th>Note</th>
+                          <th>Create At</th>
+                          <th>Update At</th>
+                          <th>Action</th>
+                        </tr>
+                    </thead>
+              <tbody>
+              </table>
+                    </div><!-- /.box-body -->
+              </div><!-- /.box -->
+
             </div><!-- /.col -->
           </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -96,7 +130,7 @@
                 }) 
 
                 get_all();
-                
+                get_all_reg_book();
             });
 
             function classroom_list(){
@@ -177,12 +211,12 @@
                       ]
                 });
 
-                $('#mytable').on( 'click', '#info', function (e) {
-                e.preventDefault();
-                  var data = table.row( $(this).parents('tr') ).data();
-                  if (data != null) {
-                    window.location = '<?php echo base_url()?>register/read/'+data.id;
-                  }
+              $('#mytable').on( 'click', '#info', function (e) {
+              e.preventDefault();
+                var data = table.row( $(this).parents('tr') ).data();
+                if (data != null) {
+                  window.location = '<?php echo base_url()?>register/read/'+data.id;
+                }
               } );
               $('#mytable').on( 'click', '#update', function (e) {
                 e.preventDefault();
@@ -221,6 +255,116 @@
                                 data : {id: data.id},
                                 success: function(data){
                                     get_all();
+                                }
+                            });
+                            return false;
+                          }
+                        })
+                      } else {
+                        Swal.fire({
+                          icon: 'error',
+                          title: 'Your request has been canceled!',
+                          showConfirmButton: false,
+                          timer: 1000
+                        })
+                      }
+                    });
+                  }
+              } );
+            }
+
+            function get_all_reg_book(){
+                var count = 0;
+                var table = $("#mytable2").DataTable({
+                    scrollY: "400px",
+                    scrollX: true,
+                    scrollCollapse: true,
+                    destroy: true,
+                    paging: true,
+                    searching: true,
+                    "ajax": {
+                        "url": "<?php echo base_url()?>register/get_data_reg_book/",
+                        "dataSrc": "",
+                        "data": function(data) {
+                          
+                        },
+                      },
+                      "columns": [
+                          { "data": null,
+                              render: function ( data, type, row ) { 
+                                    return count+=1;
+                                }
+                          },
+                          { "data": "reg_code"},
+                          { "data": "child_name" },
+                          { "data": "parent_name" },
+                          { "data": "phone" },
+                          { "data": "email"},
+                          { "data": "address"},
+                          { "data": "birth_date" },
+                          { "data": "period" },
+                          { "data": "note"},
+                          { "data": "create_at" },
+                          { "data": "update_at" },
+                          { "data": null,
+                                render: function ( data, type, row ) {
+                                   return '<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups" style="flex-wrap: nowrap;">'+
+                                      '<div class="btn-group" title="view" role="group" aria-label="First group">'+
+                                        '<button id="info" style="margin-left: 5px;" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></button></div>'+
+                                      '<div class="btn-group" title="edit"role="group" aria-label="Second group">'+
+                                        '<button id="update" style="margin-left: 5px;" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button></div>'+
+                                      '<div class="btn-group" role="group" aria-label="fourth group">'+
+                                        '<button id="delete" title="delete" style="margin-left: 5px;" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></i></button></div>'+
+                                    '</div>';
+                              }
+                          },
+                      ]
+                });
+
+                $('#mytable2').on( 'click', '#info', function (e) {
+                e.preventDefault();
+                  var data = table.row( $(this).parents('tr') ).data();
+                  if (data != null) {
+                    window.location = '<?php echo base_url()?>register/read/'+data.id;
+                  }
+              } );
+              $('#mytable2').on( 'click', '#update', function (e) {
+                e.preventDefault();
+                  var data = table.row( $(this).parents('tr') ).data();
+                  if (data != null) {
+                    window.location = '<?php echo base_url()?>register/update/'+data.id;
+                  }
+              } );
+
+                $('#mytable2').on( 'click', '#delete', function (e) {
+                  e.preventDefault();
+                  var data = table.row( $(this).parents('tr') ).data();
+                  if (data != null) {
+                    Swal.fire({
+                      title: "Confirmation",
+                      text: "Are your sure want to delete Registration No."+data.reg_code+" ?",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Yes, confirm it!'
+                    })
+                    .then((result) => {
+                      if (result.value) {
+                        Swal.fire({
+                          icon: 'success',
+                          title: 'Your receipt has been confirm!',
+                          showConfirmButton: false,
+                          timer: 1000,
+                          onClose: () => {
+                            //menggunakan ajax agar tidak perlu load page
+                            $.ajax({
+                                type : "POST",
+                                url  : "<?php echo base_url('register/delete')?>",
+                                dataType : "JSON",
+                                data : {id: data.id},
+                                success: function(data){
+                                    get_all_reg_book();
                                 }
                             });
                             return false;

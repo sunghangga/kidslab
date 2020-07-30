@@ -58,6 +58,14 @@ class Register_model extends CI_Model
         return $this->db->get()->result();
     }
 
+    // get data by id
+    function get_data_reg_book()
+    {
+        $this->db->where('classroom_id IS NULL', null, false);
+        $this->db->order_by($this->id, $this->order);
+        return $this->db->get($this->table)->result();
+    }
+
     // get_schedule
     function get_schedule($class_type, $classroom, $date)
     {

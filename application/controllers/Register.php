@@ -42,6 +42,12 @@ class Register extends CI_Controller
         echo json_encode($register);
     }
 
+    public function get_data_reg_book()
+    {
+        $register = $this->Register_model->get_data_reg_book();
+        echo json_encode($register);
+    }
+
     public function schedule()
     {
     	$data = array(
