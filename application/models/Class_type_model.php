@@ -28,6 +28,16 @@ class Class_type_model extends CI_Model
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }
+
+    // get data by class_type
+    function get_id_class_type($class_type)
+    {
+        $this->db->select('class_type.id');
+        $this->db->from($this->table);
+        $this->db->where('LOWER(class_type.name)', strtolower($class_type));
+        $this->db->limit(1);
+        return $this->db->get()->row();
+    }
     
     // get total rows
     function total_rows($q = NULL) {

@@ -84,14 +84,14 @@ class Participants extends CI_Controller
             $code = $branch.'.'.sprintf("%06s", $code);
 
             $data = array(
-    		'code' => $code,
-    		'child_name' => $this->input->post('child_name',TRUE),
-    		'parent_name' => $this->input->post('parent_name',TRUE),
-    		'phone' => $this->input->post('phone',TRUE),
-    		'email' => $this->input->post('email',TRUE),
-    		'address' => $this->input->post('address',TRUE),
-    		'birth_date' => $this->input->post('birth_date',TRUE),
-	    );
+        		'code' => $code,
+        		'child_name' => $this->input->post('child_name',TRUE),
+        		'parent_name' => $this->input->post('parent_name',TRUE),
+        		'phone' => $this->input->post('phone',TRUE),
+        		'email' => $this->input->post('email',TRUE),
+        		'address' => $this->input->post('address',TRUE),
+        		'birth_date' => $this->input->post('birth_date',TRUE),
+    	    );
 
             $this->Participants_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');

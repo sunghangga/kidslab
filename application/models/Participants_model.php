@@ -34,6 +34,13 @@ class Participants_model extends CI_Model
         $this->db->select('max(code) last_code');
         return $this->db->get($this->table)->row();
     }
+
+    function get_count_participants($child_name, $phone)
+    {
+        $this->db->select('count(code) count');
+        $this->db->where(array("LOWER(child_name)" => strtolower($child_name), "phone" => $phone));
+        return $this->db->get($this->table)->row();
+    }
     
     // get total rows
     function total_rows($q = NULL) {

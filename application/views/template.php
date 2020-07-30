@@ -68,12 +68,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </li>
                     <li class="user-footer">
                         <div class="row">
-                            <div class="pull-left col-md-6">
+                            <!-- <div class="pull-left col-md-6">
                                 <?php
                                 echo anchor(base_url('user/profil'),'Profil',array('class'=>'btn btn-default btn-flat'));
                                 ?>
-                            </div>
-                            <div class="pull-right col-md-6" style="text-align: right;">
+                            </div> -->
+                            <div class="pull-right col-md-12" style="text-align: right;">
                                 <?php
                                 echo anchor(base_url('login/logout'),'Sign out',array('class'=>'btn btn-default btn-flat'));
                                 ?>

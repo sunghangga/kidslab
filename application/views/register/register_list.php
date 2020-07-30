@@ -6,11 +6,6 @@
             <div class='col-12'>
               <div class='card'>
                 <div class='card-header'>
-              <!-- <?php echo form_open_multipart('register/import_excel', array('name' => 'spreadsheet')); ?>
-                  <p>Upload Data Registration</p>
-                  <input  type="file" name="regis">
-                  <button class="btn btn-success btn-sm" type="submit" name="import"><i class="fas fa-file-upload"></i>Upload</button>
-              <?php echo form_close(); ?> -->
               <form method="POST" action="<?php echo base_url() ?>register/import_excel" enctype="multipart/form-data">
                   <h5>UPLOAD REGISTRATION DATA</h5>
                   <input type="file" name="upload_file">

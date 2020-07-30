@@ -190,8 +190,6 @@ class Register extends CI_Controller
 	    'address' => set_value('address'),
 	    'birth_date' => set_value('birth_date'),
 	    'period' => set_value('period'),
-	    // 'class_type_id' => set_value('class_type_id'),
-	    // 'classroom_id' => set_value('classroom_id'),
 	    'note' => set_value('note'),
 	    'get_all_classtype' => $this->Class_type_model->get_all(),
 	    'get_all_classroom' => $this->Classroom_model->get_all(),
@@ -249,8 +247,34 @@ class Register extends CI_Controller
 					'classroom_id' => $this->input->post('classroom_id',TRUE),
 					'note' => $this->input->post('note',TRUE),
 			    );
-
+			    // untuk mendapatkan last id register
 	            $last_id = $this->Register_model->insert($data);
+
+	            // untuk cek apa ada data regis yang diinput pada participants
+	            $check_participants = $this->Participants_model->get_count_participants($data['child_name'], $data['phone']);
+	            if ($check_participants->count <= 0) {
+	            	//untuk membuat kode otomatis
+		            $last_code = $this->Participants_model->get_last_code();
+		            if (is_null($last_code->last_code)) {
+		                $last_code->last_code = 0;
+		            }
+		            $last_code = explode('.', $last_code->last_code);
+		            $code = (int) ($last_code[count($last_code)-1]);
+		            $code++;
+		            $branch = "KL11";
+		            $code = $branch.'.'.sprintf("%06s", $code);
+
+		            $data_participants = array(
+		        		'code' => $code,
+		        		'child_name' => $data['child_name'],
+		        		'parent_name' => $data['parent_name'],
+		        		'phone' => $data['phone'],
+		        		'email' => $data['email'],
+		        		'address' => $data['address'],
+		        		'birth_date' => $data['birth_date'],
+		    	    );
+		    	    $this->Participants_model->insert($data_participants);
+	            }
 
 	            $data_payment = array(
 	            	'register_id' => $last_id,
@@ -422,23 +446,113 @@ class Register extends CI_Controller
 			$spreadsheet = $reader->load($_FILES['upload_file']['tmp_name']);
 			$sheetData = $spreadsheet->getActiveSheet()->toArray();
 
-			$data = array();
+			// $data = array();
+			// $data_participants = array();
 			for($i = 1;$i < count($sheetData);$i++)
 			{
-                array_push($data, array(
+				if ($sheetData[$i][6] == 'ALPHA') {
+					$class_type = $this->Class_type_model->get_id_class_type($sheetData[$i][6]);
+					$classroom = $this->Classroom_model->get_id_classroom($sheetData[$i][7]);
+				}
+				elseif ($sheetData[$i][6] == 'BETA'){ //bila class_type = BETA
+					$class_type = $this->Class_type_model->get_id_class_type($sheetData[$i][6]);
+					$classroom = $this->Classroom_model->get_id_classroom($sheetData[$i][8]);
+				}
+
+				// jika class yang dipilih custom
+				if ($classroom->id == null) {
+					if ($sheetData[$i][6] == 'ALPHA') {
+						$note = $sheetData[$i][7].' (Request)';
+					}
+					elseif ($sheetData[$i][6] == 'BETA'){
+						$note = $sheetData[$i][8].' (Request)';
+					}
+				}
+				// jika class yang dipilih sudah penuh 
+				elseif ($classroom->id != null) {
+					// untuk mengecek jumlah kelas tersisa
+			        $check_quota = $this->Classroom_model->get_by_id($classroom->id);
+			        $count_book_class = $this->Register_model->get_count_book($classroom->id, $sheetData[$i][9]);
+			        //$sheetData[$i][9] adalah period
+			        if ($count_book_class->count >= $check_quota->quota) {
+			        	if ($sheetData[$i][6] == 'ALPHA') {
+							$note = $sheetData[$i][7].' (Class Full)';
+						}
+						elseif ($sheetData[$i][6] == 'BETA'){
+							$note = $sheetData[$i][8].' (Class Full)';
+						}
+						$classroom->id = null;
+			        }
+				}
+
+				// array untuk insert register
+				$last_code = $this->Register_model->get_last_code();
+	            if (is_null($last_code->last_code)) {
+	                $last_code->last_code = 0;
+	            }
+	            $last_code = explode('.', $last_code->last_code);
+	            $code = (int) ($last_code[count($last_code)-1]);
+	            $code++;
+	            $branch = "KL21";
+	            $code = $branch.'.'.sprintf("%08s", $code);
+                $data = array(
+                	'reg_code' => $code,
                 	'parent_name' => $sheetData[$i][1],
                 	'address' => $sheetData[$i][2],
                 	'phone' => $sheetData[$i][3],
                     'child_name' => $sheetData[$i][4],
                     'birth_date' => $sheetData[$i][5],
-                    'class_type_id' => $sheetData[$i][6],
-                    'classroom_id' => $sheetData[$i][7],
+                    'class_type_id' => $class_type->id,
+                    'classroom_id' => $classroom->id,
                     'email' => 'default@email.com',
-                    'period' => $sheetData[$i][9],
-            	));
+                    'note' => $note,
+                    'period' => $sheetData[$i][9], //dalam format 2020-07-28
+            	);
+            	$last_id = $this->Register_model->insert($data);
+
+            	// untuk cek apa ada data regis yang diinput pada participants
+	            $check_participants = $this->Participants_model->get_count_participants($sheetData[$i][4], $sheetData[$i][3]);
+	            if ($check_participants->count <= 0) {
+	            	//untuk membuat kode otomatis
+		            $last_code = $this->Participants_model->get_last_code();
+		            if (is_null($last_code->last_code)) {
+		                $last_code->last_code = 0;
+		            }
+		            $last_code = explode('.', $last_code->last_code);
+		            $code = (int) ($last_code[count($last_code)-1]);
+		            $code++;
+		            $branch = "KL11";
+		            $code = $branch.'.'.sprintf("%06s", $code);
+
+		            $data_participants = array(
+		        		'code' => $code,
+		        		'child_name' => $sheetData[$i][4],
+		        		'parent_name' => $sheetData[$i][1],
+		        		'phone' => $sheetData[$i][3],
+		        		'email' => 'default@email.com',
+		        		'address' => $sheetData[$i][2],
+		        		'birth_date' => $sheetData[$i][5],
+		    	    );
+		    	    $this->Participants_model->insert($data_participants);
+	            }
+	            $data_payment = array(
+	            	'register_id' => $last_id,
+	            	'pay_status' => 0, 
+	            );
+
+	            $data_shipment = array(
+	            	'register_id' => $last_id,
+	            	'pay_status' => 0,
+	            	'ship_status' => 0, 
+	            );
+
+	            $this->Payment_model->insert($data_payment);
+	            $this->Shipment_model->insert($data_shipment);
             }
 
 			print_r($data);
+			$this->session->set_flashdata('message', 'Update Record Success');
+	        redirect(site_url('register'));
 		}
 	}
     
