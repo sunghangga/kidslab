@@ -80,7 +80,8 @@ class Register extends CI_Controller
     	$class_type = $_GET['class_type'];
         $classroom = $_GET['classroom'];
         $date = $_GET['date'];
-    	$address = $this->Register_model->get_address_print($class_type, $classroom, $date);
+        $ship_status = $_GET['ship_status'];
+    	$address = $this->Register_model->get_address_print($class_type, $classroom, $date, $ship_status);
         echo json_encode($address);
     }
 
@@ -95,12 +96,18 @@ class Register extends CI_Controller
 
     public function address_pdf()
     {
-    	if ($_GET['ct'] != null) {
-    		$class_type =  $_GET['ct'];
+    	if ($_GET['ss'] != null) {
+    		$ship_status =  $_GET['ss'];
     	}
     	else {
-    		$class_type = null;
+    		$ship_status = null;
     	}
+        if ($_GET['ct'] != null) {
+            $class_type =  $_GET['ct'];
+        }
+        else {
+            $class_type = null;
+        }
     	if ($_GET['c'] != null) {
     		$classroom =  $_GET['c'];
     	}
@@ -115,7 +122,7 @@ class Register extends CI_Controller
     	}
     	
     	$company = $this->Company_model->get_all();
-        $row = $this->Register_model->get_address_print($class_type, $classroom, $date);
+        $row = $this->Register_model->get_address_print($class_type, $classroom, $date, $ship_status);
         if ($row) {
             $data = array(
 	            'logo' => $company->logo,
@@ -413,7 +420,7 @@ class Register extends CI_Controller
                   		</div>')
 	        	);
 	        	$this->form_validation->run();
-	        	$this->update($this->input->post('id', TRUE));
+	        	$this->update_book($this->input->post('id', TRUE));
 	        } else {
 	            $data = array(
 					'child_name' => $this->input->post('child_name',TRUE),

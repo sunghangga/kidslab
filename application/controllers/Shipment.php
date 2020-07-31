@@ -48,7 +48,8 @@ class Shipment extends CI_Controller
         $class_type = $_GET['class_type'];
         $classroom = $_GET['classroom'];
         $date = $_GET['date'];
-        $data = $this->Shipment_model->get_all_join($class_type, $classroom, $date);
+        $ship_status = $_GET['ship_status'];
+        $data = $this->Shipment_model->get_all_join($class_type, $classroom, $date, $ship_status);
         echo json_encode($data);
     }
 

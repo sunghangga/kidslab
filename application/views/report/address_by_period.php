@@ -8,9 +8,18 @@
                 <div class='card-header'>
                 <div class="row">
                   <div class="col">
-                  <h3 class='card-title'>SCHEDULE LIST 
+                  <h3 class='card-title'>ADDRESS LIST 
                     <button id=address_pdf type="button" class="btn btn-danger btn-sm"><i class="fas fa-file-pdf"></i> PDF</button>
                   </h3>
+                </div>
+                <div class='col-md-auto'>
+                  <select class="col form-control select2bs4" name="ship_status" id="ship_status" placeholder="Shipment Status" />
+                  <?php 
+                      echo '<option value="" selected>-- ALL --</option>';
+                      echo '<option value="1">SEND</option>';
+                      echo '<option value="0">NOT SEND</option>'; 
+                  ?>
+                 </select>
                 </div>
                 <div class="col-md-2">
                     <div class="col input-group date" data-target-input="nearest" id="inputPeriod">
@@ -51,6 +60,7 @@
                 <tr>
                     <th>No</th>
             		    <th>Reg Code</th>
+                    <th>Ship Status</th>
             		    <th>Child Name</th>
                     <th>Parent Name</th>
                     <th>Address</th>
@@ -112,13 +122,15 @@
               var class_type = document.getElementById("class_type_id").value;
               var classroom = document.getElementById("classroom_id").value;
               var date = document.getElementById("period").value;
-              window.open('<?php echo base_url()?>register/address_pdf?ct='+class_type+'&c='+classroom+'&d='+date, '_blank');
+              var ship_status = document.getElementById("ship_status").value;
+              window.open('<?php echo base_url()?>register/address_pdf?ss='+ship_status+'&ct='+class_type+'&c='+classroom+'&d='+date, '_blank');
             });
 
             function get_all(){
                 var class_type = document.getElementById("class_type_id").value;
                 var classroom = document.getElementById("classroom_id").value;
                 var date = document.getElementById("period").value;
+                var ship_status = document.getElementById("ship_status").value;
                 var count = 0;
                 var table = $("#mytable").DataTable({
                     scrollY: "400px",
@@ -134,6 +146,7 @@
                             data.class_type = class_type;
                             data.classroom = classroom;
                             data.date = date;
+                            data.ship_status = ship_status;
                         },
                       },
                       "columns": [
@@ -143,6 +156,16 @@
                                 }
                           },
                           { "data": "reg_code"},
+                          { "data": "ship_status",
+                                render: function ( data, type, row ) { 
+                                    if (data == 1) {
+                                        return '<i class="fa fa-check-square" style="color: green;"></i>';
+                                    }
+                                    else {
+                                        return '<i class="fa fa-minus-circle" style="color: red;"></i>';
+                                    }
+                                } 
+                          },
                           { "data": "child_name" },
                           { "data": "parent_name" },
                           { "data": "address" },
@@ -151,9 +174,9 @@
                           { "data": "class_type" },
                       ],
                       "columnDefs": [
-                          { targets: [2,3], "width": "120px" },
-                          { targets: 4, "width": "300px" },
-                          { targets: 5, "width": "120", render: function(data){return moment(data).format('MMMM YYYY'); }},
+                          { targets: [3,4], "width": "120px" },
+                          { targets: 5, "width": "300px" },
+                          { targets: 6, "width": "120", render: function(data){return moment(data).format('MMMM YYYY'); }},
                       ]
                 });
             }

@@ -23,7 +23,7 @@ class Shipment_model extends CI_Model
     }
 
     // get all join
-    function get_all_join($class_type, $classroom, $date)
+    function get_all_join($class_type, $classroom, $date, $ship_status)
     {
         $this->db->select('s.id, s.pay_status, s.ship_status, s.create_at, s.update_at, r.reg_code, r.child_name, r.parent_name, r.phone, r.email');
         $this->db->from('shipment s');
@@ -36,6 +36,9 @@ class Shipment_model extends CI_Model
         }
         if ($classroom != null) {
             $this->db->where('c.id', $classroom);
+        }
+        if ($ship_status != null) {
+            $this->db->where('s.ship_status', $ship_status);
         }
         // digunakan range tanggal 1 sampai 31 karena jumlah maks hari 31
         if ($date != null) { 

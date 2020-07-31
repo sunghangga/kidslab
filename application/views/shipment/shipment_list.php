@@ -8,7 +8,16 @@
                 <div class='card-header'>
                   <div class="row">
                     <div class="col">
-                  <h3 class='card-title'>SHIPMENT LIST </h3>
+                  <h3 class='card-title'>SHIPMENT LIST <button id=address_pdf type="button" class="btn btn-danger btn-sm"><i class="fas fa-file-pdf"></i> PDF</button></h3>
+                </div>
+                <div class='col-md-auto'>
+                  <select class="col form-control select2bs4" name="ship_status" id="ship_status" placeholder="Shipment Status" />
+                  <?php 
+                      echo '<option value="" selected>-- ALL --</option>';
+                      echo '<option value="1">SEND</option>';
+                      echo '<option value="0">NOT SEND</option>'; 
+                  ?>
+                 </select>
                 </div>
                 <div class="col-md-2">
                     <div class="col input-group date" data-target-input="nearest" id="inputPeriod">
@@ -84,6 +93,14 @@
                 
             });
 
+            $("#address_pdf").click(function(){
+              var class_type = document.getElementById("class_type_id").value;
+              var classroom = document.getElementById("classroom_id").value;
+              var date = document.getElementById("period").value;
+              var ship_status = document.getElementById("ship_status").value;
+              window.open('<?php echo base_url()?>register/address_pdf?ss='+ship_status+'&ct='+class_type+'&c='+classroom+'&d='+date, '_blank');
+            });
+
             function classroom_list(){
             var elem = document.getElementById("class_type_id");
             var id = elem.options[elem.selectedIndex].value;
@@ -111,6 +128,7 @@
               var class_type = document.getElementById("class_type_id").value;
                 var classroom = document.getElementById("classroom_id").value;
                 var date = document.getElementById("period").value;
+                var ship_status = document.getElementById("ship_status").value;
                 var count = 0;
                 var table = $("#mytable").DataTable({
                     scrollY: "400px",
@@ -126,6 +144,7 @@
                             data.class_type = class_type;
                             data.classroom = classroom;
                             data.date = date;
+                            data.ship_status = ship_status;
                         },
                       },
                       "columns": [
