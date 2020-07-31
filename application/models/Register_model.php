@@ -160,8 +160,21 @@ class Register_model extends CI_Model
 
     function get_count_book($class_book_id, $period)
     {
+        // format $period = 2020-07
         $this->db->select('count(reg_code) count');
-        $this->db->where(array("classroom_id" => $class_book_id, "DATE_FORMAT(birth_date,'%Y-%m')" => $period));
+        $this->db->where(array("classroom_id" => $class_book_id, "DATE_FORMAT(period,'%Y-%m')" => $period));
+        return $this->db->get($this->table)->row();
+    }
+
+    function get_count_book_excel($class_book_id, $period)
+    {
+        // untuk memisahkan period
+        $time = strtotime($period);
+        $month = date("m",$time);
+        $year = date("Y",$time);
+        $period = $year.'-'.$month;
+        $this->db->select('count(reg_code) count');
+        $this->db->where(array("classroom_id" => $class_book_id, "DATE_FORMAT(period,'%Y-%m')" => $period));
         return $this->db->get($this->table)->row();
     }
     

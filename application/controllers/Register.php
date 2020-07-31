@@ -536,7 +536,7 @@ class Register extends CI_Controller
 				elseif ($classroom->id != null) {
 					// untuk mengecek jumlah kelas tersisa
 			        $check_quota = $this->Classroom_model->get_by_id($classroom->id);
-			        $count_book_class = $this->Register_model->get_count_book($classroom->id, $sheetData[$i][9]);
+			        $count_book_class = $this->Register_model->get_count_book_excel($classroom->id, $sheetData[$i][9]);
 			        //$sheetData[$i][9] adalah period
 			        if ($count_book_class->count >= $check_quota->quota) {
 			        	if ($sheetData[$i][6] == 'ALPHA') {
