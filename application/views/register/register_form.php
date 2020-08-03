@@ -36,7 +36,7 @@
                                     <div class="col-sm-4 input-group date" data-target-input="nearest" id="inputDate">
                                       <input type="text" class="form-control datetimepicker-input" data-target="#inputDate" placeholder="Birth Date"  name="birth_date" id="birth_date" value="<?php echo $birth_date; ?>"/>
                                       <div class="input-group-append" data-target="#inputDate" data-toggle="datetimepicker">
-                                          <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                          <div class="form-control input-group-text"><i class="far fa-calendar-alt"></i></div>
                                       </div>
                                     </div>
                                 </div>

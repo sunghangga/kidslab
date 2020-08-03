@@ -371,10 +371,12 @@ class Register extends CI_Controller
     {
         $row = $this->Register_model->get_book_by_id($id);
 
+        echo json_encode($row);
+        echo json_encode($this->Class_type_model->get_all());
         if ($row) {
             $data = array(
                 'button' => 'Update',
-                'action' => site_url('register/update_action'),
+                'action' => site_url('register/update_action_book'),
 				'id' => set_value('id', $row->id),
 				'child_name' => set_value('child_name', $row->child_name),
 				'parent_name' => set_value('parent_name', $row->parent_name),
@@ -403,6 +405,52 @@ class Register extends CI_Controller
 
         if ($this->form_validation->run() == FALSE) {
             $this->update($this->input->post('id', TRUE));
+        } else {
+        	// untuk mengecek jumlah kelas tersisa
+        	$class_book_id = $this->input->post('classroom_id',TRUE);
+	        $period = $this->input->post('period',TRUE);
+	        $check_quota = $this->Classroom_model->get_by_id($class_book_id);
+	        $count_book_class = $this->Register_model->get_count_book($class_book_id, $period);
+
+	        if ($count_book_class->count >= $check_quota->quota) {
+	        	$this->form_validation->set_rules('quota_limit', 'quota_limit', 'trim|required',
+	        		array('required' => 
+	        			'<div class="alert alert-danger alert-dismissible">
+                  			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  				<h5><i class="icon fas fa-ban"></i> Alert!</h5>
+                  				Quota for the selected class is full. Choose another class, or upgrade quota
+                  		</div>')
+	        	);
+	        	$this->form_validation->run();
+	        	$this->update($this->input->post('id', TRUE));
+	        } else {
+	            $data = array(
+					'child_name' => $this->input->post('child_name',TRUE),
+					'parent_name' => $this->input->post('parent_name',TRUE),
+					'phone' => $this->input->post('phone',TRUE),
+					'email' => $this->input->post('email',TRUE),
+					'address' => $this->input->post('address',TRUE),
+					'birth_date' => $this->input->post('birth_date',TRUE),
+					'period' => $this->input->post('period',TRUE).'-01',
+					'class_type_id' => $this->input->post('class_type_id',TRUE),
+					'classroom_id' => $this->input->post('classroom_id',TRUE),
+					'note' => $this->input->post('note',TRUE),
+					'update_at' => date('Y-m-d H:i:s'),
+			    );
+
+	            $this->Register_model->update($this->input->post('id', TRUE), $data);
+	            $this->session->set_flashdata('message', 'Update Record Success');
+	            redirect(site_url('register'));
+	        }
+        }
+    }
+
+    public function update_action_book() 
+    {
+        $this->_rules();
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->update_book($this->input->post('id', TRUE));
         } else {
         	// untuk mengecek jumlah kelas tersisa
         	$class_book_id = $this->input->post('classroom_id',TRUE);
