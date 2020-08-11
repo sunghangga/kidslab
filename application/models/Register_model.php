@@ -38,7 +38,7 @@ class Register_model extends CI_Model
     {
         $this->db->select('r.*, ct.name class_type');
         $this->db->from('register r');
-        $this->db->join('class_type ct','r.class_type_id=ct.id');
+        $this->db->join('class_type ct','r.class_type_id=ct.id','left');
         $this->db->where('r.id', $id);
         return $this->db->get()->row();
     }
@@ -79,7 +79,7 @@ class Register_model extends CI_Model
     // get_schedule
     function get_schedule($class_type, $classroom, $date)
     {
-        $this->db->select('r.reg_code, r.child_name, r.period, c.name class_name, ct.name class_type');
+        $this->db->select('r.reg_code, r.child_name, r.parent_name, r.period, c.name class_name, ct.name class_type');
         $this->db->from('register r');
         $this->db->join('payment p','p.register_id=r.id');
         $this->db->join('classroom c','c.id=r.classroom_id');

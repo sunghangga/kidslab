@@ -371,8 +371,6 @@ class Register extends CI_Controller
     {
         $row = $this->Register_model->get_book_by_id($id);
 
-        echo json_encode($row);
-        echo json_encode($this->Class_type_model->get_all());
         if ($row) {
             $data = array(
                 'button' => 'Update',
@@ -499,9 +497,10 @@ class Register extends CI_Controller
 		->setCellValue('A1', 'No')
 		->setCellValue('B1', 'Registration Code')
 		->setCellValue('C1', 'Child Name')
-		->setCellValue('D1', 'Period')
-		->setCellValue('E1', 'Class Type')
-		->setCellValue('F1', 'Classroom');
+		->setCellValue('D1', 'Parent Name')
+		->setCellValue('E1', 'Period')
+		->setCellValue('F1', 'Class Type')
+		->setCellValue('G1', 'Classroom');
         
         if ($_GET['ct'] != null) {
     		$class_type =  $_GET['ct'];
@@ -534,9 +533,10 @@ class Register extends CI_Controller
 			->setCellValue('A'.$i, $i-1)
 			->setCellValue('B'.$i, $data->reg_code)
 			->setCellValue('C'.$i, $data->child_name)
-			->setCellValue('D'.$i, $month.' '.$year)
-			->setCellValue('E'.$i, $data->class_type)
-			->setCellValue('F'.$i, $data->class_name);
+			->setCellValue('D'.$i, $data->parent_name)
+			->setCellValue('E'.$i, $month.' '.$year)
+			->setCellValue('F'.$i, $data->class_type)
+			->setCellValue('G'.$i, $data->class_name);
 			$i++;
 		}
 
@@ -565,42 +565,48 @@ class Register extends CI_Controller
 			$spreadsheet = $reader->load($_FILES['upload_file']['tmp_name']);
 			$sheetData = $spreadsheet->getActiveSheet()->toArray();
 
-			// $data = array();
-			// $data_participants = array();
 			for($i = 1;$i < count($sheetData);$i++)
 			{
-				if ($sheetData[$i][6] == 'ALPHA') {
-					$class_type = $this->Class_type_model->get_id_class_type($sheetData[$i][6]);
+				$excel_type_class = strtoupper(str_replace(' ', '', $sheetData[$i][6]));
+				if ($excel_type_class == 'ALPHA') {
+					$class_type = $this->Class_type_model->get_id_class_type($excel_type_class);
 					$classroom = $this->Classroom_model->get_id_classroom($sheetData[$i][7]);
 				}
-				elseif ($sheetData[$i][6] == 'BETA'){ //bila class_type = BETA
-					$class_type = $this->Class_type_model->get_id_class_type($sheetData[$i][6]);
+				else { //bila class_type = BETA
+					$class_type = $this->Class_type_model->get_id_class_type($excel_type_class);
 					$classroom = $this->Classroom_model->get_id_classroom($sheetData[$i][8]);
 				}
 
 				// jika class yang dipilih custom
-				if ($classroom->id == null) {
-					if ($sheetData[$i][6] == 'ALPHA') {
+				if (is_null($classroom)) {
+					if ($excel_type_class == 'ALPHA') {
 						$note = $sheetData[$i][7].' (Request)';
 					}
-					elseif ($sheetData[$i][6] == 'BETA'){
-						$note = $sheetData[$i][8].' (Request)';
+					else { //bila class_type = BETA
+						$excel_null_class = strtoupper(str_replace(' ', '', $sheetData[$i][8]));
+						if ($excel_null_class != '') {
+							$note = $sheetData[$i][8].' (Request)';
+						}
+						else {
+							$note = $sheetData[$i][7].' (Request)';
+						}
 					}
+					$classroom_id = null;
 				}
 				// jika class yang dipilih sudah penuh 
-				elseif ($classroom->id != null) {
+				else {
 					// untuk mengecek jumlah kelas tersisa
 			        $check_quota = $this->Classroom_model->get_by_id($classroom->id);
 			        $count_book_class = $this->Register_model->get_count_book_excel($classroom->id, $sheetData[$i][9]);
 			        //$sheetData[$i][9] adalah period
 			        if ($count_book_class->count >= $check_quota->quota) {
-			        	if ($sheetData[$i][6] == 'ALPHA') {
+			        	if ($excel_type_class == 'ALPHA') {
 							$note = $sheetData[$i][7].' (Class Full)';
 						}
-						elseif ($sheetData[$i][6] == 'BETA'){
+						elseif ($excel_type_class == 'BETA'){
 							$note = $sheetData[$i][8].' (Class Full)';
 						}
-						$classroom->id = null;
+						$classroom_id = null;
 			        }
 				}
 
@@ -622,7 +628,7 @@ class Register extends CI_Controller
                     'child_name' => $sheetData[$i][4],
                     'birth_date' => $sheetData[$i][5],
                     'class_type_id' => $class_type->id,
-                    'classroom_id' => $classroom->id,
+                    'classroom_id' => $classroom_id,
                     'email' => 'default@email.com',
                     'note' => $note,
                     'period' => $sheetData[$i][9], //dalam format 2020-07-28
