@@ -8,7 +8,7 @@
                 <div class='card-header'>
                   <div class="row">
                     <div class="col">
-                  <h3 class='card-title'>SCHEDULE LIST </h3>
+                  <h3 class='card-title'>SCHEDULE LIST <button id=schedule_excel type="button" class="btn btn-success btn-sm"><i class="fas fa-file-pdf"></i> Excel</button></h3>
                 </div>
                 <div class="col-md-2">
                     <div class="col input-group date" data-target-input="nearest" id="inputPeriod">
@@ -50,6 +50,7 @@
                     <th>No</th>
 		    <th>Reg Code</th>
 		    <th>Child Name</th>
+        <th>Parent Name</th>
 		    <th>Period</th>
 		    <th>Class Type</th>
 		    <th>Online Class</th>
@@ -81,6 +82,13 @@
                 
             });
 
+            $("#schedule_excel").click(function(){
+              var class_type = document.getElementById("class_type_id").value;
+              var classroom = document.getElementById("classroom_id").value;
+              var date = document.getElementById("period").value;
+              window.open('<?php echo base_url()?>register/schedule_excel?ct='+class_type+'&c='+classroom+'&d='+date, '_blank');
+            });
+            
             function classroom_list(){
             var elem = document.getElementById("class_type_id");
             var id = elem.options[elem.selectedIndex].value;
@@ -133,15 +141,16 @@
                           },
                           { "data": "reg_code"},
                           { "data": "child_name" },
+                          { "data": "parent_name" },
                           { "data": "period" },
                           { "data": "class_name" },
                           { "data": "class_type" },
                       ],
                       "columnDefs": [
                           { targets: 1, "width": "120px" },
-                          { targets: 2, "width": "300px" },
-                          { targets: 3, "width": "120", render: function(data){return moment(data).format('MMMM YYYY'); }},
-                          { targets: 4, "width": "150px" },
+                          { targets: [2,3], "width": "300px" },
+                          { targets: 4, "width": "120", render: function(data){return moment(data).format('MMMM YYYY'); }},
+                          { targets: 5, "width": "150px" },
                       ]
                 });
             }

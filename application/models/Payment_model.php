@@ -23,9 +23,9 @@ class Payment_model extends CI_Model
     }
 
     // get all join
-    function get_all_join($class_type, $classroom, $date)
+    function get_all_join($class_type, $classroom, $date, $pay_status)
     {
-        $this->db->select('p.id, p.pay_status, p.create_at, p.update_at, r.reg_code, r.child_name, r.parent_name, r.phone, r.email');
+        $this->db->select('p.id, p.pay_status, p.create_at, p.update_at, r.reg_code, r.child_name, r.parent_name, r.phone, r.email, ct.name type_name, c.name class_name');
         $this->db->from('payment p');
         $this->db->join('register r','r.id=p.register_id');
         $this->db->join('classroom c','c.id=r.classroom_id');
@@ -35,6 +35,9 @@ class Payment_model extends CI_Model
         }
         if ($classroom != null) {
             $this->db->where('c.id', $classroom);
+        }
+        if ($pay_status != null) {
+            $this->db->where('p.pay_status', $pay_status);
         }
         // digunakan range tanggal 1 sampai 31 karena jumlah maks hari 31
         if ($date != null) { 

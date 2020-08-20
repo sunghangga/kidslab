@@ -29,8 +29,9 @@ class Payment extends CI_Controller
     {
         $class_type = $_GET['class_type'];
         $classroom = $_GET['classroom'];
+        $pay_status = $_GET['pay_status'];
         $date = $_GET['date'];
-        $data = $this->Payment_model->get_all_join($class_type, $classroom, $date);
+        $data = $this->Payment_model->get_all_join($class_type, $classroom, $date, $pay_status);
         echo json_encode($data);
     }
 

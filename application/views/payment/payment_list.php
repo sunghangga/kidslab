@@ -10,6 +10,15 @@
                     <div class="col">
                   <h3 class='card-title'>PAYMENT LIST </h3>
                 </div>
+                <div class='col-md-auto'>
+                  <select class="col form-control select2bs4" name="pay_status" id="pay_status" placeholder="Shipment Status" />
+                  <?php 
+                      echo '<option value="" selected>-- ALL --</option>';
+                      echo '<option value="1">PAID</option>';
+                      echo '<option value="0">NOT PAID</option>'; 
+                  ?>
+                 </select>
+                </div>
                 <div class="col-md-2">
                     <div class="col input-group date" data-target-input="nearest" id="inputPeriod">
                       <input type="text" class="form-control datetimepicker-input" data-target="#inputPeriod" placeholder="Period"  name="period" id="period"/>
@@ -52,6 +61,8 @@
                     <th>Pay Status</th>
                     <th>Child Name</th>
                     <th>Parent Name</th>
+                    <th>Class Type</th>
+                    <th>Online Class</th>
                     <th>Phone</th>
                     <th>Email</th>
         		    <th>Create At</th>
@@ -111,6 +122,7 @@
               var class_type = document.getElementById("class_type_id").value;
                 var classroom = document.getElementById("classroom_id").value;
                 var date = document.getElementById("period").value;
+                var pay_status = document.getElementById("pay_status").value;
                 var count = 0;
                 var table = $("#mytable").DataTable({
                     scrollY: "400px",
@@ -126,6 +138,7 @@
                           data.class_type = class_type;
                             data.classroom = classroom;
                             data.date = date;
+                            data.pay_status = pay_status;
                         },
                       },
                       "columns": [
@@ -147,6 +160,8 @@
                           },
                           { "data": "child_name" },
                           { "data": "parent_name" },
+                          { "data": "type_name" },
+                          { "data": "class_name" },
                           { "data": "phone" },
                           { "data": "email"},
                           { "data": "create_at" },

@@ -44,12 +44,12 @@
                                     <div class='col-sm-10'>
                                       <select class="form-control select2bs4" onchange="classroom_list()" name="class_type_id" id="class_type_id" placeholder="Class Type" value="<?php echo $class_type_id; ?>" />
                                       <?php 
-                                          if($class_type_id != null || $class_type_id != "" ){ 
-                                               echo '<option value="'.$class_type_id.'" selected>'.$class_type_name.'</option>';
-                                          }
                                           foreach ($get_all_classtype as $row)
                                           {
-                                            if($class_type_id != $row->id){
+                                            if($class_type_id == $row->id){
+                                              echo '<option value="'.$row->id.'" selected>'.$row->name.'</option>';
+                                            }
+                                            else {
                                               echo '<option value="'.$row->id.'">'.$row->name.'</option>';
                                             }
                                           } 
@@ -65,7 +65,7 @@
                                          } 
                                         foreach ($get_all_classroom as $row)
                                             {
-                                              if($group_id != $row->id){
+                                              if($classroom_id != $row->id){
                                                 echo '<option value="'.$row->id.'">'.$row->name.'</option>';
                                               }
                                             } ?>
@@ -73,11 +73,12 @@
                                       </select>
                                    </div> 
                                 </div>
-                                <div class='form-group row'><label for='label' class='col-sm-2 col-form-label'>Period <?php echo form_error('period') ?></label>
+                                <div class='form-group row'>
+                                  <label for='label' class='col-sm-2 col-form-label'>Period <?php echo form_error('period') ?></label>
                                    <div class="col-sm-4 input-group date" data-target-input="nearest" id="inputPeriod">
                                       <input type="text" class="form-control datetimepicker-input" data-target="#inputPeriod" placeholder="Period"  name="period" id="period" value="<?php echo $period; ?>"/>
                                       <div class="input-group-append" data-target="#inputPeriod" data-toggle="datetimepicker">
-                                          <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                          <div class="form-control input-group-text"><i class="far fa-calendar-alt"></i></div>
                                       </div>
                                     </div>
                                 </div>
@@ -138,7 +139,11 @@
 
           function classroom_list(){
             var elem = document.getElementById("class_type_id");
+            var elem_class = document.getElementById("classroom_id");
+            
             var id = elem.options[elem.selectedIndex].value;
+            var id_classroom = elem_class.options[elem_class.selectedIndex].value;
+            console.log(id);
             $.ajax({
                 type : 'ajax',
                 url : '<?php echo base_url()?>register/get_classroom_list/'+id,
@@ -149,8 +154,12 @@
                   var i;
 
                   for(i=0; i<data.length; i++){
-
+                    if (id_classroom == data[i].id) {
+                      html += '<option value="'+data[i].id+'" selected>'+data[i].name+'</option>';
+                    }
+                    else {
                       html += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+                    }
                   }
                   $('#classroom_id').html(html);
                 }
