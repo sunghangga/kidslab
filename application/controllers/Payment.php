@@ -10,7 +10,7 @@ class Payment extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model(array('Payment_model','Shipment_model','Class_type_model','Classroom_model'));
+        $this->load->model(array('Register_model','Participants_model','Class_type_model','Classroom_model','Payment_model','Shipment_model','Company_model'));
         $this->load->library('form_validation');
         if($this->session->userdata('user_login') != 'TRUE'){ redirect('login', 'refresh');}
     }
@@ -33,6 +33,81 @@ class Payment extends CI_Controller
         $date = $_GET['date'];
         $data = $this->Payment_model->get_all_join($class_type, $classroom, $date, $pay_status);
         echo json_encode($data);
+    }
+
+    public function subscribe() 
+    {
+        $id = $this->input->post('id', TRUE);
+        $date = $this->input->post('date', TRUE);
+        $row = $this->Register_model->get_by_id($id);
+        //untuk membuat kode otomatis
+        $last_code = $this->Register_model->get_last_code();
+        if (is_null($last_code->last_code)) {
+            $last_code->last_code = 0;
+        }
+        $last_code = explode('.', $last_code->last_code);
+        $code = (int) ($last_code[count($last_code)-1]);
+        $code++;
+        $branch = "KL21";
+        $code = $branch.'.'.sprintf("%08s", $code);
+
+        $data = array(
+            'reg_code' => $code,
+            'child_name' => $row->child_name,
+            'parent_name' => $row->parent_name,
+            'phone' => $row->phone,
+            'email' => $row->email,
+            'address' => $row->address,
+            'birth_date' => $row->birth_date,
+            'period' => $date.'-01', //untuk dapat masuk ke db
+            'class_type_id' => $row->class_type_id,
+            'classroom_id' => $row->classroom_id,
+            'note' => $row->note,
+        );
+        // untuk mendapatkan last id register
+        $last_id = $this->Register_model->insert($data);
+
+        // untuk cek apa ada data regis yang diinput pada participants
+        $check_participants = $this->Participants_model->get_count_participants($data['child_name'], $data['phone']);
+        if ($check_participants->count <= 0) {
+            //untuk membuat kode otomatis
+            $last_code = $this->Participants_model->get_last_code();
+            if (is_null($last_code->last_code)) {
+                $last_code->last_code = 0;
+            }
+            $last_code = explode('.', $last_code->last_code);
+            $code = (int) ($last_code[count($last_code)-1]);
+            $code++;
+            $branch = "KL11";
+            $code = $branch.'.'.sprintf("%06s", $code);
+
+            $data_participants = array(
+                'code' => $code,
+                'child_name' => $data['child_name'],
+                'parent_name' => $data['parent_name'],
+                'phone' => $data['phone'],
+                'email' => $data['email'],
+                'address' => $data['address'],
+                'birth_date' => $data['birth_date'],
+            );
+            $this->Participants_model->insert($data_participants);
+        }
+
+        $data_payment = array(
+            'register_id' => $last_id,
+            'pay_status' => 0, 
+        );
+
+        $data_shipment = array(
+            'register_id' => $last_id,
+            'pay_status' => 0,
+            'ship_status' => 0, 
+        );
+
+        $this->Payment_model->insert($data_payment);
+        $this->Shipment_model->insert($data_shipment);
+        $this->session->set_flashdata('message', 'Create Record Success');
+        redirect(site_url('payment'));
     }
 
     public function read($id) 

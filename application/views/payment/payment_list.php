@@ -76,6 +76,36 @@
             </div><!-- /.col -->
           </div><!-- /.row -->
         </div><!-- /.container-fluid -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="subscribeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Subscribe</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <label class="control-label" style="font-size: 25px;">Choose Month</label>
+                <input type="hidden" name="reg_id" id="reg_id" />
+                <div class="col">
+                    <div class="col input-group date" data-target-input="nearest" id="inputPeriodModal">
+                      <input type="text" class="form-control datetimepicker-input" data-target="#inputPeriodModal" placeholder="Period"  name="periodModal" id="periodModal"/>
+                      <div class="input-group-append" data-target="#inputPeriodModal" data-toggle="datetimepicker">
+                          <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="subsSubmitModal" type="button" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </section><!-- /.content -->
       <script src="<?php echo base_url('template/adminlte/plugins/jquery/jquery.min.js') ?>"></script>
         <script src="<?php echo base_url('template/adminlte/plugins/jquery-ui/jquery-ui.min.js') ?>"></script>
@@ -87,36 +117,61 @@
                 $('#inputPeriod').datetimepicker({
                   format: 'YYYY-MM'
                 })
+                $('#inputPeriodModal').datetimepicker({
+                  format: 'YYYY-MM'
+                })
                $('.select2bs4').select2({
                   theme: 'bootstrap4'
                 }) 
+
+               $('#subscribeModal').on('show.bs.modal', function (e) {
+                  var reg_id = $(e.relatedTarget).data('id');
+                  document.getElementById("reg_id").value = reg_id;
+               });
+
+               $("#subsSubmitModal").on("click", function(e) {
+                  e.preventDefault();
+                  var reg_id = document.getElementById("reg_id").value;
+                  var subsDate = document.getElementById("periodModal").value;
+                  $.ajax({
+                      type : 'POST',
+                      url : '<?php echo base_url()?>payment/subscribe/',
+                      // async : false,
+                      data : {id: reg_id, date: subsDate},
+                      dataType : 'json',
+                      success : function(data){
+                        console.log(data);
+                      }
+                  });
+                  $('#subscribeModal').modal('toggle'); // hide modal after click submit
+                });
 
                 get_all();
                 
             });
 
             function classroom_list(){
-            var elem = document.getElementById("class_type_id");
-            var id = elem.options[elem.selectedIndex].value;
-            $.ajax({
-                type : 'ajax',
-                url : '<?php echo base_url()?>register/get_classroom_list/'+id,
-                // async : false,
-                dataType : 'json',
-                success : function(data){
-                  var html = '';
-                  var i;
+              var elem = document.getElementById("class_type_id");
+              var id = elem.options[elem.selectedIndex].value;
+              $.ajax({
+                  type : 'ajax',
+                  url : '<?php echo base_url()?>register/get_classroom_list/'+id,
+                  // async : false,
+                  dataType : 'json',
+                  success : function(data){
+                    var html = '';
+                    var i;
 
-                  html += '<option value="" selected>-- ALL --</option>';
-                  for(i=0; i<data.length; i++){
+                    html += '<option value="" selected>-- ALL --</option>';
+                    for(i=0; i<data.length; i++){
 
-                      html += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+                        html += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+                    }
+                    $('#classroom_id').html(html);
                   }
-                  $('#classroom_id').html(html);
-                }
-            });
-            // get_all();
-          }
+              });
+              // get_all();
+            }
 
             function get_all(){
               var class_type = document.getElementById("class_type_id").value;
@@ -168,10 +223,17 @@
                           { "data": "update_at" },
                           { "data": null,
                                 render: function ( data, type, row ) {
-                                  return '<button id="confirm" title="confirm" class="btn btn-info btn-sm"><span class="fa fa-check" style="margin-right: 3px;"></span> | <span class="fa fa-ban" style="margin-left: 3px;"></span></button>';
+                                  var btnSubs = '';
+                                  if (data.pay_status == 1) {
+                                    btnSubs = '<button data-id="'+data.reg_id+'" id="subscribe" style="margin-left: 5px;" class="btn btn-success btn-sm" data-toggle="modal" data-target="#subscribeModal"><i class="far fa-arrow-alt-circle-right"></i></button>';
+                                  }
+                                  return '<button id="confirm" title="confirm" class="btn btn-info btn-sm"><span class="fa fa-check" style="margin-right: 3px;"></span> | <span class="fa fa-ban" style="margin-left: 3px;"></span></button>'+btnSubs;
                               }
                           },
-                      ]
+                      ],
+                    "columnDefs": [
+                        { targets: 11, "width": "85"}
+                    ]
                 });
 
                 $('#mytable').on( 'click', '#confirm', function (e) {

@@ -67,6 +67,7 @@
             		    <th>Period</th>
             		    <th>Class Type</th>
             		    <th>Classroom</th>
+                    <th>Action</th>
                 </tr>
             </thead>
         </table>
@@ -172,6 +173,11 @@
                           { "data": "period" },
                           { "data": "class_name" },
                           { "data": "class_type" },
+                          { "data": null,
+                                render: function ( data, type, row ) {
+                                  return '<button id=per_address_pdf style="margin-left: 5px;" type="button" class="btn btn-danger btn-sm"><i class="fas fa-file-pdf"></i></button>';
+                              }
+                          },
                       ],
                       "columnDefs": [
                           { targets: [3,4], "width": "120px" },
@@ -179,5 +185,12 @@
                           { targets: 6, "width": "120", render: function(data){return moment(data).format('MMMM YYYY'); }},
                       ]
                 });
+                $('#mytable').on( 'click', '#per_address_pdf', function (e) {
+                  e.preventDefault();
+                  var data = table.row( $(this).parents('tr') ).data();
+                    if (data != null) {
+                      window.open('<?php echo base_url()?>register/per_address_pdf/'+data.reg_id,'_blank');
+                    }
+                } );
             }
         </script>

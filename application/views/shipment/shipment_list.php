@@ -172,11 +172,22 @@
                           { "data": "update_at" },
                           { "data": null,
                                 render: function ( data, type, row ) {
-                                  return '<button id="confirm" title="confirm" class="btn btn-info btn-sm"><span class="fa fa-check" style="margin-right: 3px;"></span> | <span class="fa fa-ban" style="margin-left: 3px;"></span></button>';
+                                  return '<button id="confirm" title="confirm" class="btn btn-info btn-sm"><span class="fa fa-check" style="margin-right: 3px;"></span> | <span class="fa fa-ban" style="margin-left: 3px;"></span></button><button id=per_address_pdf style="margin-left: 5px;" type="button" class="btn btn-danger btn-sm"><i class="fas fa-file-pdf"></i></button>';
                               }
                           },
-                      ]
+                      ],
+                    "columnDefs": [
+                        { targets: 9, "width": "85"}
+                    ]
                 });
+
+                $('#mytable').on( 'click', '#per_address_pdf', function (e) {
+                  e.preventDefault();
+                  var data = table.row( $(this).parents('tr') ).data();
+                    if (data != null) {
+                      window.open('<?php echo base_url()?>register/per_address_pdf/'+data.reg_id,'_blank');
+                    }
+                } );
 
                 $('#mytable').on( 'click', '#confirm', function (e) {
                   e.preventDefault();

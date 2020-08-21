@@ -22,6 +22,11 @@ class Register_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    function get_count()
+    {
+      return $this->db->count_all_results($this->table);
+    }
+
     // get data by id
     function get_by_id($id)
     {
@@ -118,7 +123,7 @@ class Register_model extends CI_Model
     // get_address
     function get_address_print($class_type, $classroom, $date, $ship_status)
     {
-        $this->db->select('r.reg_code, r.child_name, r.parent_name, r.period, r.address, r.email, r.phone, c.name class_name, ct.name class_type, s.ship_status');
+        $this->db->select('r.id reg_id, r.reg_code, r.child_name, r.parent_name, r.period, r.address, r.email, r.phone, c.name class_name, ct.name class_type, s.ship_status');
         $this->db->from('register r');
         $this->db->join('payment p','p.register_id=r.id');
         $this->db->join('shipment s','s.register_id=r.id');
@@ -144,6 +149,19 @@ class Register_model extends CI_Model
             $this->db->where('r.period >=', date('Y-m').'-01');
             $this->db->where('r.period <=', date('Y-m').'-31');
         }
+        return $this->db->get()->result();
+    }
+
+    function get_per_address_print($id)
+    {
+        $this->db->select('r.reg_code, r.child_name, r.parent_name, r.period, r.address, r.email, r.phone, c.name class_name, ct.name class_type, s.ship_status');
+        $this->db->from('register r');
+        $this->db->join('payment p','p.register_id=r.id');
+        $this->db->join('shipment s','s.register_id=r.id');
+        $this->db->join('classroom c','c.id=r.classroom_id');
+        $this->db->join('class_type ct','c.class_type_id=ct.id');
+        $this->db->where('p.pay_status', 1);
+        $this->db->where('r.id', $id);
         return $this->db->get()->result();
     }
 

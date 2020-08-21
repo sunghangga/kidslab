@@ -139,6 +139,26 @@ class Register extends CI_Controller
         }
     }
 
+    public function per_address_pdf($id)
+    {
+    	$company = $this->Company_model->get_all();
+        $row = $this->Register_model->get_per_address_print($id);
+        if ($row) {
+            $data = array(
+	            'logo' => $company->logo,
+	            'name' => $company->name,
+	            'tlp' => $company->tlp,
+	            'data_address' => $row
+	        );
+            $this->load->library("mypdf");
+            set_time_limit(500);
+            $this->mypdf->generate("report/address_print","A4","potrait","Participant Address - ".$row->reg_code, $data);
+        } else {
+            $this->session->set_flashdata('message', 'Record Not Found');
+            redirect(site_url('register/address_report'));
+        }
+    }
+
     public function get_all_participants($id=null){
         if (isset($_GET['term'])) {
             $result = $this->Register_model->search_participants($_GET['term']);

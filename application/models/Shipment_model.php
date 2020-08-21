@@ -22,10 +22,18 @@ class Shipment_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    function get_count()
+    {
+        $this->db->select('id');
+        $this->db->where('pay_status',1);
+        $this->db->where('ship_status',1);
+        return $this->db->count_all_results($this->table);
+    }
+
     // get all join
     function get_all_join($class_type, $classroom, $date, $ship_status)
     {
-        $this->db->select('s.id, s.pay_status, s.ship_status, s.create_at, s.update_at, r.reg_code, r.child_name, r.parent_name, r.phone, r.email');
+        $this->db->select('r.id reg_id, s.id, s.pay_status, s.ship_status, s.create_at, s.update_at, r.reg_code, r.child_name, r.parent_name, r.phone, r.email');
         $this->db->from('shipment s');
         $this->db->join('register r','r.id=s.register_id');
         $this->db->join('classroom c','c.id=r.classroom_id');

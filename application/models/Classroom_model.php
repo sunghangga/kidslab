@@ -22,6 +22,11 @@ class Classroom_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    function get_count()
+    {
+      return $this->db->count_all_results($this->table);
+    }
+    
     // get data by id
     function get_by_id($id)
     {
