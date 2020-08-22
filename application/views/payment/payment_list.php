@@ -250,34 +250,39 @@
                       confirmButtonText: 'Yes, confirm it!'
                     })
                     .then((result) => {
-                      if (result.value) {
-                        Swal.fire({
-                          icon: 'success',
-                          title: 'Your receipt has been confirm!',
-                          showConfirmButton: false,
-                          timer: 1000,
-                          onClose: () => {
-                            //menggunakan ajax agar tidak perlu load page
-                            $.ajax({
-                                type : "POST",
-                                url  : "<?php echo base_url('payment/apply_payment')?>",
-                                dataType : "JSON",
-                                data : {id: data.id},
-                                success: function(data){
-                                    get_all();
+                      //menggunakan ajax agar tidak perlu load page
+                      $.ajax({
+                          type : "POST",
+                          url  : "<?php echo base_url('payment/apply_payment')?>",
+                          dataType : "JSON",
+                          data : {id: data.id},
+                          success: function(data){
+                            result.value = data.status;
+                            var remain_quota = data.remain;
+                            var class_type_remain = data.class_type;
+                            var classroom_remain = data.class_name;
+                            
+                            if (result.value) {
+                              Swal.fire({
+                                icon: 'success',
+                                title: 'Your receipt has been confirm! Remaining quota for '+classroom_remain+' ('+class_type_remain+') is '+remain_quota,
+                                // showConfirmButton: false,
+                                // timer: 1000,
+                                onClose: () => {
+                                  get_all();
+                                  return false;
                                 }
-                            });
-                            return false;
+                              })
+                            } else {
+                              Swal.fire({
+                                icon: 'error',
+                                title: 'Your request has been canceled! Remaining quota for '+classroom_remain+' ('+class_type_remain+') is '+remain_quota,
+                                // showConfirmButton: false,
+                                // timer: 1000
+                              })
+                            }
                           }
-                        })
-                      } else {
-                        Swal.fire({
-                          icon: 'error',
-                          title: 'Your request has been canceled!',
-                          showConfirmButton: false,
-                          timer: 1000
-                        })
-                      }
+                      });
                     });
                   }
               } );

@@ -265,25 +265,25 @@ class Register extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->create();
         } else {
-        	// untuk mengecek jumlah kelas tersisa
-        	$class_book_id = $this->input->post('classroom_id',TRUE);
-	        $period = $this->input->post('period',TRUE);
-	        $check_quota = $this->Classroom_model->get_by_id($class_book_id);
-	        $count_book_class = $this->Register_model->get_count_book($class_book_id, $period);
+     //    	// untuk mengecek jumlah kelas tersisa
+     //    	$class_book_id = $this->input->post('classroom_id',TRUE);
+	    //     $period = $this->input->post('period',TRUE);
+	    //     $check_quota = $this->Classroom_model->get_by_id($class_book_id);
+	    //     $count_book_class = $this->Register_model->get_count_book($class_book_id, $period);
 
-	        if ($count_book_class->count >= $check_quota->quota) {
-	        	$this->form_validation->set_rules('quota_limit', 'quota_limit', 'trim|required',
-	        		array('required' => 
-	        			'<div class="alert alert-danger alert-dismissible fade show" role="alert">
-					  <strong><i class="icon fas fa-ban"></i>Alert!</strong> Quota for the selected class is full. Choose another class, or upgrade quota.
-					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					    <span aria-hidden="true">&times;</span>
-					  </button>
-					</div>')
-	        	);
-	        	$this->form_validation->run();
-	        	$this->create();
-	        } else {
+	    //     if ($count_book_class->count >= $check_quota->quota) {
+	    //     	$this->form_validation->set_rules('quota_limit', 'quota_limit', 'trim|required',
+	    //     		array('required' => 
+	    //     			'<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					//   <strong><i class="icon fas fa-ban"></i>Alert!</strong> Quota for the selected class is full. Choose another class, or upgrade quota.
+					//   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					//     <span aria-hidden="true">&times;</span>
+					//   </button>
+					// </div>')
+	    //     	);
+	    //     	$this->form_validation->run();
+	    //     	$this->create();
+	    //     } else {
 	        	//untuk membuat kode otomatis
 	            $last_code = $this->Register_model->get_last_code();
 	            if (is_null($last_code->last_code)) {
@@ -352,7 +352,7 @@ class Register extends CI_Controller
 	            $this->Shipment_model->insert($data_shipment);
 	            $this->session->set_flashdata('message', 'Create Record Success');
 	            redirect(site_url('register'));
-	        }
+	        // }
         }
     }
     
@@ -424,24 +424,24 @@ class Register extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->update($this->input->post('id', TRUE));
         } else {
-        	// untuk mengecek jumlah kelas tersisa
-        	$class_book_id = $this->input->post('classroom_id',TRUE);
-	        $period = $this->input->post('period',TRUE);
-	        $check_quota = $this->Classroom_model->get_by_id($class_book_id);
-	        $count_book_class = $this->Register_model->get_count_book($class_book_id, $period);
+        	// // untuk mengecek jumlah kelas tersisa
+        	// $class_book_id = $this->input->post('classroom_id',TRUE);
+	        // $period = $this->input->post('period',TRUE);
+	        // $check_quota = $this->Classroom_model->get_by_id($class_book_id);
+	        // $count_book_class = $this->Register_model->get_count_book($class_book_id, $period);
 
-	        if ($count_book_class->count >= $check_quota->quota) {
-	        	$this->form_validation->set_rules('quota_limit', 'quota_limit', 'trim|required',
-	        		array('required' => 
-	        			'<div class="alert alert-danger alert-dismissible">
-                  			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  				<h5><i class="icon fas fa-ban"></i> Alert!</h5>
-                  				Quota for the selected class is full. Choose another class, or upgrade quota
-                  		</div>')
-	        	);
-	        	$this->form_validation->run();
-	        	$this->update($this->input->post('id', TRUE));
-	        } else {
+	        // if ($count_book_class->count >= $check_quota->quota) {
+	        // 	$this->form_validation->set_rules('quota_limit', 'quota_limit', 'trim|required',
+	        // 		array('required' => 
+	        // 			'<div class="alert alert-danger alert-dismissible">
+         //          			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+         //          				<h5><i class="icon fas fa-ban"></i> Alert!</h5>
+         //          				Quota for the selected class is full. Choose another class, or upgrade quota
+         //          		</div>')
+	        // 	);
+	        // 	$this->form_validation->run();
+	        // 	$this->update($this->input->post('id', TRUE));
+	        // } else {
 	            $data = array(
 					'child_name' => $this->input->post('child_name',TRUE),
 					'parent_name' => $this->input->post('parent_name',TRUE),
@@ -459,7 +459,7 @@ class Register extends CI_Controller
 	            $this->Register_model->update($this->input->post('id', TRUE), $data);
 	            $this->session->set_flashdata('message', 'Update Record Success');
 	            redirect(site_url('register'));
-	        }
+	        // }
         }
     }
 
@@ -470,24 +470,24 @@ class Register extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->update_book($this->input->post('id', TRUE));
         } else {
-        	// untuk mengecek jumlah kelas tersisa
-        	$class_book_id = $this->input->post('classroom_id',TRUE);
-	        $period = $this->input->post('period',TRUE);
-	        $check_quota = $this->Classroom_model->get_by_id($class_book_id);
-	        $count_book_class = $this->Register_model->get_count_book($class_book_id, $period);
+        	// // untuk mengecek jumlah kelas tersisa
+        	// $class_book_id = $this->input->post('classroom_id',TRUE);
+	        // $period = $this->input->post('period',TRUE);
+	        // $check_quota = $this->Classroom_model->get_by_id($class_book_id);
+	        // $count_book_class = $this->Register_model->get_count_book($class_book_id, $period);
 
-	        if ($count_book_class->count >= $check_quota->quota) {
-	        	$this->form_validation->set_rules('quota_limit', 'quota_limit', 'trim|required',
-	        		array('required' => 
-	        			'<div class="alert alert-danger alert-dismissible">
-                  			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  				<h5><i class="icon fas fa-ban"></i> Alert!</h5>
-                  				Quota for the selected class is full. Choose another class, or upgrade quota
-                  		</div>')
-	        	);
-	        	$this->form_validation->run();
-	        	$this->update_book($this->input->post('id', TRUE));
-	        } else {
+	        // if ($count_book_class->count >= $check_quota->quota) {
+	        // 	$this->form_validation->set_rules('quota_limit', 'quota_limit', 'trim|required',
+	        // 		array('required' => 
+	        // 			'<div class="alert alert-danger alert-dismissible">
+         //          			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+         //          				<h5><i class="icon fas fa-ban"></i> Alert!</h5>
+         //          				Quota for the selected class is full. Choose another class, or upgrade quota
+         //          		</div>')
+	        // 	);
+	        // 	$this->form_validation->run();
+	        // 	$this->update_book($this->input->post('id', TRUE));
+	        // } else {
 	            $data = array(
 					'child_name' => $this->input->post('child_name',TRUE),
 					'parent_name' => $this->input->post('parent_name',TRUE),
@@ -505,7 +505,7 @@ class Register extends CI_Controller
 	            $this->Register_model->update($this->input->post('id', TRUE), $data);
 	            $this->session->set_flashdata('message', 'Update Record Success');
 	            redirect(site_url('register'));
-	        }
+	        // }
         }
     }
 
@@ -615,19 +615,20 @@ class Register extends CI_Controller
 				}
 				// jika class yang dipilih sudah penuh 
 				else {
-					// untuk mengecek jumlah kelas tersisa
-			        $check_quota = $this->Classroom_model->get_by_id($classroom->id);
-			        $count_book_class = $this->Register_model->get_count_book_excel($classroom->id, $sheetData[$i][9]);
-			        //$sheetData[$i][9] adalah period
-			        if ($count_book_class->count >= $check_quota->quota) {
-			        	if ($excel_type_class == 'ALPHA') {
-							$note = $sheetData[$i][7].' (Class Full)';
-						}
-						elseif ($excel_type_class == 'BETA'){
-							$note = $sheetData[$i][8].' (Class Full)';
-						}
-						$classroom_id = null;
-			        }
+					// // untuk mengecek jumlah kelas tersisa
+			  //       $check_quota = $this->Classroom_model->get_by_id($classroom->id);
+			  //       $count_book_class = $this->Register_model->get_count_book_excel($classroom->id, $sheetData[$i][9]);
+			  //       //$sheetData[$i][9] adalah period
+			  //       if ($count_book_class->count >= $check_quota->quota) {
+			  //       	if ($excel_type_class == 'ALPHA') {
+					// 		$note = $sheetData[$i][7].' (Class Full)';
+					// 	}
+					// 	elseif ($excel_type_class == 'BETA'){
+					// 		$note = $sheetData[$i][8].' (Class Full)';
+					// 	}
+					// 	$classroom_id = null;
+			  //       }
+                    $note = null;
 				}
 
 				// array untuk insert register

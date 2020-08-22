@@ -205,22 +205,57 @@ class Payment extends CI_Controller
 
     public function apply_payment() 
     {
+        // untuk mengetahui id register
         $id=$this->input->post('id', TRUE);
+        // $id=575;
         $row = $this->Payment_model->get_by_id($id);
-        if ($row->pay_status == 0) {
-            $update_status = 1;
-        }
-        else {
-            $update_status = 0;
-        }
-        $data = array(
-            'pay_status' => $update_status,
-            'update_at' => date('Y-m-d H:i:s'),
-        );
+        $data_reg = $this->Register_model->get_by_id($row->register_id);
+        
+        // untuk mengecek jumlah kelas tersisa
+        $class_book_id = $data_reg->classroom_id;
+        $period = date_format(new DateTime($data_reg->period),'Y-m'); //dalam format YYYY-MM
+        $check_quota = $this->Classroom_model->get_by_id($class_book_id);
+        $count_fix_class = $this->Register_model->get_count_pay($class_book_id, $period);
 
-        $this->Payment_model->update($id, $data, $row->register_id);
-        $this->session->set_flashdata('message', 'Update Record Success');
-        echo json_encode($data);
+        if ($count_fix_class->count >= $check_quota->quota && $row->pay_status == 0) {
+            $data_back = array(
+                'status' => false,
+                'remain' => $check_quota->quota - $count_fix_class->count,
+                'class_name' => $data_reg->class_name,
+                'class_type' => $data_reg->class_type,
+            );
+            echo json_encode($data_back);
+        } else {
+            if ($row->pay_status == 0) {
+                $update_status = 1;
+            }
+            else {
+                $update_status = 0;
+            }
+
+            $data = array(
+                'pay_status' => $update_status,
+                'update_at' => date('Y-m-d H:i:s'),
+            );
+
+            $this->Payment_model->update($id, $data, $row->register_id);
+
+            // untuk mengecek jumlah kelas tersisa
+            $class_book_id = $data_reg->classroom_id;
+            $period = date_format(new DateTime($data_reg->period),'Y-m'); //dalam format YYYY-MM
+            $check_quota = $this->Classroom_model->get_by_id($class_book_id);
+            $count_fix_class = $this->Register_model->get_count_pay($class_book_id, $period);
+            
+            $data_back = array(
+                'status' => true,
+                'remain' => $check_quota->quota - $count_fix_class->count,
+                'class_name' => $data_reg->class_name,
+                'class_type' => $data_reg->class_type,
+            );
+
+            $this->session->set_flashdata('message', 'Update Record Success');
+            echo json_encode($data_back);
+        }
     }
     
     public function delete($id) 

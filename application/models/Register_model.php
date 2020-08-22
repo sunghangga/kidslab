@@ -30,7 +30,7 @@ class Register_model extends CI_Model
     // get data by id
     function get_by_id($id)
     {
-        $this->db->select('r.*, c.name class_name, ct.name class_type');
+        $this->db->select('r.*, c.id classroom_id, c.name class_name, ct.id class_type_id, ct.name class_type');
         $this->db->from('register r');
         $this->db->join('classroom c','c.id=r.classroom_id');
         $this->db->join('class_type ct','c.class_type_id=ct.id');
@@ -185,6 +185,16 @@ class Register_model extends CI_Model
         $this->db->select('count(reg_code) count');
         $this->db->where(array("classroom_id" => $class_book_id, "DATE_FORMAT(period,'%Y-%m')" => $period));
         return $this->db->get($this->table)->row();
+    }
+
+    function get_count_pay($class_book_id, $period)
+    {
+        // format $period = 2020-07
+        $this->db->select('count(r.reg_code) count');
+        $this->db->from('register r');
+        $this->db->join('payment p','p.register_id=r.id');
+        $this->db->where(array("p.pay_status" => 1, "r.classroom_id" => $class_book_id, "DATE_FORMAT(r.period,'%Y-%m')" => $period));
+        return $this->db->get()->row();
     }
 
     function get_count_book_excel($class_book_id, $period)
