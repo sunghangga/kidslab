@@ -593,7 +593,7 @@ class Register extends CI_Controller
 					$classroom = $this->Classroom_model->get_id_classroom($sheetData[$i][7]);
 				}
 				else { //bila class_type = BETA
-					$class_type = $this->Class_type_model->get_id_class_type($excel_type_class);
+					$class_type = $this->Class_type_model->get_id_class_type('BETA');
 					$classroom = $this->Classroom_model->get_id_classroom($sheetData[$i][8]);
 				}
 
@@ -611,7 +611,7 @@ class Register extends CI_Controller
 							$note = $sheetData[$i][7].' (Request)';
 						}
 					}
-					$classroom_id = null;
+					$classroom_id = '';
 				}
 				// jika class yang dipilih sudah penuh 
 				else {
@@ -628,7 +628,8 @@ class Register extends CI_Controller
 					// 	}
 					// 	$classroom_id = null;
 			  //       }
-                    $note = null;
+                    $classroom_id = $classroom->id;
+                    $note = '';
 				}
 
 				// array untuk insert register
@@ -654,6 +655,7 @@ class Register extends CI_Controller
                     'note' => $note,
                     'period' => $sheetData[$i][9], //dalam format 2020-07-28
             	);
+                
             	$last_id = $this->Register_model->insert($data);
 
             	// untuk cek apa ada data regis yang diinput pada participants
@@ -696,7 +698,6 @@ class Register extends CI_Controller
 	            $this->Shipment_model->insert($data_shipment);
             }
 
-			print_r($data);
 			$this->session->set_flashdata('message', 'Update Record Success');
 	        redirect(site_url('register'));
 		}
