@@ -289,8 +289,8 @@
                         Swal.fire({
                           icon: 'error',
                           title: 'Your request has been canceled!',
-                          // showConfirmButton: false,
-                          // timer: 1000
+                          showConfirmButton: false,
+                          timer: 1000
                         })
                       }
                     });
