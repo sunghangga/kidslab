@@ -39,6 +39,15 @@ class Register_model extends CI_Model
     }
 
     // get data by id
+    function get_by_id_regis_detail($id)
+    {
+        $this->db->select('id, register_id, num_box, box_name');
+        $this->db->from('register_detail');
+        $this->db->where('register_id', $id);
+        return $this->db->get()->result();
+    }
+
+    // get data by id
     function get_book_by_id($id)
     {
         $this->db->select('r.*, ct.name class_type');
@@ -258,11 +267,24 @@ class Register_model extends CI_Model
         return  $insert_id;
     }
 
+    // insert data detail
+    function insert_detail($data)
+    {
+        $this->db->insert('register_detail', $data);
+    }
+
     // update data
     function update($id, $data)
     {
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
+    }
+
+    // update data detail
+    function update_detail($id, $data)
+    {
+        $this->db->where($this->id, $id);
+        $this->db->update('register_detail', $data);
     }
 
     // delete data

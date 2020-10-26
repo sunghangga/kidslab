@@ -40,7 +40,8 @@
                                       </div>
                                     </div>
                                 </div>
-	  <div class='form-group row'><label for='label' class='col-sm-2 col-form-label'>Class Type <?php echo form_error('class_type_id') ?></label>
+                          	  <div class='form-group row'>
+                                <label for='label' class='col-sm-2 col-form-label'>Class Type <?php echo form_error('class_type_id') ?></label>
                                     <div class='col-sm-10'>
                                       <select class="form-control select2bs4" onchange="classroom_list()" name="class_type_id" id="class_type_id" placeholder="Class Type" value="<?php echo $class_type_id; ?>" />
                                       <?php 
@@ -55,6 +56,26 @@
                                           } 
                                       ?>
                                      </select>
+                                   </div> 
+                                </div>
+                                <div class='form-group row'>
+                                  <label for='label' class='col-sm-2 col-form-label'>Boxes <?php echo form_error('box1') ?></label>
+                                    <input type="hidden" name="id_box1" value="<?php echo $id_box1; ?>" />
+                                    <div class='col-sm-2'>
+                                      <input type="number" class="form-control" name="box1" id="box1" placeholder="" value="<?php echo $box1; ?>"/>
+                                   </div> 
+                                   <div class='col-sm-2'>
+                                      <input type="text" class="form-control" name="box1_name" id="box1_name" placeholder="" value="<?php echo $box1_name; ?>" readonly/>
+                                   </div> 
+                                </div>
+                                <div class='form-group row'>
+                                  <label for='label' class='col-sm-2 col-form-label'><?php echo form_error('box2') ?></label>
+                                    <input type="hidden" name="id_box2" value="<?php echo $id_box2; ?>" />
+                                    <div class='col-sm-2'>
+                                      <input type="number" class="form-control" name="box2" id="box2" placeholder="" value="<?php echo $box2; ?>"/>
+                                   </div> 
+                                   <div class='col-sm-2'>
+                                      <input type="text" class="form-control" name="box2_name" id="box2_name" placeholder="" value="<?php echo $box2_name; ?>" readonly/>
                                    </div> 
                                 </div>
 	  <div class='form-group row'><label for='label' class='col-sm-2 col-form-label'>Classroom <?php echo form_error('classroom_id') ?></label>
@@ -143,7 +164,7 @@
             
             var id = elem.options[elem.selectedIndex].value;
             var id_classroom = elem_class.options[elem_class.selectedIndex].value;
-            console.log(id);
+            // console.log(id);
             $.ajax({
                 type : 'ajax',
                 url : '<?php echo base_url()?>register/get_classroom_list/'+id,

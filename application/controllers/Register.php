@@ -252,6 +252,12 @@ class Register extends CI_Controller
 	    'birth_date' => set_value('birth_date'),
 	    'period' => set_value('period'),
 	    'note' => set_value('note'),
+        'id_box1' => set_value('id_box1'),
+        'id_box2' => set_value('id_box2'),
+        'box1' => set_value('box1'),
+        'box2' => set_value('box2'),
+        'box1_name' => set_value('box1_name', 'ALPHA'),
+        'box2_name' => set_value('box2_name', 'BETA'),
 	    'get_all_classtype' => $this->Class_type_model->get_all(),
 	    'get_all_classroom' => $this->Classroom_model->get_all(),
 	);
@@ -311,6 +317,34 @@ class Register extends CI_Controller
 			    // untuk mendapatkan last id register
 	            $last_id = $this->Register_model->insert($data);
 
+                // insert data register detail, pake cara jadul biar cepet. Next pake ag-grid
+                if (is_null($this->input->post('box1',TRUE)) or $this->input->post('box1',TRUE) < 0) 
+                {
+                    $box1 = 0;
+                }
+                else {
+                    $box1 = $this->input->post('box1',TRUE);
+                }
+                if (is_null($this->input->post('box2',TRUE)) or $this->input->post('box2',TRUE) < 0) {
+                    $box2 = 0;
+                }
+                else {
+                    $box2 = $this->input->post('box2',TRUE);
+                }
+                $data_regisdetail = array(
+                    'register_id' => $last_id,
+                    'num_box' => $box1,
+                    'box_name' => $this->input->post('box1_name',TRUE),
+                );
+                $this->Register_model->insert_detail($data_regisdetail);
+                
+                $data_regisdetail = array(
+                    'register_id' => $last_id,
+                    'num_box' => $box2,
+                    'box_name' => $this->input->post('box2_name',TRUE),
+                );
+                $this->Register_model->insert_detail($data_regisdetail);
+
 	            // untuk cek apa ada data regis yang diinput pada participants
 	            $check_participants = $this->Participants_model->get_count_participants($data['child_name'], $data['phone']);
 	            if ($check_participants->count <= 0) {
@@ -360,6 +394,21 @@ class Register extends CI_Controller
     {
         $row = $this->Register_model->get_by_id($id);
 
+        // initial regis detail
+        $regis_detail = $this->Register_model->get_by_id_regis_detail($id);
+        for ($i=0; $i < count($regis_detail); $i++) { 
+            if ($regis_detail[$i]->box_name == 'ALPHA') {
+                $id_box1 = $regis_detail[$i]->id;
+                $box1 = $regis_detail[$i]->num_box;
+                $box1_name = $regis_detail[$i]->box_name;
+            } 
+            else if ($regis_detail[$i]->box_name == 'BETA') {
+                $id_box2 = $regis_detail[$i]->id;
+                $box2 = $regis_detail[$i]->num_box;
+                $box2_name = $regis_detail[$i]->box_name;
+            }
+        }
+
         if ($row) {
             $data = array(
                 'button' => 'Update',
@@ -377,6 +426,12 @@ class Register extends CI_Controller
 				'class_type_name' => set_value('class_type_name', $row->class_type),
 				'classroom_name' => set_value('classroom_name', $row->class_name),
 				'note' => set_value('note', $row->note),
+                'id_box1' => set_value('id_box1', $id_box1),
+                'id_box2' => set_value('id_box2', $id_box2),
+                'box1' => set_value('box1', $box1),
+                'box2' => set_value('box2', $box2),
+                'box1_name' => set_value('box1_name', $box1_name),
+                'box2_name' => set_value('box2_name', $box2_name),
 				'get_all_classtype' => $this->Class_type_model->get_all(),
 			    'get_all_classroom' => $this->Classroom_model->get_all(),
 	    );
@@ -455,8 +510,34 @@ class Register extends CI_Controller
 					'note' => $this->input->post('note',TRUE),
 					'update_at' => date('Y-m-d H:i:s'),
 			    );
-
 	            $this->Register_model->update($this->input->post('id', TRUE), $data);
+
+                // insert data register detail, pake cara jadul biar cepet. Next pake ag-grid
+                if (is_null($this->input->post('box1',TRUE)) or $this->input->post('box1',TRUE) < 0) 
+                {
+                    $box1 = 0;
+                }
+                else {
+                    $box1 = $this->input->post('box1',TRUE);
+                }
+                if (is_null($this->input->post('box2',TRUE)) or $this->input->post('box2',TRUE) < 0) {
+                    $box2 = 0;
+                }
+                else {
+                    $box2 = $this->input->post('box2',TRUE);
+                }
+                $data_regisdetail = array(
+                    'num_box' => $box1,
+                    'box_name' => $this->input->post('box1_name',TRUE),
+                );
+                $this->Register_model->update_detail($this->input->post('id_box1',TRUE),$data_regisdetail);
+                
+                $data_regisdetail = array(
+                    'num_box' => $box2,
+                    'box_name' => $this->input->post('box2_name',TRUE),
+                );
+                $this->Register_model->update_detail($this->input->post('id_box2',TRUE),$data_regisdetail);
+
 	            $this->session->set_flashdata('message', 'Update Record Success');
 	            redirect(site_url('register'));
 	        // }
@@ -735,20 +816,19 @@ class Register extends CI_Controller
 
     public function _rules() 
     {
-	$this->form_validation->set_rules('child_name', 'child name', 'trim|required');
-	$this->form_validation->set_rules('parent_name', 'parent name', 'trim|required');
-	$this->form_validation->set_rules('phone', 'phone', 'trim|required');
-	$this->form_validation->set_rules('email', 'email', 'trim|required');
-	$this->form_validation->set_rules('address', 'address', 'trim|required');
-	$this->form_validation->set_rules('birth_date', 'birth date', 'trim|required');
-	$this->form_validation->set_rules('period', 'period', 'trim|required');
-	$this->form_validation->set_rules('class_type_id', 'class type id', 'trim|required');
-	$this->form_validation->set_rules('classroom_id', 'classroom id', 'trim|required');
+    	$this->form_validation->set_rules('child_name', 'child name', 'trim|required');
+    	$this->form_validation->set_rules('parent_name', 'parent name', 'trim|required');
+    	$this->form_validation->set_rules('phone', 'phone', 'trim|required');
+    	$this->form_validation->set_rules('email', 'email', 'trim|required');
+    	$this->form_validation->set_rules('address', 'address', 'trim|required');
+    	$this->form_validation->set_rules('birth_date', 'birth date', 'trim|required');
+    	$this->form_validation->set_rules('period', 'period', 'trim|required');
+    	$this->form_validation->set_rules('class_type_id', 'class type id', 'trim|required');
+    	$this->form_validation->set_rules('classroom_id', 'classroom id', 'trim|required');
 
-	$this->form_validation->set_rules('id', 'id', 'trim');
-	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
+    	$this->form_validation->set_rules('id', 'id', 'trim');
+    	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
-
 }
 
 /* End of file Register.php */
