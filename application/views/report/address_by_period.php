@@ -67,6 +67,7 @@
             		    <th>Period</th>
             		    <th>Class Type</th>
             		    <th>Classroom</th>
+                    <th>Note</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -173,6 +174,7 @@
                           { "data": "period" },
                           { "data": "class_name" },
                           { "data": "class_type" },
+                          { "data": "note" },
                           { "data": null,
                                 render: function ( data, type, row ) {
                                   return '<button id=per_address_pdf style="margin-left: 5px;" type="button" class="btn btn-danger btn-sm"><i class="fas fa-file-pdf"></i></button>';
@@ -182,6 +184,7 @@
                       "columnDefs": [
                           { targets: [3,4], "width": "120px" },
                           { targets: 5, "width": "300px" },
+                          { targets: 9, "width": "100px" },
                           { targets: 6, "width": "120", render: function(data){return moment(data).format('MMMM YYYY'); }},
                       ]
                 });

@@ -33,7 +33,7 @@ class Shipment_model extends CI_Model
     // get all join
     function get_all_join($class_type, $classroom, $date, $ship_status)
     {
-        $this->db->select('r.id reg_id, s.id, s.pay_status, s.ship_status, s.create_at, s.update_at, r.reg_code, r.child_name, r.parent_name, r.phone, r.email');
+        $this->db->select('r.id reg_id, s.id, s.pay_status, s.ship_status, s.create_at, s.update_at, r.reg_code, r.child_name, r.parent_name, r.phone, r.email, r.note');
         $this->db->from('shipment s');
         $this->db->join('register r','r.id=s.register_id');
         $this->db->join('classroom c','c.id=r.classroom_id');

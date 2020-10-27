@@ -67,33 +67,6 @@ class Payment extends CI_Controller
         // untuk mendapatkan last id register
         $last_id = $this->Register_model->insert($data);
 
-        // insert data register detail, pake cara jadul biar cepet. Next pake ag-grid
-        // initial regis detail
-        $regis_detail = $this->Register_model->get_by_id_regis_detail($id);
-        for ($i=0; $i < count($regis_detail); $i++) { 
-            if ($regis_detail[$i]->box_name == 'ALPHA') {
-                $box1 = $regis_detail[$i]->num_box;
-                $box1_name = $regis_detail[$i]->box_name;
-            } 
-            else if ($regis_detail[$i]->box_name == 'BETA') {
-                $box2 = $regis_detail[$i]->num_box;
-                $box2_name = $regis_detail[$i]->box_name;
-            }
-        }
-        $data_regisdetail = array(
-            'register_id' => $last_id,
-            'num_box' => $box1,
-            'box_name' => $box1_name,
-        );
-        $this->Register_model->insert_detail($data_regisdetail);
-        
-        $data_regisdetail = array(
-            'register_id' => $last_id,
-            'num_box' => $box2,
-            'box_name' => $box2_name,
-        );
-        $this->Register_model->insert_detail($data_regisdetail);
-
         // untuk cek apa ada data regis yang diinput pada participants
         $check_participants = $this->Participants_model->get_count_participants($data['child_name'], $data['phone']);
         if ($check_participants->count <= 0) {

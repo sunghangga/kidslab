@@ -65,6 +65,7 @@
                     <th>Online Class</th>
                     <th>Phone</th>
                     <th>Email</th>
+                    <th>Note</th>
         		    <th>Create At</th>
         		    <th>Update At</th>
         		    <th>Action</th>
@@ -220,6 +221,7 @@
                           { "data": "class_name" },
                           { "data": "phone" },
                           { "data": "email"},
+                          { "data": "note"},
                           { "data": "create_at" },
                           { "data": "update_at" },
                           { "data": null,
@@ -233,7 +235,8 @@
                           },
                       ],
                     "columnDefs": [
-                        { targets: 11, "width": "85"}
+                        { targets: 12, "width": "85"},
+                        { targets: 9, "width": "100"},
                     ]
                 });
 

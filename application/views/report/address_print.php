@@ -45,6 +45,17 @@
             <f class="hcontent"><?php echo $row->phone?></f>
           </td>
         </tr>
+        <tr style="color: red;">
+          <td>
+            <f class="htitle"><b>Note</b></f>
+          </td>
+          <td>
+            <f class="hcontent">: </f>
+          </td>
+          <td>
+            <f class="hcontent"><?php echo $row->note?></f>
+          </td>
+        </tr>
       </table>
     </div>
     <div class="column-right" style="padding-left: 475px; width: 50%; margin-top: 2px;">

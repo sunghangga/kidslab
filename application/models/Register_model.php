@@ -132,7 +132,7 @@ class Register_model extends CI_Model
     // get_address
     function get_address_print($class_type, $classroom, $date, $ship_status)
     {
-        $this->db->select('r.id reg_id, r.reg_code, r.child_name, r.parent_name, r.period, r.address, r.email, r.phone, c.name class_name, ct.name class_type, s.ship_status');
+        $this->db->select('r.id reg_id, r.reg_code, r.child_name, r.parent_name, r.period, r.address, r.email, r.phone, r.note, c.name class_name, ct.name class_type, s.ship_status');
         $this->db->from('register r');
         $this->db->join('payment p','p.register_id=r.id');
         $this->db->join('shipment s','s.register_id=r.id');
@@ -163,7 +163,7 @@ class Register_model extends CI_Model
 
     function get_per_address_print($id)
     {
-        $this->db->select('r.reg_code, r.child_name, r.parent_name, r.period, r.address, r.email, r.phone, c.name class_name, ct.name class_type, s.ship_status');
+        $this->db->select('r.reg_code, r.child_name, r.parent_name, r.period, r.address, r.email, r.phone, r.note, c.name class_name, ct.name class_type, s.ship_status');
         $this->db->from('register r');
         $this->db->join('payment p','p.register_id=r.id');
         $this->db->join('shipment s','s.register_id=r.id');
@@ -267,24 +267,11 @@ class Register_model extends CI_Model
         return  $insert_id;
     }
 
-    // insert data detail
-    function insert_detail($data)
-    {
-        $this->db->insert('register_detail', $data);
-    }
-
     // update data
     function update($id, $data)
     {
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
-    }
-
-    // update data detail
-    function update_detail($id, $data)
-    {
-        $this->db->where($this->id, $id);
-        $this->db->update('register_detail', $data);
     }
 
     // delete data

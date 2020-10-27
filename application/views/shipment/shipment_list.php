@@ -63,9 +63,10 @@
                     <th>Parent Name</th>
                     <th>Phone</th>
                     <th>Email</th>
-        		    <th>Create At</th>
-        		    <th>Update At</th>
-        		    <th>Action</th>
+                    <th>Note</th>
+            		    <th>Create At</th>
+            		    <th>Update At</th>
+            		    <th>Action</th>
                 </tr>
             </thead>
         </table>
@@ -168,6 +169,7 @@
                           { "data": "parent_name" },
                           { "data": "phone" },
                           { "data": "email"},
+                          { "data": "note"},
                           { "data": "create_at" },
                           { "data": "update_at" },
                           { "data": null,
@@ -177,7 +179,8 @@
                           },
                       ],
                     "columnDefs": [
-                        { targets: 9, "width": "85"}
+                        { targets: 10, "width": "85"},
+                        { targets: 7, "width": "100"},
                     ]
                 });
 

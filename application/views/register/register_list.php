@@ -64,6 +64,7 @@
         		    <th>Address</th>
         		    <th>Birth Date</th>
         		    <th>Period</th>
+                <th>Note</th>
         		    <th>Class Type</th>
         		    <th>Online Class</th>
         		    <th>Create At</th>
@@ -190,6 +191,7 @@
                           { "data": "address"},
                           { "data": "birth_date" },
                           { "data": "period" },
+                          { "data": "note" },
                           { "data": "class_type" },
                           { "data": "class_name"},
                           { "data": "create_at" },
@@ -210,6 +212,7 @@
                     "columnDefs": [
                         { targets: 7, "width": "90", render: function(data){return moment(data).format('D MMMM YYYY'); }},
                         { targets: 8, "width": "90", render: function(data){return moment(data).format('MMMM YYYY'); }},
+                        { targets: 9, "width": "100"},
                     ]
                 });
 
