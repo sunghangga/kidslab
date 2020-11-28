@@ -45,17 +45,19 @@
             <f class="hcontent"><?php echo $row->phone?></f>
           </td>
         </tr>
-        <tr style="color: red;">
-          <td>
-            <f class="htitle"><b>Note</b></f>
-          </td>
-          <td>
-            <f class="hcontent">: </f>
-          </td>
-          <td>
-            <f class="hcontent"><?php echo $row->note?></f>
-          </td>
-        </tr>
+        <?php if(!is_null($row->note) && $row->note != '') { ?>
+          <tr style="color: blue;">
+            <td>
+              <f class="htitle"><b>Note</b></f>
+            </td>
+            <td>
+              <f class="hcontent">: </f>
+            </td>
+            <td>
+              <f class="hcontent"><?php echo $row->note?></f>
+            </td>
+          </tr>
+        <?php } ?>
       </table>
     </div>
     <div class="column-right" style="padding-left: 475px; width: 50%; margin-top: 2px;">
@@ -69,6 +71,31 @@
     </div>
    </div>
  </div>
+
+ <?php if($row->is_special == "on") { ?>
+ <div class="row form-p-all" style="margin-bottom: 8px;">
+    <div class="col-md-12">
+    <div class="column" style="width: 80%;">
+      <table>
+        
+          <tr style="color: red;">
+            <td>
+              <f class="htitle"><b>Special Message</b></f>
+            </td>
+            <td>
+              <f class="hcontent">: </f>
+            </td>
+            <td>
+              <f class="hcontent"><?php echo $row->special_note?></f>
+            </td>
+          </tr>
+        
+      </table>
+    </div>
+   </div>
+ </div>
+ <?php } ?>
+
 <?php } ?>
 </div>
 </body>

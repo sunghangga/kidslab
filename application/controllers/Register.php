@@ -252,6 +252,8 @@ class Register extends CI_Controller
 	    'birth_date' => set_value('birth_date'),
 	    'period' => set_value('period'),
 	    'note' => set_value('note'),
+        'special_note' => set_value('special_note'),
+        'is_special' => set_value('is_special'),
 	    'get_all_classtype' => $this->Class_type_model->get_all(),
 	    'get_all_classroom' => $this->Classroom_model->get_all(),
 	);
@@ -284,6 +286,7 @@ class Register extends CI_Controller
 	    //     	$this->form_validation->run();
 	    //     	$this->create();
 	    //     } else {
+
 	        	//untuk membuat kode otomatis
 	            $last_code = $this->Register_model->get_last_code();
 	            if (is_null($last_code->last_code)) {
@@ -304,6 +307,8 @@ class Register extends CI_Controller
 					'address' => $this->input->post('address',TRUE),
 					'birth_date' => $this->input->post('birth_date',TRUE),
 					'period' => $this->input->post('period',TRUE).'-01', //untuk dapat masuk ke db
+                    'is_special' => $this->input->post('is_special',TRUE),
+                    'special_note' => $this->input->post('special_note',TRUE),
 					'class_type_id' => $this->input->post('class_type_id',TRUE),
 					'classroom_id' => $this->input->post('classroom_id',TRUE),
 					'note' => $this->input->post('note',TRUE),
@@ -374,6 +379,8 @@ class Register extends CI_Controller
 				'period' => set_value('period', $row->period),
 				'class_type_id' => set_value('class_type_id', $row->class_type_id),
 				'classroom_id' => set_value('classroom_id', $row->classroom_id),
+                'is_special' => set_value('is_special', $row->is_special),
+                'special_note' => set_value('special_note', $row->special_note),
 				'class_type_name' => set_value('class_type_name', $row->class_type),
 				'classroom_name' => set_value('classroom_name', $row->class_name),
 				'note' => set_value('note', $row->note),
@@ -404,6 +411,8 @@ class Register extends CI_Controller
 				'birth_date' => set_value('birth_date', $row->birth_date),
 				'period' => set_value('period', $row->period),
 				'class_type_id' => set_value('class_type_id', $row->class_type_id),
+                'is_special' => set_value('is_special', $row->is_special),
+                'special_note' => set_value('special_note', $row->special_note),
 				'classroom_id' => set_value('classroom_id', $row->classroom_id),
 				'class_type_name' => set_value('class_type_name', $row->class_type),
 				'note' => set_value('note', $row->note),
@@ -450,6 +459,8 @@ class Register extends CI_Controller
 					'address' => $this->input->post('address',TRUE),
 					'birth_date' => $this->input->post('birth_date',TRUE),
 					'period' => $this->input->post('period',TRUE).'-01',
+                    'is_special' => $this->input->post('is_special',TRUE),
+                    'special_note' => $this->input->post('special_note',TRUE),
 					'class_type_id' => $this->input->post('class_type_id',TRUE),
 					'classroom_id' => $this->input->post('classroom_id',TRUE),
 					'note' => $this->input->post('note',TRUE),
@@ -496,6 +507,8 @@ class Register extends CI_Controller
 					'address' => $this->input->post('address',TRUE),
 					'birth_date' => $this->input->post('birth_date',TRUE),
 					'period' => $this->input->post('period',TRUE).'-01',
+                    'is_special' => $this->input->post('is_special',TRUE),
+                    'special_note' => $this->input->post('special_note',TRUE),
 					'class_type_id' => $this->input->post('class_type_id',TRUE),
 					'classroom_id' => $this->input->post('classroom_id',TRUE),
 					'note' => $this->input->post('note',TRUE),

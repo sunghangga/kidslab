@@ -42,23 +42,40 @@
                                 </div>
                           	  <div class='form-group row'>
                                 <label for='label' class='col-sm-2 col-form-label'>Class Type <?php echo form_error('class_type_id') ?></label>
-                                    <div class='col-sm-10'>
+                                <div class="row col">
+                                    <div class='col-sm-6'>
                                       <select class="form-control select2bs4" onchange="classroom_list()" name="class_type_id" id="class_type_id" placeholder="Class Type" value="<?php echo $class_type_id; ?>" />
-                                      <?php 
-                                          foreach ($get_all_classtype as $row)
-                                          {
-                                            if($class_type_id == $row->id){
-                                              echo '<option value="'.$row->id.'" selected>'.$row->name.'</option>';
-                                            }
-                                            else {
-                                              echo '<option value="'.$row->id.'">'.$row->name.'</option>';
-                                            }
-                                          } 
-                                      ?>
-                                     </select>
-                                   </div> 
+                                        <?php 
+                                            foreach ($get_all_classtype as $row)
+                                            {
+                                              if($class_type_id == $row->id){
+                                                echo '<option value="'.$row->id.'" selected>'.$row->name.'</option>';
+                                              }
+                                              else {
+                                                echo '<option value="'.$row->id.'">'.$row->name.'</option>';
+                                              }
+                                            } 
+                                        ?>
+                                       </select>
+                                    </div> 
+                                     <div class="col-sm-6">
+                                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                                          <input type="checkbox" class="custom-control-input" id="is_special" name="is_special" value="<?php echo $is_special; ?>">
+                                          <label class="custom-control-label" for="is_special">Spesial box?</label>
+                                        </div>
+                                      </div>
+                                    </div>
                                 </div>
-	  <div class='form-group row'><label for='label' class='col-sm-2 col-form-label'>Classroom <?php echo form_error('classroom_id') ?></label>
+                                <div id="show_note">
+                                  <div class='form-group row'>
+                                    <label for='label' class='col-sm-2 col-form-label'></label>
+                                      <div class='col-sm-10'><textarea class="form-control" rows="3" name="special_note" id="special_note" placeholder="Special Note"><?php echo $special_note; ?></textarea>
+                                      </div>
+                                  </div>
+                                </div>
+
+	                               <div class='form-group row'>
+                                  <label for='label' class='col-sm-2 col-form-label'>Classroom <?php echo form_error('classroom_id') ?></label>
                                     <div class='col-sm-10'>
                                       <select class="form-control select2bs4" id="classroom_id" name="classroom_id">
                                         <?php if($classroom_id != null || $classroom_id != ""){ 
@@ -83,7 +100,8 @@
                                       </div>
                                     </div>
                                 </div>
-	    <div class='form-group row'><label for='label' class='col-sm-2 col-form-label'>Note <?php echo form_error('note') ?></label>
+                          	    <div class='form-group row'>
+                                  <label for='label' class='col-sm-2 col-form-label'>Note <?php echo form_error('note') ?></label>
                                     <div class='col-sm-10'><textarea class="form-control" rows="3" name="note" id="note" placeholder="Note"><?php echo $note; ?></textarea>
                                     </div>
                                 </div>
@@ -112,6 +130,28 @@
           $(function () {
               // panggil pertama
               classroom_list();
+
+              if (document.getElementById("is_special").value == "on") {
+                document.getElementById("is_special").checked = true;
+                document.getElementById("show_note").style.display = "block";
+              }
+              else {
+                document.getElementById("is_special").checked = false;
+                document.getElementById("show_note").style.display = "none";
+              }
+
+              $('#is_special').change(function() {
+                var x = document.getElementById("show_note");
+                if ($(this).prop('checked')) {
+                  document.getElementById("is_special").value = "on";
+                  x.style.display = "block";
+                }
+                else {
+                  document.getElementById("is_special").value = null;
+                  x.style.display = "none";
+                  document.getElementById("special_note").value = null;
+                }
+              })
 
                $('#inputDate').datetimepicker({
                   format: 'YYYY-MM-DD'
